@@ -1,5 +1,7 @@
 # Gorai Documentation
 
+<img src="./images/gorai.png" width="25%">
+
 **The robotics platform for software teams.**
 
 *Pronounced "go-ray" (like "sting-ray")*

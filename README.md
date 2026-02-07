@@ -1,8 +1,18 @@
 # Gorai Documentation
 
-**Professional robotics for prosumers — without the PhD**
+**The robotics platform for software teams.**
 
 *Pronounced "go-ray" (like "sting-ray")*
+
+## Why Gorai?
+
+> **Autonomy without replay is folklore.** Gorai treats action logs, state streams, and replay as first-class platform concerns — not optional add-ons.
+
+> **Agent-compatible. Not agent-dependent.** AI-driven execution is a first-class citizen, but the platform works just as well with deterministic state machines, scripts, and rule-based planners. No autonomy method is mandatory. All are constrained.
+
+> **Build robots like software. Run them like systems.** Gorai is a software engineer's robotics platform — opinionated, pragmatic, and operational. If you already think in APIs, distributed systems, and deployments, you'll be productive in days, not months.
+
+---
 
 This is the canonical documentation for the Gorai robotics platform. If you want to understand what Gorai is, how it works, how to build with it, or where it's headed — it's in here.
 

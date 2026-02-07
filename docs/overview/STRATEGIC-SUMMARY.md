@@ -206,7 +206,7 @@ DON'T:
 ### Positioning Statements
 
 **DO say**:
-- "The robotics platform for software engineers"
+- "The robotics platform for the AI era"
 - "Gorai makes professional robotics accessible"
 - "Build a robot in under an hour"
 - "Single binary, no containers required"

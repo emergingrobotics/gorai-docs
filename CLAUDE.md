@@ -4,6 +4,24 @@ This is the canonical documentation repository for the **Gorai** robotics ecosys
 
 **Pronunciation:** "go-ray" (like "sting-ray")
 
+## Finding Documentation — Read INDEX.md First
+
+**Before searching for files, read `INDEX.md` at the repository root.** It contains:
+
+1. **Topic Quick-Reference table** — maps common topics directly to the right file
+2. **Per-file entries** with path, summary, and keywords for every document in the repo
+3. **Directory-level grouping** so you can scan an entire category
+
+### Lookup workflow
+
+1. Open `INDEX.md`
+2. Check the **Topic Quick-Reference** table at the top for an exact match
+3. If no exact match, scan keywords in the relevant directory section
+4. Read the summary to confirm the file covers what you need
+5. Open the file
+
+This avoids unnecessary glob/grep across hundreds of files and gets you to the right document in one step.
+
 ## Purpose
 
 This repo holds all higher-level documentation — strategy, architecture, specifications, book content, hardware analysis, guides, and ecosystem documentation. The core [gorai](../gorai) repo focuses on Go source code and implementation.
@@ -11,6 +29,8 @@ This repo holds all higher-level documentation — strategy, architecture, speci
 ## Repository Layout
 
 ```
+INDEX.md               # AI-navigable index of every document (READ THIS FIRST)
+
 docs/
 ├── overview/          # Strategic vision, framework comparisons (ROS 2, Viam, YARP)
 ├── architecture/      # Design patterns, component model, NATS messaging, abstractions
@@ -67,3 +87,4 @@ The documentation covers components beyond the core repo:
 - Book chapters follow a numbered ordering (00-18 + appendices)
 - The `archive/` directory preserves historical designs — don't delete, they provide context
 - When adding ecosystem component docs, place them in `docs/ecosystem/`
+- **When adding or renaming documents, update `INDEX.md`** with path, summary, and keywords

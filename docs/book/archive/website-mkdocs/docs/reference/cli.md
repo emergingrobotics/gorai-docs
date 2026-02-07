@@ -1,0 +1,1 @@
+../../../content/reference/cli.md

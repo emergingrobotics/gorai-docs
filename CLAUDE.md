@@ -1,6 +1,6 @@
 # Gorai Documentation Repository
 
-**The robotics platform for software teams.** Pronounced "go-ray" (like "sting-ray").
+**The robotics platform for software engineers.** Pronounced "go-ray" (like "sting-ray").
 
 ## How to Navigate This Repo
 

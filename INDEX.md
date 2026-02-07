@@ -14,6 +14,7 @@ This file is a machine-readable index of every document in gorai-docs. Use it to
 
 | Topic | Primary Document |
 |-------|-----------------|
+| Complete system overview (start here) | `docs/overview/system-overview.md` |
 | What is Gorai / why it exists | `docs/overview/STRATEGIC-SUMMARY.md` |
 | Framework comparison (ROS 2, Viam, YARP) | `docs/overview/general-designs.md` |
 | Complete technical specification | `docs/specifications/gorai-framework-specification.md` |
@@ -53,6 +54,10 @@ This file is a machine-readable index of every document in gorai-docs. Use it to
 ---
 
 ## docs/overview/
+
+### docs/overview/system-overview.md
+Summary: Complete picture of the Gorai platform in one document — what it is, the five-layer architecture (resource model, NATS messaging, mesh discovery, dynamic discovery), how robots are configured with RDL, runtime lifecycle, deployment modes, the full ecosystem of components, hardware platforms, language strategy, safety model, and comparison with ROS 2 and Viam.
+Keywords: system overview, architecture, resource model, NATS, mesh discovery, dynamic discovery, RDL, runtime, deployment, ecosystem, gorai-gsp, gorai-nats-gw, hardware, language strategy, safety, ROS 2 comparison, Viam comparison, start here
 
 ### docs/overview/STRATEGIC-SUMMARY.md
 Summary: Quick reference for core strategic decisions — prosumer market positioning, phased architecture (simple binary → containers → K3s), Go-first polyglot language strategy, and "coopetition" with ROS 2.

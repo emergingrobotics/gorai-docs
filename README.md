@@ -26,7 +26,17 @@ The core framework implementation lives in [gorai](../gorai). This repo is every
 
 **[System Overview](docs/overview/system-overview.md)** — Read this first. It explains the entire Gorai system in one document: what it is, the architecture (resource model, NATS messaging, mesh discovery), how robots are configured and deployed, the ecosystem of components, and how it all fits together.
 
-After the system overview, pick your path:
+### Use an AI agent to explore
+
+This repo has ~100 documents. Point an AI coding agent at this repo (it will read `CLAUDE.md` and `INDEX.md` automatically) and ask it what you need:
+
+- *"Explain the Gorai architecture and how components communicate"*
+- *"I want to build a new sensor component — what patterns should I follow?"*
+- *"Compare Gorai's approach to ROS 2 and Viam"*
+- *"What hardware do I need to get started with a simple robot?"*
+- *"Walk me through the RDL configuration format"*
+
+### Or pick your path
 
 | I want to... | Read |
 |--------------|------|

@@ -41,8 +41,8 @@ velocity_input ──NATS──> mecanum_controller
               │
               ├── GPIO_SET (IN1=HIGH, IN2=LOW)  ──NATS──> gateway ──GSP/2──> Pico
               │
-              └── SetNormalized() on pwm/remote ──NATS──> gateway ──GSP/2──> Pico
-                  (motor_fl_speed component)
+              └── PWM_SET (speed_pin)           ──NATS──> gateway ──GSP/2──> Pico
+                  (internal pwm/remote instance)
 ```
 
 ### Data Flow Step-by-Step
@@ -54,7 +54,7 @@ velocity_input ──NATS──> mecanum_controller
 5. The `l298n_controller` service subscribes to each motor's topic.
 6. On receiving a power command, the service applies the L298N H-bridge truth table:
    - Sets direction via `GPIO_SET` (IN1/IN2 pins) published directly to NATS.
-   - Sets speed via `SetNormalized()` on the corresponding `pwm/remote` component, which publishes `PWM_SET` to NATS.
+   - Sets speed via `SetNormalized()` on an internally-created `pwm/remote` instance for the motor's `speed_pin`, which publishes `PWM_SET` to NATS.
 7. The NATS gateway bridges GPIO_SET and PWM_SET to the Pico via GSP/2.
 8. The Pico drives the physical GPIO and PWM pins.
 
@@ -95,32 +95,9 @@ Each motor is a `motor/remote` component in NATS output mode. It implements the 
 }
 ```
 
-### PWM Speed Components (ENA/ENB)
-
-Each motor's speed pin is a `pwm/remote` component. The L298N service calls `SetNormalized()` on it.
-
-```json
-{
-  "name": "motor_fl_speed",
-  "type": "pwm",
-  "model": "remote",
-  "attributes": {
-    "nats_subject_prefix": "gsp",
-    "device_id": "gsp-pico",
-    "pin": 2,
-    "frequency_hz": 50,
-    "min_pulse_us": 1000,
-    "max_pulse_us": 2000,
-    "initial_pulse_us": 1000,
-    "failsafe_pulse_us": 1000,
-    "auto_configure": true
-  }
-}
-```
-
 ### L298N Controller Service
 
-The service ties everything together. It subscribes to motor NATS topics, resolves PWM component dependencies, and publishes GPIO commands for direction.
+The service ties everything together. It subscribes to motor NATS topics, internally creates `pwm/remote` instances for each motor's speed pin, and publishes GPIO commands for direction. No standalone PWM components are needed -- the speed pin is defined inline per motor.
 
 ```json
 {
@@ -134,17 +111,18 @@ The service ties everything together. It subscribes to motor NATS topics, resolv
       {
         "name": "motor_fl",
         "motor_topic": "gorai.main-robot.motor.motor_fl.command",
-        "pwm_component": "motor_fl_speed",
+        "speed_pin": 2,
         "in1_pin": 3,
         "in2_pin": 4,
         "invert": false,
         "brake_on_stop": true
       }
     ]
-  },
-  "depends_on": ["motor_fl_speed"]
+  }
 }
 ```
+
+Each motor entry defines all three pins (speed, in1, in2) directly. The service uses the top-level `nats_subject_prefix` and `device_id` to configure the internal PWM instances with L298N-appropriate defaults (50Hz, 1000-2000us pulse range).
 
 ### Full Wiring for Four Motors (Two L298N Boards)
 
@@ -165,9 +143,9 @@ To add support for a different motor controller IC (e.g. DRV8833), create a new 
 2. **Define a config** with motor definitions including pin mappings and controller-specific parameters.
 3. **Subscribe to motor NATS topics** in `Reconfigure()`.
 4. **Translate power commands** to the controller's specific GPIO/PWM sequences.
-5. **Resolve PWM component dependencies** for speed control pins.
+5. **Create PWM instances internally** using `pwm/remote.New()` for speed control pins, rather than depending on standalone PWM components.
 6. **Send GPIO commands** for direction/mode pins by publishing directly to NATS.
-7. **Handle cleanup** in `Close()` by setting all outputs to safe defaults.
+7. **Handle cleanup** in `Close()` by setting all outputs to safe defaults and closing internal PWM instances.
 
 The key insight is that the `motor/remote` component in NATS output mode is controller-agnostic. It just publishes `{"power": float64}` to a topic. The motor controller service is what knows the specific IC's truth table and pin protocol.
 

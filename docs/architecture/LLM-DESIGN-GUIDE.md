@@ -664,8 +664,9 @@ func TestSetPower(t *testing.T) {
 - [ ] Constructor signature matches `func New(ctx, deps, conf) (any, error)`
 - [ ] Implements the interface (compile-time check with `var _ Interface = (*impl)(nil)`)
 - [ ] Thread-safe if stateful
-- [ ] `Close()` cleans up resources
-- [ ] Tests in `*_test.go`
+- [ ] Any `<-chan T` returning method uses fan-out subscriber pattern ([details](go-channel-fan-out.md))
+- [ ] `Close()` cleans up resources (including closing all subscriber channels)
+- [ ] Tests in `*_test.go` (including multi-consumer fan-out test if applicable)
 - [ ] Config documented with JSON tags
 
 ## Checklist for New Services
@@ -677,8 +678,48 @@ func TestSetPower(t *testing.T) {
 - [ ] Constructor signature matches `func New(ctx, deps, conf) (any, error)`
 - [ ] Implements the interface
 - [ ] Thread-safe if stateful
-- [ ] `Close()` cleans up resources
-- [ ] Tests in `*_test.go`
+- [ ] Any `<-chan T` returning method uses fan-out subscriber pattern ([details](go-channel-fan-out.md))
+- [ ] `Close()` cleans up resources (including closing all subscriber channels)
+- [ ] Tests in `*_test.go` (including multi-consumer fan-out test if applicable)
+
+---
+
+## Go Channel Fan-Out (Required)
+
+**Any method that returns a `<-chan T` to callers MUST use the fan-out subscriber registry pattern.** Never return a shared internal channel -- Go channels deliver each value to exactly one reader, so a second consumer silently steals events from the first.
+
+See [go-channel-fan-out.md](go-channel-fan-out.md) for the full implementation template.
+
+### Summary
+
+```go
+// WRONG -- shared channel, only one caller gets each event
+func (c *MyComponent) Events(ctx context.Context) (<-chan T, error) {
+    return c.eventCh, nil
+}
+
+// RIGHT -- unique channel per caller, broadcast to all
+func (c *MyComponent) Events(ctx context.Context) (<-chan T, error) {
+    ch := make(chan T, bufferSize)
+    sub := &eventSubscriber{ch: ch, ctx: ctx}
+
+    c.subscribersMu.Lock()
+    c.subscribers = append(c.subscribers, sub)
+    c.subscribersMu.Unlock()
+
+    go c.watchSubscriberContext(sub)
+    return ch, nil
+}
+```
+
+Key pieces:
+- `eventSubscriber` struct holding a channel and the caller's context
+- `subscribers []*eventSubscriber` protected by a `sync.Mutex`
+- `sendEvent()` broadcasts to all subscribers with non-blocking sends
+- `watchSubscriberContext()` removes and closes the channel when the caller's context is cancelled
+- `Close()` closes all subscriber channels and nils the slice
+
+This pattern is **not** needed for NATS subscriptions (NATS already delivers to all subscribers) or for internal single-consumer pipelines.
 
 ---
 
@@ -693,6 +734,7 @@ func TestSetPower(t *testing.T) {
 | Hardcoding configuration | Use Config struct with JSON tags |
 | Skipping the fake implementation | Always provide a fake for testing |
 | Forgetting `Close()` | Always clean up resources |
+| Returning a shared `<-chan T` from a public method | Use fan-out subscriber registry ([details](go-channel-fan-out.md)) |
 
 ---
 
@@ -832,6 +874,7 @@ See [specs/dynamic-discovery.md](../specs/dynamic-discovery.md) for complete spe
 | Document | Purpose |
 |----------|---------|
 | [CLAUDE.md](../CLAUDE.md) | Project overview for AI assistants |
+| [go-channel-fan-out.md](go-channel-fan-out.md) | Required fan-out pattern for Go channel methods |
 | [specs/mesh-service-discovery.md](../specs/mesh-service-discovery.md) | Mesh system specification |
 | [specs/dynamic-discovery.md](../specs/dynamic-discovery.md) | Dynamic discovery and auto-adoption |
 | [specs/gorai-framework-specification.md](../specs/gorai-framework-specification.md) | Complete technical spec |

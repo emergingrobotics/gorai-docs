@@ -20,6 +20,8 @@ This approach maintains Gorai's configuration-driven philosophy while enabling:
 - Language-agnostic external services
 - Zero changes to the RDL format
 
+> **Design requirement**: All Go components that expose event streams via `<-chan T` methods must use the [fan-out subscriber pattern](go-channel-fan-out.md). This is a fundamental concurrency rule -- see the linked doc for rationale and implementation template.
+
 **Key Insight**: The RDL doesn't need to know about repos. It references components by `type+model`. The user's robot binary controls which components are available via Go imports.
 
 ---
@@ -1226,6 +1228,7 @@ This architecture maintains Gorai's core philosophy:
 - **Pluggable**: Registry pattern enables dynamic discovery
 - **Pragmatic polyglot**: Go for core, any language for services
 - **Ecosystem-friendly**: Clear path for third-party contributions
+- **Safe concurrency**: Go channel methods use [fan-out subscriber pattern](go-channel-fan-out.md) to prevent event loss
 
 It enables:
 - Independent component development & versioning

@@ -54,7 +54,7 @@ velocity_input ──NATS──> mecanum_controller
 5. The `l298n_controller` service subscribes to each motor's topic.
 6. On receiving a power command, the service applies the L298N H-bridge truth table:
    - Sets direction via `GPIO_SET` (IN1/IN2 pins) published directly to NATS.
-   - Sets speed via `SetNormalized()` on an internally-created `pwm/remote` instance for the motor's `speed_pin`, which publishes `PWM_SET` to NATS.
+   - Sets speed via `SetDuty()` (0.0-1.0 duty cycle) on an internally-created `pwm/remote` instance for the motor's `speed_pin`, which publishes `PWM_SET` to NATS.
 7. The NATS gateway bridges GPIO_SET and PWM_SET to the Pico via GSP/2.
 8. The Pico drives the physical GPIO and PWM pins.
 
@@ -64,12 +64,12 @@ velocity_input ──NATS──> mecanum_controller
 
 The L298N uses two GPIO pins (IN1, IN2) to control direction and one PWM pin (ENA or ENB) for speed. Each L298N board drives two motors.
 
-| Power     | IN1  | IN2  | ENA/ENB   | Result         |
-|-----------|------|------|-----------|----------------|
-| > 0       | HIGH | LOW  | |power|   | Forward        |
-| < 0       | LOW  | HIGH | |power|   | Backward       |
-| == 0      | LOW  | LOW  | 0         | Coast (off)    |
-| == 0 (brake) | HIGH | HIGH | 0      | Brake (hold)   |
+| Power     | IN1  | IN2  | ENA/ENB Duty | Result         |
+|-----------|------|------|--------------|----------------|
+| > 0       | HIGH | LOW  | |power| * 100% | Forward     |
+| < 0       | LOW  | HIGH | |power| * 100% | Backward    |
+| == 0      | LOW  | LOW  | 0%           | Coast (off)    |
+| == 0 (brake) | HIGH | HIGH | 0%        | Brake (hold)   |
 
 The `brake_on_stop` flag in the motor definition controls whether a zero-power command results in coasting (LOW/LOW) or braking (HIGH/HIGH).
 
@@ -107,6 +107,7 @@ The service ties everything together. It subscribes to motor NATS topics, intern
   "attributes": {
     "nats_subject_prefix": "gsp",
     "device_id": "gsp-pico",
+    "pwm_frequency_hz": 5000,
     "motors": [
       {
         "name": "motor_fl",
@@ -122,7 +123,18 @@ The service ties everything together. It subscribes to motor NATS topics, intern
 }
 ```
 
-Each motor entry defines all three pins (speed, in1, in2) directly. The service uses the top-level `nats_subject_prefix` and `device_id` to configure the internal PWM instances with L298N-appropriate defaults (50Hz, 1000-2000us pulse range).
+Each motor entry defines all three pins (speed, in1, in2) directly. The service uses the top-level `nats_subject_prefix` and `device_id` to configure the internal PWM instances.
+
+### PWM Speed Control
+
+The L298N ENA/ENB pins are duty-cycle driven, not servo-style pulse-width driven. The service defaults to **5kHz** PWM with **0-100% duty cycle** control via `SetDuty()`. This is configurable via the `pwm_frequency_hz` attribute (default: 5000).
+
+At 5kHz (200us period), a motor at 50% power receives a 100us pulse per cycle (50% duty). This is fundamentally different from servo PWM (50Hz, 1000-2000us pulse width) and provides much better motor torque and responsiveness.
+
+| Frequency | Period | Duty 0% | Duty 50% | Duty 100% |
+|-----------|--------|---------|----------|-----------|
+| 5kHz      | 200us  | 0us     | 100us    | 200us     |
+| 50Hz (servo, **wrong** for L298N) | 20000us | 1000us | 1500us | 2000us |
 
 ### Full Wiring for Four Motors (Two L298N Boards)
 
@@ -143,7 +155,7 @@ To add support for a different motor controller IC (e.g. DRV8833), create a new 
 2. **Define a config** with motor definitions including pin mappings and controller-specific parameters.
 3. **Subscribe to motor NATS topics** in `Reconfigure()`.
 4. **Translate power commands** to the controller's specific GPIO/PWM sequences.
-5. **Create PWM instances internally** using `pwm/remote.New()` for speed control pins, rather than depending on standalone PWM components.
+5. **Create PWM instances internally** using `pwm/remote.New()` for speed control pins, rather than depending on standalone PWM components. Use `SetDuty()` for motor speed (0-100% duty cycle at kHz-range frequency), not `SetNormalized()` which is designed for servo pulse-width control.
 6. **Send GPIO commands** for direction/mode pins by publishing directly to NATS.
 7. **Handle cleanup** in `Close()` by setting all outputs to safe defaults and closing internal PWM instances.
 

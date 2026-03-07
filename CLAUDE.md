@@ -70,3 +70,5 @@ archive/                # Historical designs — don't delete, kept for context
 - Don't delete `archive/` — it preserves historical context
 - Ecosystem component docs go in `docs/ecosystem/`
 - **When adding or renaming documents, update `INDEX.md`**
+- `docs/architecture/gorai-nats-auth.md` is the NATS authentication reference document covering all supported auth methods, key generation, and server configuration
+- All security and authentication architectural decisions are defined in [gorai/CLAUDE.md](../gorai/CLAUDE.md) (Security & Authentication section) and referenced by satellite repos — do not duplicate the standard, reference it

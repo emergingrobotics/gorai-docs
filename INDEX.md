@@ -113,6 +113,7 @@ Use this file to find the right document fast. Scan the topic table first, then 
 |------|---------|
 | `development-tools.md` | Dev setup: Go 1.22+, NATS server, protoc, linting, editor config. Full tool list. |
 | `install-nats.md` | NATS installation: binary install, systemd service, JetStream config, verification. |
+| `install-dependencies.md` | Ubuntu install guide: Go, NATS with JetStream, VictoriaMetrics as systemd services. |
 | `nats-setup.md` | NATS configuration: server options, JetStream, auth, monitoring, clustering, leaf nodes. |
 
 ## docs/ecosystem/

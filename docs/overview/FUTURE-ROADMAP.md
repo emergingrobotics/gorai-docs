@@ -4,11 +4,13 @@ This document describes the planned evolution of Gorai from simple binary deploy
 
 ---
 
-## Current State: Phase 1 - Simple Binary
+## Phase 1: Simple Binary -- The Product
 
-**Status: Active Development**
+**Status: This IS the product.**
 
-The current architecture focuses on simplicity and accessibility:
+`gorai run` is the Gorai runtime. A single Go binary with an embedded NATS server reads a JSON configuration file, brings up all components and services, and runs the robot. There is no external dependency to install. This is not a stepping stone -- it is the deployment model for all current and near-term use cases.
+
+ORCA (autonomous submersible) runs `gorai run` on a Raspberry Pi inside a pressure housing -- the ultimate proof that single-binary deployment is the right model for embedded robotics.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -16,15 +18,16 @@ The current architecture focuses on simplicity and accessibility:
 │                                                                  │
 │   ├── Components (GPS, GPIO, sensors, motors)                   │
 │   ├── Behaviors (state machines, scripts)                       │
+│   ├── Embedded NATS Server                                      │
 │   └── Message Router (NATS client)                              │
 │                                                                  │
-│   External: NATS Server (systemd service)                       │
+│   No external dependencies.                                     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Characteristics
 - Single binary (~10-20MB)
-- NATS as only external dependency
+- Embedded NATS server (zero external dependencies)
 - ~20-50MB RAM usage
 - No containers, no K8s
 - Direct systemd integration
@@ -34,18 +37,17 @@ The current architecture focuses on simplicity and accessibility:
 - Students learning robotics
 - Rapid prototyping
 - Single-device deployments
+- Production embedded robots (ORCA, Surf)
 
-### When to Stay in Phase 1
-- All components can be implemented in Go
-- No ML/vision processing required
-- Single robot deployment
-- Resource-constrained devices (< 2GB RAM)
+### Recommendation
+
+Stay on Phase 1. K3s and process-compose were evaluated and deliberately deferred. The single-binary model handles everything from GPS trackers to autonomous submersibles. Move to Phase 2 only when a specific, proven need arises that cannot be solved within the Go binary.
 
 ---
 
 ## Phase 2: Optional Containers (Future)
 
-**Status: Planned**
+**Status: Deferred -- revisit when user demand requires it**
 
 Add containerized services for capabilities that benefit from Python or C++:
 
@@ -84,7 +86,7 @@ Add containerized services for capabilities that benefit from Python or C++:
 
 ## Phase 3: K3s Fleet Management (Future)
 
-**Status: Planned**
+**Status: Deferred -- revisit when user demand requires it**
 
 Full Kubernetes-based orchestration for production fleets:
 

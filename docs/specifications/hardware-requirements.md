@@ -1,22 +1,22 @@
 # Hardware Requirements Specification
 
-**Version:** 2.0
+**Version:** 3.0
 **Status:** Active
-**Last Updated:** 2024-12-25
+**Last Updated:** 2026-04-12
 
 ## 1. Overview
 
-Gorai requires capable hardware to support containerized robotics workloads and edge AI. This document specifies minimum and recommended hardware configurations.
+Gorai runs as a single Go binary with an embedded NATS server, deployed directly on Linux SBCs via systemd. This document specifies minimum and recommended hardware configurations.
 
 ### 1.1 Design Philosophy
 
-**"Consistent deployment from edge to fleet."**
+**"Single binary deployment -- one Go binary with embedded NATS."**
 
-Gorai uses K3s (Lightweight Kubernetes), providing:
-- Container isolation and reproducibility
-- Consistent deployment model (~512 MB overhead)
-- Fleet-ready from day one (single-node or multi-node)
-- Production-grade orchestration without complexity
+Gorai deploys as a single statically-compiled Go binary (~10-20MB) with an embedded NATS server, providing:
+- Minimal resource footprint (~50-100MB total RAM)
+- Zero external dependencies (no containers, no orchestration)
+- Simple systemd service management
+- Direct hardware access without abstraction layers
 
 ### 1.2 Platform Strategy
 
@@ -28,9 +28,7 @@ Gorai supports three platform tiers:
 | **Performance** | Jetson Orin Nano Super | 67 TOPS (CUDA) | Multi-model AI, VLMs |
 | **Budget AI** | Orange Pi 5B | 6 TOPS (built-in) | Lower cost AI builds |
 
-All platforms use identical K3s deployment. Choose based on AI requirements and budget.
-
-**See [K3s Installation Guide](k3s-installation.md) for platform-specific installation instructions.**
+All platforms use the same Go binary deployment model. Choose based on AI requirements and budget.
 
 ---
 
@@ -41,7 +39,7 @@ All platforms use identical K3s deployment. Choose based on AI requirements and 
 | Requirement | Specification |
 |-------------|---------------|
 | **Processor** | ARM64 (Cortex-A72 or better) or x86_64 |
-| **RAM** | 4 GB minimum |
+| **RAM** | 2 GB minimum |
 | **Cores** | 4 cores minimum |
 | **Reference** | Raspberry Pi 4 Model B (4GB) |
 
@@ -49,20 +47,20 @@ All platforms use identical K3s deployment. Choose based on AI requirements and 
 
 | Requirement | Specification |
 |-------------|---------------|
-| **Type** | SSD recommended, SD card acceptable |
-| **Interface** | USB 3.0, NVMe, eMMC, or SD card |
-| **Capacity** | 32 GB minimum (64 GB recommended) |
+| **Type** | SD card, SSD, NVMe, or eMMC |
+| **Interface** | SD card, USB 3.0, NVMe, or eMMC |
+| **Capacity** | 16 GB minimum (32 GB recommended) |
 
 **Storage recommendations by use case:**
 
 | Use Case | Storage Type | Notes |
 |----------|--------------|-------|
-| Development | SSD or NVMe | Fast image pulls, frequent updates |
-| Deployed robot | SSD or NVMe | Required for K3s SQLite database |
+| Development | SSD or NVMe | Fast iteration, frequent updates |
+| Deployed robot | SD card or SSD | SD card is fine for binary deployment |
 | AI workloads | SSD or NVMe | Model loading performance |
-| Orange Pi 5B | Built-in eMMC | Built-in eMMC sufficient for K3s |
+| Orange Pi 5B | Built-in eMMC | Built-in eMMC is sufficient |
 
-**CRITICAL:** K3s uses SQLite for the control plane database, which requires sustained random I/O. SD cards provide only 10-30 IOPS and will cause database corruption and instability. **SSD, NVMe, or eMMC required.**
+SD cards work well for simple binary deployment. The GoRAI binary and NATS data involve modest sequential I/O, well within SD card capabilities. Use SSD or NVMe for AI workloads that load large model files.
 
 ### 2.3 Network
 
@@ -101,8 +99,8 @@ The Raspberry Pi 5 is Gorai's **primary reference platform** with the best docum
 | **Total** | | **$150-170** |
 
 **For AI workloads**, add an external accelerator:
-- Hailo-8L M.2 (+$70) → 13 TOPS
-- Google Coral USB (+$60) → 4 TOPS
+- Hailo-8L M.2 (+$70) -> 13 TOPS
+- Google Coral USB (+$60) -> 4 TOPS
 
 ### 3.2 Alternative Platform: Orange Pi 5B (8GB)
 
@@ -166,21 +164,17 @@ The Jetson Orin Nano Super is Gorai's **performance platform** for AI-intensive 
 ```
 Total RAM:        8,192 MB
 ├── Linux OS:       300 MB
-├── K3s:            512 MB
-├── NATS:           512 MB
-└── Available:    6,868 MB  ← For robot workloads
-
-Total CPU:        4 cores @ 2.4 GHz
-├── K3s:          ~3% overhead (idle)
-└── Available:    ~97% (~3.9 cores)  ← For robot workloads
+├── Embedded NATS:   50-100 MB  (with JetStream)
+├── GoRAI binary:    50-100 MB  (all components loaded)
+└── Available:    ~7,500 MB  <- For application workloads
 ```
 
-**K3s overhead is acceptable for edge AI:**
-| Resource | K3s Overhead | Available (8GB) | Notes |
-|----------|--------------|-----------------|-------|
-| RAM | ~512 MB | ~6.9 GB | AI workloads need 4GB+ anyway |
-| CPU | ~3% idle | ~97% | Minimal impact on inference |
-| Disk | ~1.5 GB | Varies | SQLite database + images |
+**Binary deployment overhead is minimal:**
+| Resource | GoRAI + NATS Overhead | Available (8GB) | Notes |
+|----------|----------------------|-----------------|-------|
+| RAM | ~100-200 MB | ~7.5 GB | Nearly all RAM available for workloads |
+| CPU | <1% idle | ~100% | No orchestration overhead |
+| Disk | ~20 MB binary | Varies | Binary + NATS data directory |
 
 ### 3.5 Performance Expectations
 
@@ -188,8 +182,8 @@ Total CPU:        4 cores @ 2.4 GHz
 |----------|-------------------|-----------------|--------------------|--------------------|
 | YOLO inference (640x480) | 60+ FPS | 30+ FPS | 25-30 FPS | 2-3 FPS |
 | MobileNet classification | 200+ FPS | 100+ FPS | 50+ FPS | 10-15 FPS |
-| Multiple models concurrent | ✅ Yes | ⚠️ Limited | ⚠️ Limited | ❌ No |
-| On-robot LLM/VLM | ✅ Yes | ❌ No | ❌ No | ❌ No |
+| Multiple models concurrent | Yes | Limited | Limited | No |
+| On-robot LLM/VLM | Yes | No | No | No |
 | Camera streaming | 30 FPS, 1080p | 30 FPS, 1080p | 30 FPS, 1080p | 30 FPS, 1080p |
 | NATS messaging | 10,000+ msg/sec | 10,000+ msg/sec | 10,000+ msg/sec | 10,000+ msg/sec |
 | Power consumption | 15-25W | ~5W | ~8W | ~5W |
@@ -202,45 +196,44 @@ Total CPU:        4 cores @ 2.4 GHz
 
 | Platform | RAM | AI Acceleration | Storage | Support Level |
 |----------|-----|-----------------|---------|---------------|
-| **Raspberry Pi 5 (8GB)** | 8 GB | External (Hailo, Coral) | NVMe HAT | ★★★ Primary |
-| **Raspberry Pi 5 (4GB)** | 4 GB | External (Hailo, Coral) | NVMe HAT | ★★★ |
+| **Raspberry Pi 5 (8GB)** | 8 GB | External (Hailo, Coral) | NVMe HAT | Primary |
+| **Raspberry Pi 5 (4GB)** | 4 GB | External (Hailo, Coral) | NVMe HAT | Primary |
 
 ### 4.2 Performance Platform (Maximum AI)
 
 | Platform | RAM | AI Acceleration | Storage | Support Level |
 |----------|-----|-----------------|---------|---------------|
-| **Jetson Orin Nano Super** | 8 GB | 67 TOPS (CUDA) | NVMe required | ★★★ Performance |
+| **Jetson Orin Nano Super** | 8 GB | 67 TOPS (CUDA) | NVMe required | Performance |
 
 ### 4.3 Budget AI Platform (Built-in NPU)
 
 | Platform | RAM | AI Acceleration | Storage | Support Level |
 |----------|-----|-----------------|---------|---------------|
-| **Orange Pi 5B (8GB)** | 8 GB | 6 TOPS built-in | 64-256GB eMMC | ★★★ Budget AI |
-| **Orange Pi 5B (16GB)** | 16 GB | 6 TOPS built-in | 128-256GB eMMC | ★★★ Budget AI |
+| **Orange Pi 5B (8GB)** | 8 GB | 6 TOPS built-in | 64-256GB eMMC | Budget AI |
+| **Orange Pi 5B (16GB)** | 16 GB | 6 TOPS built-in | 128-256GB eMMC | Budget AI |
 
 ### 4.4 Minimum Baseline
 
 | Platform | RAM | AI Acceleration | Storage | Support Level |
 |----------|-----|-----------------|---------|---------------|
-| **Raspberry Pi 4 (8GB)** | 8 GB | External (Coral) | USB SSD or SD | ★★☆ |
-| **Raspberry Pi 4 (4GB)** | 4 GB | External (Coral) | USB SSD or SD | ★★☆ Minimum |
+| **Raspberry Pi 4 (8GB)** | 8 GB | External (Coral) | USB SSD or SD | Supported |
+| **Raspberry Pi 4 (4GB)** | 4 GB | External (Coral) | USB SSD or SD | Supported |
+| **Raspberry Pi 4 (2GB)** | 2 GB | None | USB SSD or SD | Minimum |
 
 ### 4.5 Other Supported Platforms
 
 | Platform | RAM | Notes | Support Level |
 |----------|-----|-------|---------------|
-| **Radxa Rock 5B** | 4-16 GB | RK3588, 6 TOPS NPU | ★★☆ |
-| **Orange Pi 5 Plus** | 4-32 GB | RK3588, dual 2.5GbE, NVMe | ★★☆ |
-| **x86_64 (any)** | 4+ GB | Generic x86 systems | ★★☆ |
+| **Radxa Rock 5B** | 4-16 GB | RK3588, 6 TOPS NPU | Supported |
+| **Orange Pi 5 Plus** | 4-32 GB | RK3588, dual 2.5GbE, NVMe | Supported |
+| **x86_64 (any)** | 2+ GB | Generic x86 systems | Supported |
 
 ### 4.6 Not Supported
 
 | Platform | Reason |
 |----------|--------|
-| Raspberry Pi 4 (2GB) | Insufficient RAM for containers + workloads |
 | Raspberry Pi 3 (all) | Insufficient RAM (1GB max) |
-| Raspberry Pi Zero (all) | Insufficient RAM for containers |
-| Orange Pi 5B (4GB) | Tight RAM for AI workloads |
+| Raspberry Pi Zero (all) | Insufficient RAM |
 
 ### 4.7 Platform Comparison
 
@@ -305,11 +298,11 @@ The RK3588's built-in NPU provides good vision inference without external hardwa
 **Workflow:**
 ```
 x86_64 Linux Host              Orange Pi 5B
-┌─────────────────────┐        ┌─────────────────────┐
-│ 1. Export to ONNX   │        │                     │
-│ 2. Convert to .rknn │───────►│ 3. Run with         │
-│    (RKNN-Toolkit2)  │        │    RKNN-Lite        │
-└─────────────────────┘        └─────────────────────┘
++---------------------+        +---------------------+
+| 1. Export to ONNX   |        |                     |
+| 2. Convert to .rknn |------->| 3. Run with         |
+|    (RKNN-Toolkit2)  |        |    RKNN-Lite        |
++---------------------+        +---------------------+
 ```
 
 **Note:** Model conversion requires an x86_64 Linux host. Models cannot be converted directly on the ARM board.
@@ -335,37 +328,37 @@ CPU-only inference is supported but limited:
 **Raspberry Pi 4:**
 ```
 USB 3.0 SSD (blue port) or SD Card
-├── Boot partition (256MB, FAT32)
-├── Root partition (remaining, ext4)
-└── Container data: /var/lib/containers
++-- Boot partition (256MB, FAT32)
++-- Root partition (remaining, ext4)
++-- GoRAI data: /var/lib/gorai
 ```
 
 **Raspberry Pi 5:**
 ```
-NVMe SSD (via HAT) — recommended
-├── Boot partition (512MB, FAT32)
-├── Root partition (remaining, ext4)
-└── Container data: /var/lib/containers
+NVMe SSD (via HAT) -- recommended
++-- Boot partition (512MB, FAT32)
++-- Root partition (remaining, ext4)
++-- GoRAI data: /var/lib/gorai
 
-Or USB 3.0 SSD, or SD Card (A2 class) for deployed robots
+Or USB 3.0 SSD, or SD Card (A2 class)
 ```
 
 **Orange Pi 5B:**
 ```
 Built-in eMMC (64-256GB)
-├── Boot partition (512MB, FAT32)
-├── Root partition (remaining, ext4)
-└── Container data: /var/lib/containers
++-- Boot partition (512MB, FAT32)
++-- Root partition (remaining, ext4)
++-- GoRAI data: /var/lib/gorai
 
 No external storage required
 ```
 
 **Jetson Orin Nano Super:**
 ```
-NVMe SSD (M.2 2280) — required
-├── Boot partition (512MB, FAT32)
-├── Root partition (remaining, ext4)
-└── Container data: /var/lib/containers
+NVMe SSD (M.2 2280) -- required
++-- Boot partition (512MB, FAT32)
++-- Root partition (remaining, ext4)
++-- GoRAI data: /var/lib/gorai
 
 No built-in storage; NVMe or USB SSD required
 ```
@@ -374,10 +367,12 @@ No built-in storage; NVMe or USB SSD required
 
 | Metric | Minimum | Recommended |
 |--------|---------|-------------|
-| Sequential Read | 200 MB/s | 500+ MB/s |
-| Sequential Write | 150 MB/s | 400+ MB/s |
-| Random Read IOPS | 500 | 5,000+ |
-| Random Write IOPS | 500 | 5,000+ |
+| Sequential Read | 40 MB/s | 500+ MB/s |
+| Sequential Write | 20 MB/s | 400+ MB/s |
+| Random Read IOPS | 100 | 5,000+ |
+| Random Write IOPS | 100 | 5,000+ |
+
+The GoRAI binary and embedded NATS have modest I/O requirements. Higher performance storage primarily benefits AI model loading and NATS JetStream persistence under heavy message volumes.
 
 ### 6.3 Recommended SSDs
 
@@ -385,6 +380,7 @@ No built-in storage; NVMe or USB SSD required
 |----------|----------|
 | **NVMe (Pi 5)** | Samsung 980, WD SN570, Crucial P3 |
 | **USB 3.0 SATA** | Samsung T7, SanDisk Extreme, Crucial X6 |
+| **SD Card (A2)** | SanDisk Extreme Pro, Samsung EVO Select |
 | **Budget** | Kingston A400 + enclosure |
 
 **Avoid:** QLC drives for heavy write workloads, no-name brands with poor controllers.
@@ -393,15 +389,15 @@ No built-in storage; NVMe or USB SSD required
 
 ## 7. Bill of Materials
 
-### 7.1 Minimum Build (~$105)
+### 7.1 Minimum Build (~$70)
 
 | Component | Specification | Cost |
 |-----------|---------------|------|
-| Raspberry Pi 4 (4GB) | | $55 |
-| USB 3.0 SSD (128GB) | Samsung T7 or similar | $30 |
+| Raspberry Pi 4 (2GB) | | $35 |
+| SD Card (32GB, A2) | SanDisk Extreme Pro or similar | $10 |
 | Power Supply | 5V/3A USB-C | $15 |
-| SD Card (boot) | 16GB for initial setup | $5 |
-| **Total** | | **~$105** |
+| Heatsink | Passive or active | $10 |
+| **Total** | | **~$70** |
 
 ### 7.2 Recommended Build (~$150)
 
@@ -414,7 +410,7 @@ No built-in storage; NVMe or USB SSD required
 | Heatsink | Active cooling | $10 |
 | **Total** | | **~$155** |
 
-### 7.3 Budget AI Build (~$145) — Orange Pi 5B
+### 7.3 Budget AI Build (~$145) -- Orange Pi 5B
 
 | Component | Specification | Cost |
 |-----------|---------------|------|
@@ -425,7 +421,7 @@ No built-in storage; NVMe or USB SSD required
 
 **Note:** Built-in eMMC and NPU eliminate need for external SSD or AI accelerator.
 
-### 7.4 AI-Ready Build (~$250) — Pi 5 + Hailo
+### 7.4 AI-Ready Build (~$250) -- Pi 5 + Hailo
 
 | Component | Specification | Cost |
 |-----------|---------------|------|
@@ -437,7 +433,7 @@ No built-in storage; NVMe or USB SSD required
 | Heatsink | Active cooling | $10 |
 | **Total** | | **~$235** |
 
-### 7.5 Performance AI Build (~$335) — Jetson Orin Super
+### 7.5 Performance AI Build (~$335) -- Jetson Orin Super
 
 | Component | Specification | Cost |
 |-----------|---------------|------|
@@ -456,8 +452,8 @@ No built-in storage; NVMe or USB SSD required
 
 ### 8.1 Pre-Installation
 
-- [ ] Verify platform meets minimum requirements (4GB RAM, ARM64/x86_64)
-- [ ] Obtain storage (SSD recommended for development; SD card acceptable for deployed robots)
+- [ ] Verify platform meets minimum requirements (2GB RAM, ARM64/x86_64)
+- [ ] Obtain storage (SD card, SSD, or NVMe)
 - [ ] Quality power supply available
 - [ ] Ethernet connection available (recommended)
 
@@ -485,17 +481,18 @@ No built-in storage; NVMe or USB SSD required
 - [ ] Verify internet connectivity (for package installation)
 - [ ] Configure hostname
 
-### 8.4 Gorai Installation
+### 8.4 GoRAI Installation
 
 ```bash
-# Install gorai CLI
+# Download the GoRAI binary
 curl -sfL https://get.gorai.dev | sh
 
-# Initialize Gorai (installs Podman if needed, pulls base images)
-gorai init
+# Install as systemd service
+sudo gorai install
 
 # Verify installation
 gorai version
+gorai status
 ```
 
 ---
@@ -506,14 +503,14 @@ gorai version
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| Pod won't start | Insufficient RAM | Upgrade to 4GB+ platform |
-| Container image pull fails | Network/storage | Check connectivity, storage space |
+| GoRAI fails to start | Insufficient RAM | Upgrade to 2GB+ platform |
+| NATS connection refused | Service not running | Check `systemctl status gorai` |
 | Throttling under load | Overheating | Add active cooling |
 | USB SSD not detected | Power issues | Use powered USB hub or quality PSU |
 | NPU not detected (Orange Pi) | Missing RKNN driver | Install rknpu2 kernel module |
 | RKNN model fails to load | Wrong toolkit version | Match RKNN-Toolkit2 to board's runtime |
 | Orange Pi thermal throttle | Board runs hot | **Required**: Add active fan cooling |
-| Jetson GPU not in container | Runtime not configured | Install nvidia-container-toolkit |
+| Jetson GPU not accessible | Runtime not configured | Install nvidia-container-toolkit |
 | Jetson thermal throttle | Sustained 25W load | Improve cooling or use 15W mode |
 
 ### 9.2 Performance Verification
@@ -529,8 +526,9 @@ sudo hdparm -Tt /dev/sda  # Replace with your device
 vcgencmd measure_temp  # Raspberry Pi
 cat /sys/class/thermal/thermal_zone*/temp  # Jetson, Orange Pi
 
-# Check container resource usage
-podman stats
+# Check GoRAI service status
+systemctl status gorai
+gorai status
 ```
 
 ### 9.3 Storage Performance Test
@@ -544,7 +542,7 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
     --rw=randrw --bs=4k --direct=1 --size=1G \
     --numjobs=4 --runtime=60 --group_reporting
 
-# Target: 500+ IOPS for both read and write
+# Target: 100+ IOPS minimum, 500+ IOPS recommended
 ```
 
 ---
@@ -577,9 +575,9 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
   sudo apt update && sudo apt upgrade
   ```
 - **Power Modes:**
-  - 7W (eco) — Battery operation
-  - 15W (default) — Balanced
-  - 25W MAXN SUPER — Maximum performance (67 TOPS)
+  - 7W (eco) -- Battery operation
+  - 15W (default) -- Balanced
+  - 25W MAXN SUPER -- Maximum performance (67 TOPS)
   ```bash
   # Set power mode
   sudo nvpmodel -m 0  # MAXN SUPER (25W)
@@ -592,16 +590,6 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
 - **Storage:** NVMe SSD required (no built-in storage)
 - **WiFi:** M.2 Key E module required (Intel AC8265 recommended)
 - **Cooling:** Active fan required for 25W MAXN SUPER mode
-- **Container GPU Access:**
-  ```bash
-  # Install NVIDIA Container Toolkit
-  sudo apt install nvidia-container-toolkit
-  sudo nvidia-ctk runtime configure --runtime=podman
-
-  # Test GPU access in container
-  podman run --rm --runtime=nvidia --device=nvidia.com/gpu=all \
-    nvcr.io/nvidia/l4t-base:r36.2.0 nvidia-smi
-  ```
 
 ### A.4 Orange Pi 5B
 
@@ -611,7 +599,7 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
   # Recommended: Armbian Bookworm server image
   ```
 - **eMMC Flashing:** Flash via USB-C (Maskrom mode) or SD card installer
-- **Cooling:** **Active fan required** — RK3588S runs hot under sustained load
+- **Cooling:** **Active fan required** -- RK3588S runs hot under sustained load
 - **NPU Setup:**
   ```bash
   # Verify NPU is available
@@ -635,20 +623,20 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
 
 ## Appendix B: Upgrade Paths
 
-### B.1 Pi 4 (4GB) → Pi 5 (8GB)
+### B.1 Pi 4 (4GB) -> Pi 5 (8GB)
 
 1. Backup robot configuration: `gorai backup rover1`
 2. Install Pi 5 with new SSD
-3. Install Gorai: `curl -sfL https://get.gorai.dev | sh`
-4. Initialize cluster: `gorai cluster init`
+3. Install GoRAI: `curl -sfL https://get.gorai.dev | sh`
+4. Install service: `sudo gorai install`
 5. Restore: `gorai restore rover1 backup.tar.gz`
 
-### B.2 Pi 4 → Orange Pi 5B (for AI)
+### B.2 Pi 4 -> Orange Pi 5B (for AI)
 
 1. Backup robot configuration: `gorai backup rover1`
 2. Install Armbian on Orange Pi 5B (eMMC boot)
-3. Install Gorai: `curl -sfL https://get.gorai.dev | sh`
-4. Initialize cluster: `gorai cluster init`
+3. Install GoRAI: `curl -sfL https://get.gorai.dev | sh`
+4. Install service: `sudo gorai install`
 5. Restore: `gorai restore rover1 backup.tar.gz`
 6. Update RDL to use `rk3588_npu` accelerator
 7. Re-deploy: `gorai deploy rover1.yaml`
@@ -661,9 +649,8 @@ fio --name=random-rw --ioengine=libaio --iodepth=32 \
 4. Update RDL to reference accelerator
 5. Deploy updated configuration
 
-### B.4 Single Robot → Fleet
+---
 
-1. Designate control plane node (or use cloud VM)
-2. Initialize cluster in HA mode: `gorai cluster init --ha`
-3. Join existing robots: `gorai cluster join <url> --token <token>`
-4. Update RDL for fleet topology
+## Appendix C: Future Phases
+
+Future phases may add optional container support (Phase 2) and K3s fleet management (Phase 3). These will have additional hardware requirements documented when implemented.

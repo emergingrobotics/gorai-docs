@@ -4,6 +4,16 @@
 
 ---
 
+## Hardware Products
+
+Gorai is the software platform. These are the hardware products it powers:
+
+- **ORCA** — Autonomous submersible. 2 motors + dive planes, rated to 80ft depth, target price under $2,500. This is the flagship hardware project. There is no competition in this category below $50,000.
+- **Surf** — Autonomous surface vessel. Target price under $1,500. Second product.
+- **Drive** — Land robot. Deferred. The land robot market is competitive and crowded; Gorai's differentiation is strongest in marine autonomy.
+
+---
+
 ## What Gorai Is
 
 Gorai is a Go-based robotics platform for building autonomous robots. It targets the gap between educational kits (Arduino, micro:bit) and enterprise platforms (ROS 2) — the space where makers, citizen scientists, students, and small teams need real autonomy without a PhD in robotics infrastructure.
@@ -187,17 +197,18 @@ The runtime supports **hot reload**: send SIGHUP and it re-reads configuration, 
 
 ## Deployment
 
-### Current: Simple Binary (Mode 1)
+### Current and Primary: Simple Binary (Mode 1)
 
-One Go binary. One JSON config. One NATS server. Managed by systemd.
+`gorai run` is the deployment model. One Go binary with an embedded NATS server, one JSON config, managed by systemd. This is not a stepping stone toward containers or Kubernetes -- it IS the product. The embedded NATS server means there is no external dependency to install or manage.
 
 | Aspect | Value |
 |--------|-------|
 | Binary size | ~10-20MB |
 | RAM usage | ~20-50MB |
-| Dependencies | NATS server only |
+| Dependencies | None (NATS is embedded) |
 | Orchestration | systemd |
 | Deploy method | Cross-compile + rsync/scp |
+| Runtime command | `gorai run robot.json` |
 
 ```bash
 GOOS=linux GOARCH=arm64 go build -o myrobot ./cmd/myrobot
@@ -205,14 +216,16 @@ rsync -avz myrobot robot.json pi@robot.local:/opt/myrobot/
 ssh pi@robot.local "sudo systemctl restart myrobot"
 ```
 
-### Future: Progressive Complexity
+This model works for every current use case, from GPS trackers to autonomous submersibles running on a Raspberry Pi inside a pressure housing at 80ft depth.
 
-The architecture is designed to scale without rewriting:
+### Future: Progressive Complexity (Deferred)
 
-- **Mode 2 (Containers):** Add Podman containers for Python/C++ services (vision, ML inference). Core remains a native binary. Same NATS backbone.
-- **Mode 3 (K3s Fleet):** Full Kubernetes orchestration for multi-robot fleets. Rolling updates, health checks, resource isolation. Same RDL format.
+The architecture is designed to scale without rewriting, but these modes are deferred until user demand requires them. K3s and process-compose were evaluated and deliberately set aside.
 
-The same configuration format works across all modes. You add complexity only when the robot needs it.
+- **Mode 2 (Containers):** Deferred. Add Podman containers for Python/C++ services (vision, ML inference). Core remains a native binary. Same NATS backbone.
+- **Mode 3 (K3s Fleet):** Deferred. Full Kubernetes orchestration for multi-robot fleets. Rolling updates, health checks, resource isolation. Same RDL format.
+
+The same configuration format works across all modes. You add complexity only when the robot needs it -- but the recommendation is to stay on Mode 1 as long as possible.
 
 ---
 
@@ -273,6 +286,16 @@ Components requiring CGo, platform-specific dependencies, or non-Go languages li
 | Orange Pi 5B (8GB) | Budget AI | Built-in RK3588 NPU (6 TOPS) |
 
 The framework targets Linux ARM64 and AMD64. macOS is supported for development only. Microcontrollers (RP2040, ESP32) are supported through TinyGo firmware speaking GSP/2 over serial.
+
+### Hardware Access Patterns
+
+GoRAI supports two hardware access patterns:
+
+1. **Co-processor (RP2040 via GSP/2):** An RP2040 board handles real-time hardware I/O (PWM, encoders, GPIO). The RPi communicates with it over USB serial using the Gorai Serial Protocol v2. Best for: precise timing-critical control, isolating hardware from the Linux scheduler.
+
+2. **Native RPi hardware (GPIO/I2C/SPI):** Direct access to Raspberry Pi GPIO pins, I2C buses, and SPI buses from Go code. Best for: simple sensors, I2C devices, situations where an RP2040 is unnecessary overhead.
+
+Both approaches produce GoRAI components with identical interfaces -- application code does not know or care which driver model is used underneath.
 
 ---
 

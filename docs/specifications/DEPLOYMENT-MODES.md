@@ -1,5 +1,7 @@
 # Deployment Modes
 
+> **Current Status: Only Mode 1 (Simple Binary) is implemented, tested, and recommended. Modes 2 and 3 are deferred — they will be implemented when user demand requires them. `gorai run` with embedded NATS is the deployment model.**
+
 **Version:** 1.0
 **Status:** Active
 **Last Updated:** 2025-01-24
@@ -16,7 +18,9 @@ Gorai supports progressive deployment modes that match robot complexity. Start s
 
 **Status: Implemented and Tested**
 
-The primary deployment mode. A single Go binary runs directly on the robot, managed by systemd.
+This is the recommended deployment for all current use cases, including the ORCA autonomous submersible and Surf autonomous surface vessel.
+
+The primary deployment mode. A single Go binary runs directly on the robot, managed by systemd. NATS is now embedded in the binary — users do not need to install or manage a separate NATS server.
 
 ```mermaid
 flowchart LR
@@ -43,7 +47,7 @@ flowchart LR
 |--------|-------|
 | Binary size | ~10-20MB |
 | RAM usage | ~20-50MB |
-| Dependencies | NATS server only |
+| Dependencies | None (NATS embedded) |
 | Orchestration | systemd |
 | Container runtime | None required |
 
@@ -71,7 +75,7 @@ ssh pi@robot.local "sudo systemctl restart myrobot"
 ```ini
 [Unit]
 Description=My Robot
-After=network-online.target nats.service
+After=network-online.target
 
 [Service]
 Type=simple
@@ -89,7 +93,7 @@ WantedBy=multi-user.target
 
 ## Mode 2: Containerized Services (Future - Untested)
 
-**Status: Design Only - Not Implemented**
+**Status: Deferred.** This mode was evaluated alongside process-compose as a runtime strategy. Both were deferred in favor of keeping the simple binary model until user demand requires orchestration.
 
 > **Warning:** This mode is a planned future capability. The designs are preserved but the implementation has not been built or tested. Do not rely on this for production use.
 
@@ -130,7 +134,7 @@ flowchart TB
 
 ## Mode 3: K3s Fleet Management (Future - Untested)
 
-**Status: Design Only - Not Implemented**
+**Status: Deferred.** This mode was evaluated alongside process-compose as a runtime strategy. Both were deferred in favor of keeping the simple binary model until user demand requires orchestration.
 
 > **Warning:** This mode is a planned future capability. The designs are preserved but the implementation has not been built or tested. Do not rely on this for production use.
 
@@ -184,6 +188,8 @@ flowchart TB
 | Need rolling updates? | No | No | Yes |
 | Production fleet? | No | No | Yes |
 | Complexity | Low | Medium | High |
+
+> **Note:** For prosumer robotics (citizen scientists, hobbyists, students), Mode 1 is the right choice. The orchestration overhead of Modes 2-3 is not justified until you have multi-service robots or fleet operations.
 
 ---
 

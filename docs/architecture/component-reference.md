@@ -69,6 +69,57 @@ type Actuator interface {
 
 ---
 
+## Hardware Access Patterns
+
+GoRAI components can access hardware through two patterns. Both produce components with identical interfaces — application code is unaware of which pattern is used.
+
+### Co-Processor (RP2040 via GSP/2)
+
+An RP2040 microcontroller board handles real-time hardware I/O (PWM, motor control, encoder reading, GPIO). The Raspberry Pi communicates with it over USB serial using the Gorai Serial Protocol v2 (GSP/2).
+
+**Best for:**
+- Precise timing-critical control (servo PWM, motor encoders)
+- Isolating hardware I/O from Linux scheduler jitter
+- Complex actuator configurations (multiple motors, servos, ESCs)
+- Robots where hardware reliability is critical (e.g., ORCA submersible — control must not glitch underwater)
+
+**How it works:**
+- RP2040 runs TinyGo firmware (`rp2040-pwm` or custom)
+- RPi runs GoRAI with GSP/2 client components
+- Communication: USB serial at 115200+ baud using binary GSP/2 protocol
+- 40+ message types for PWM, motors, encoders, IMU, sensors, GPIO
+
+### Native RPi Hardware (GPIO/I2C/SPI)
+
+Direct access to Raspberry Pi GPIO pins, I2C buses, and SPI buses from Go code running on the Pi.
+
+**Best for:**
+- Simple sensors (temperature, distance, light)
+- I2C devices (IMU, compass, pressure sensor, OLED displays)
+- SPI devices (ADCs, DACs)
+- Prototyping and learning (no co-processor needed)
+- Cost-sensitive builds where an RP2040 board is unnecessary
+
+**How it works:**
+- GoRAI components use Linux kernel interfaces (gpiod, i2c-dev, spidev)
+- No additional hardware beyond the RPi and connected sensors/actuators
+- Lower latency for simple reads; subject to Linux scheduler jitter for timing-critical operations
+
+### Choosing Between Patterns
+
+| Factor | RP2040 Co-Processor | Native RPi |
+|--------|-------------------|------------|
+| Timing precision | Microsecond (hardware timers) | Millisecond (Linux scheduler) |
+| Additional hardware cost | ~$4-10 (Pico board) | None |
+| Setup complexity | Flash firmware, USB cable | Wire directly to Pi GPIO |
+| Motor/servo control | Recommended | Possible but jitter-prone |
+| I2C sensors | Possible but adds latency | Recommended |
+| Reliability under load | Unaffected by Pi CPU load | Can be affected by CPU spikes |
+
+**Both patterns can be used simultaneously.** A robot can have an RP2040 handling motors and servos while the Pi reads I2C sensors directly. GoRAI's NATS-based architecture means components don't care where their data comes from.
+
+---
+
 ## Sensor Types
 
 ### IMU (Inertial Measurement Unit)

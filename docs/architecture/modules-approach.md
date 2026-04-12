@@ -6,18 +6,36 @@
 
 ---
 
+## Core Principle: The Caddy Model
+
+Gorai uses the same component packaging approach as the [Caddy web server](https://caddyserver.com/): **blank imports in `main.go` are the canonical component manifest**.
+
+Each robot project starts from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template). The user's `main.go` declares components via blank imports. Each import triggers `init()` which calls `registry.RegisterComponent()`. The result is a single compiled binary with exactly the components needed.
+
+**Why this was chosen:**
+- **Standard Go tooling**: `go get`, `go mod tidy`, semantic versioning. No custom package manager.
+- **Single binary**: All components compile into one executable. No runtime dependency resolution, no missing libraries, no version conflicts at deploy time.
+- **Compile-time safety**: If a component is missing or incompatible, the build fails. No surprises in production.
+- **No new concepts**: Go developers already understand modules, imports, and init(). The component manifest is just a Go source file.
+
+> **The Go import list is the component manifest. No custom package manager needed.**
+
+`gorai component add` = `go get` + add blank import to `main.go`. Custom components are Go packages in the user's repo. Sharing = extract to standalone Go module, push to GitHub. Registry = JSON file mapping names to Go module paths.
+
+---
+
 ## Executive Summary
 
 This document recommends a **hybrid multi-repository architecture** for Gorai components and services that leverages:
 
-1. **Go Modules** for in-process components (hardware drivers, internal services)
-2. **Container Registries** for external services (ML models, vision pipelines, SLAM)
+1. **Go Modules** for in-process components (hardware drivers, internal services) -- **this is the current approach**
+2. **Container Registries** for external services (ML models, vision pipelines, SLAM) -- **Phase 2 (Deferred)**
 3. **Service RDL Registry** for reusable service definitions
 
 This approach maintains Gorai's configuration-driven philosophy while enabling:
 - Independent component development and versioning
 - Private/proprietary component repositories
-- Language-agnostic external services
+- Language-agnostic external services (Phase 2)
 - Zero changes to the RDL format
 
 > **Design requirement**: All Go components that expose event streams via `<-chan T` methods must use the [fan-out subscriber pattern](go-channel-fan-out.md). This is a fundamental concurrency rule -- see the linked doc for rationale and implementation template.
@@ -236,7 +254,9 @@ replace github.com/acme-corp/gorai-driver-custom-lidar => ../gorai-driver-custom
 
 ---
 
-### 2. External Services: Container Registries
+### 2. External Services: Container Registries -- Phase 2 (Deferred)
+
+> **Phase 2**: Container-based external services are deferred. The current approach focuses on Go components via the Caddy model. This section documents the future approach for non-Go workloads (ML/AI, SLAM) that will communicate via NATS as external processes.
 
 **For**: Language-agnostic services (Python ML models, C++ SLAM, ROS 2 bridges)
 
@@ -585,7 +605,9 @@ import (
 func main() { robot.RunFromConfig("robot.json") }
 ```
 
-**Improvement**: CLI scaffolding command
+**Standard starting point**: Clone [gorai-robot-template](https://github.com/gorai/gorai-robot-template) for a ready-made project skeleton with `main.go`, `go.mod`, `robot.json`, and a `Makefile`.
+
+**Additional option**: CLI scaffolding command
 
 ```bash
 gorai new my-robot --template differential-drive
@@ -630,7 +652,7 @@ export GOPRIVATE=github.com/acme-corp/*
 go get github.com/acme-corp/gorai-driver-custom@v1.0.0
 ```
 
-### Creating a Custom External Service
+### Creating a Custom External Service (Phase 2 -- Deferred)
 
 ```bash
 # Clone template
@@ -756,7 +778,7 @@ before_script:
   - go env -w GOPRIVATE=gitlab.com/acme-corp/*
 ```
 
-### For Container Registries
+### For Container Registries (Phase 2 -- Deferred)
 
 **Setup**:
 

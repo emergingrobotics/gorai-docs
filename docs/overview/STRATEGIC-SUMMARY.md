@@ -112,23 +112,64 @@ These phases will be pursued only when concrete user demand requires them. See [
 
 ---
 
-## Component Registry: "npm for Robotics"
+## Component Registry: "npm for Robotics" (The Caddy Model)
 
-Gorai's component ecosystem follows the package manager model that made npm, pip, and cargo successful:
+Gorai's component ecosystem follows the **Caddy model**: a user's robot project is a Go module where `main.go` contains blank imports for each component. Each import triggers an `init()` function that calls `registry.RegisterComponent()`. The Go import list IS the component manifest — no custom package manager, no `package.json`, no lock file beyond `go.sum`.
+
+```go
+// main.go — the component manifest
+package main
+
+import (
+    "github.com/gregherlein/gorai/pkg/runtime"
+
+    _ "github.com/gregherlein/gorai-gps/nmea"        // GPS driver
+    _ "github.com/gregherlein/gorai-imu/bno055"       // IMU driver
+    _ "github.com/gregherlein/gorai-nav/waypoint"     // Waypoint navigation
+)
+
+func main() {
+    runtime.Run()
+}
+```
 
 ```
-gorai component add gps-nmea         # Install a GPS driver
-gorai component add imu-bno055       # Install an IMU driver
-gorai component add waypoint-nav     # Install waypoint navigation behavior
-gorai component list                 # List installed components
 gorai component search sonar         # Search the registry
+gorai component add sensor/bno055    # Looks up registry, runs go get, adds blank import
+gorai component list                 # List installed components
 ```
+
+> **Key Insight:** The Go import list is the component manifest. No custom package manager needed — Go modules handles versioning, checksums, and caching. `gorai component add` is a thin wrapper around `go get` plus a blank import insertion.
+
+### Why Go Modules (Not Custom Package Managers, Containers, or Submodules)
+
+Other approaches were considered and rejected:
+
+| Approach | Problem |
+|----------|---------|
+| Custom package manager (npm-style) | Reinvents dependency resolution, versioning, and caching that Go modules already provides |
+| Git submodules | Brittle, poor version management, no transitive dependency handling |
+| Container-per-component | Runtime overhead, complex orchestration, defeats single-binary goal |
+| Dynamic plugins (`plugin.Open`) | Fragile in Go, requires exact build-flag matching, not cross-platform |
+
+Go modules give us everything for free: semantic versioning, cryptographic checksums (`go.sum`), module proxies and caching, transitive dependency resolution, and reproducible builds. The Caddy model proves this works at scale for extensible Go applications.
+
+### How It Works
+
+- **Registry** — a JSON file (`gorai-registry`) mapping friendly names (e.g., `sensor/bno055`) to Go module paths (e.g., `github.com/gregherlein/gorai-imu/bno055`)
+- **`gorai component add`** — looks up the registry, runs `go get`, and adds a blank import to `main.go`
+- **Custom components** — Go packages in the user's own repo with an `init()` function that calls `registry.RegisterComponent()`
+- **Sharing** — extract a custom component to a standalone Go module, push to GitHub, submit to the registry
+- **Template repo** — `gorai-robot-template` gives users a working `main.go`, `go.mod`, `robot.json`, and `Makefile` as a starting point for new robot projects
+- **Non-Go components** — external services in Python, C++, or any language communicate via NATS (Phase 2, deferred)
+
+The result: components compile into a single binary. No runtime dependency resolution, no DLL hell, no missing shared libraries on the robot at 80ft depth. The binary either builds or it doesn't — and if it builds, it runs.
 
 Components are self-contained Go packages with typed NATS interfaces. The registry enables:
 - **Discoverability** — search and browse available drivers, sensors, behaviors
 - **Composability** — mix and match components via RDL configuration
 - **Community contribution** — third-party components published to the registry
-- **Version management** — pin component versions for reproducible builds
+- **Version management** — pinned by Go modules for reproducible builds
 
 ---
 
@@ -188,7 +229,9 @@ The choice is per-robot, configured in RDL. Both approaches use the same compone
 | Motor controllers | Go or cgo | If SDK exists (Dynamixel), wrap; else pure Go |
 | Web UI | Go templates + HTMX | Avoid separate JS frontend complexity |
 
-**Why**: NATS has clients for 40+ languages. Any language can be a Gorai service.
+**Why Go for components**: The component ecosystem is a key reason Go was chosen as the core language. Every component compiles into the single robot binary — no runtime dependency resolution, no shared library conflicts, no container overhead. A robot running at 80ft depth or in a remote field has exactly the dependencies it was compiled with, verified by `go.sum` checksums. This is the same model that makes Caddy (the web server) extensible: blank imports, init registration, single binary output. No other mainstream language offers this combination of static compilation, module ecosystem, and deployment simplicity.
+
+**Why NATS for polyglot**: NATS has clients for 40+ languages. Any language can be a Gorai service.
 
 ### 2. ROS 2 Positioning: Coopetition, Not Competition
 
@@ -267,8 +310,8 @@ Not "vs. ROS 2" — different markets:
 
 ### Phase 1: `gorai run` Framework (Current)
 1. `gorai run` with embedded NATS — the runtime
-2. Component registry (`gorai component add`)
-3. Basic sensors (GPS, IMU, compass) in pure Go
+2. Component ecosystem — registry (`gorai-registry`), CLI (`gorai component add/search`), template repo (`gorai-robot-template`)
+3. Basic sensors (GPS, IMU, compass) as standalone Go module components
 4. Motor control (I2C/PWM) via both RP2040 (GSP/2) and native RPi
 5. CLI: validate, run, build, component add/list/search
 6. ORCA and Surf hardware platform support

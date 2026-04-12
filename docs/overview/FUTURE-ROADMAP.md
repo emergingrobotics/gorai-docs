@@ -25,6 +25,20 @@ ORCA (autonomous submersible) runs `gorai run` on a Raspberry Pi inside a pressu
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+### Component Ecosystem: "npm for Robotics"
+
+The component ecosystem is a key Phase 1 deliverable — this is the "npm for robotics" moment. It uses the **Caddy model**: blank imports in `main.go` as the component manifest, with Go modules handling all dependency management.
+
+**Deliverables:**
+
+- **`gorai-robot-template`** — Template repository giving users a working starting point (`main.go`, `go.mod`, `robot.json`, `Makefile`). Clone and customize.
+- **`gorai-registry`** — JSON registry mapping friendly component names (e.g., `sensor/bno055`) to Go module paths. The index that makes `gorai component search` work.
+- **`gorai component` CLI** — `search`, `add`, `list`, and `remove` commands. `gorai component add sensor/bno055` looks up the registry, runs `go get`, and adds the blank import to `main.go`.
+- **Reference components as standalone Go modules** — GPS, IMU, motor controllers, and navigation behaviors published as independent Go modules that any robot project can import.
+- **Custom component workflow** — users write components in their own repo with `init()` registration, extract and share by pushing to GitHub as standalone modules.
+
+This is what makes Gorai accessible: `gorai component add` is the entire installation experience. No custom package manager, no containers, no submodules — Go modules provides versioning, checksums, and caching. The result is a single binary containing every component, verified at compile time.
+
 ### Characteristics
 - Single binary (~10-20MB)
 - Embedded NATS server (zero external dependencies)
@@ -246,4 +260,4 @@ The core principle: **Users should be able to start with Phase 1 and progressive
 
 ---
 
-**Last Updated**: 2025-01-24
+**Last Updated**: 2026-04-12

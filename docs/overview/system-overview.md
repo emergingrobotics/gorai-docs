@@ -135,6 +135,79 @@ This creates a hybrid static/dynamic model: RDL defines the structure and rules;
 
 ---
 
+## Component Ecosystem
+
+Gorai uses the **Caddy model** for component packaging. A user's robot project is a standard Go module. The `main.go` file contains blank imports for each component the robot needs — the Go import list IS the component manifest.
+
+```go
+// main.go — a complete Gorai robot
+package main
+
+import (
+    "github.com/gregherlein/gorai/pkg/runtime"
+
+    // Components are added by blank import.
+    // Each triggers init() which calls registry.RegisterComponent().
+    _ "github.com/gregherlein/gorai-gps/nmea"
+    _ "github.com/gregherlein/gorai-imu/bno055"
+    _ "github.com/gregherlein/gorai-nav/waypoint"
+    _ "github.com/gregherlein/gorai-motor/pwm"
+)
+
+func main() {
+    runtime.Run() // reads robot.json, starts components, runs the robot
+}
+```
+
+No custom package manager, no `package.json`, no lock file beyond `go.sum`. Go modules provides versioning, checksums, caching, and transitive dependency resolution. The result is a single statically-linked binary containing every component the robot needs — no runtime dependency resolution, no DLL hell.
+
+### The CLI Workflow
+
+```
+gorai component search sonar         # Search the registry for sonar components
+gorai component add sensor/bno055    # Looks up registry, runs `go get`, adds blank import to main.go
+gorai component list                 # List installed components
+gorai build                          # Compile the single binary
+gorai run robot.json                 # Run the robot
+```
+
+`gorai component add sensor/bno055` does three things: looks up the friendly name in the registry to find the Go module path, runs `go get` to fetch the module, and adds the blank import to `main.go`. That is the entire installation process.
+
+### The Registry
+
+The component registry (`gorai-registry`) is a JSON file mapping friendly names to Go module paths:
+
+```json
+{
+  "sensor/bno055": {
+    "module": "github.com/gregherlein/gorai-imu/bno055",
+    "description": "Bosch BNO055 9-DOF IMU",
+    "type": "sensor"
+  },
+  "sensor/gps-nmea": {
+    "module": "github.com/gregherlein/gorai-gps/nmea",
+    "description": "NMEA GPS receiver",
+    "type": "sensor"
+  }
+}
+```
+
+### Custom Components
+
+Custom components are Go packages in the user's own repository. Add an `init()` function that calls `registry.RegisterComponent()` and the component is available to the runtime. To share a custom component: extract it to a standalone Go module, push to GitHub, and optionally submit it to the registry for discoverability.
+
+### Getting Started
+
+The **`gorai-robot-template`** repository provides a working starting point: `main.go` with common imports, `go.mod`, `robot.json`, and a `Makefile`. Clone the template, add or remove component imports, edit the robot configuration, and build.
+
+### Non-Go Components (Phase 2)
+
+Components written in Python, C++, or other languages run as external services communicating via NATS. They are not compiled into the binary but connect to the same NATS message bus. This is deferred to Phase 2 when vision, ML, and SLAM requirements drive the need.
+
+For the full component ecosystem specification, see [Third-Party Component Ecosystem](../architecture/third-party-component-ecosystem.md).
+
+---
+
 ## Robot Configuration: RDL
 
 Robots are defined in **Robot Definition Language (RDL)** — a JSON file that declares identity, components, services, and their configuration.

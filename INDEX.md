@@ -34,6 +34,7 @@ Use this file to find the right document fast. Scan the topic table first, then 
 | Framework comparisons (ROS 2, Viam, YARP) | `docs/overview/general-designs.md` |
 | NATS authentication | `docs/architecture/gorai-nats-auth.md` |
 | Third-party component guide | `docs/architecture/third-party-component-ecosystem.md` |
+| Component packaging approach (Caddy model) | `../gorai/docs/package-dev-approach.md` (in gorai repo) |
 | Roadmap / future phases | `docs/overview/FUTURE-ROADMAP.md` |
 | Book (learn Gorai from scratch) | `docs/book/chapters/01-introduction.md` |
 | Example robots | `docs/EXAMPLES.md` |
@@ -67,8 +68,8 @@ Use this file to find the right document fast. Scan the topic table first, then 
 | `PACKAGE-LOCATIONS.md` | Where code belongs: cmd/, pkg/, components/, driver/, services/, internal/. Decision tree. |
 | `nats-description.md` | NATS as backbone: Core (pub/sub, request/reply), JetStream (streams, KV store, object store), clustering, leaf nodes, 18M msg/sec. |
 | `gorai-nats-auth.md` | Five NATS auth methods: token, user/password, NKeys, JWT/accounts, TLS client certificates. Deployment recommendations. |
-| `modules-approach.md` | Hybrid multi-repo via Go Modules (in-process) and container registries (external services). RDL imports. |
-| `third-party-component-ecosystem.md` | Building components outside the main repo: Go components vs container services, metadata standards, distribution. |
+| `modules-approach.md` | Caddy model: blank imports in main.go as component manifest, Go Modules for distribution, container registries deferred to Phase 2. |
+| `third-party-component-ecosystem.md` | Building components outside the main repo: Caddy model (blank imports + init() registration), Go components, container services (Phase 2 deferred), metadata standards, distribution. |
 | `hardware-abstraction.md` | **ARCHIVED** — HAL removed 2026-02-06. Components now use GSP protocol or NATS. |
 | `robot-description-formats.md` | Analysis of URDF, Xacro, SDF, MJCF robot description languages. |
 | `web-dashboard-research.md` | Dashboard research: Chi + HTMX + Templ, websockets for real-time, uPlot charts, go2rtc video streaming. |

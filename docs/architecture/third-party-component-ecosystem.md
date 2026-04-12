@@ -19,6 +19,59 @@ This document provides a comprehensive guide for third-party developers who want
 
 **Goal**: Enable a thriving ecosystem where anyone can create, distribute, and monetize Gorai-compatible components without needing to contribute to the core repository.
 
+> **The Go import list is the component manifest. No custom package manager needed.**
+
+---
+
+## The Caddy Model
+
+Gorai uses the same component packaging approach as the [Caddy web server](https://caddyserver.com/): blank imports in `main.go` serve as the canonical component manifest.
+
+### How It Works
+
+1. **The user's robot project is a Go module.** Start from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template) template repo.
+2. **`main.go` blank imports are the manifest.** Each `import _ "..."` line declares a component dependency.
+3. **Each blank import triggers `init()` which calls `registry.RegisterComponent()`.** The component is available at runtime without any other configuration.
+4. **`gorai component add` = `go get` + add blank import.** Standard Go tooling handles dependency resolution.
+5. **Custom components are Go packages in the user's repo.** No special packaging format needed.
+6. **Sharing = extract to standalone Go module, push to GitHub.** Others `go get` your module.
+7. **Registry = JSON file mapping names to Go module paths.** Discovery is opt-in; distribution uses standard Go modules.
+
+### Why This Approach
+
+- **Single binary**: All components compile into one executable. No runtime dependency issues.
+- **Standard tooling**: `go get`, `go mod tidy`, semantic versioning -- nothing new to learn.
+- **No custom package manager**: The Go module system already solves versioning, authentication, and dependency resolution.
+- **Compile-time safety**: Missing or incompatible components fail at build time, not at runtime.
+
+### Quick Example
+
+```go
+// main.go -- the component manifest
+package main
+
+import (
+    "github.com/gorai/gorai/pkg/robot"
+
+    // Components are declared via blank imports
+    _ "github.com/gorai/gorai-component-motor/gpio"
+    _ "github.com/gorai/gorai-component-sensor/imu/mpu6050"
+    _ "github.com/acme-corp/gorai-driver-custom-lidar"
+)
+
+func main() {
+    robot.RunFromConfig("robot.json")
+}
+```
+
+Adding a component:
+
+```bash
+gorai component add github.com/acme-corp/gorai-component-lidar@v1.0.0
+```
+
+This runs `go get` and adds the blank import to `main.go`. That is all.
+
 ---
 
 ## Table of Contents
@@ -79,7 +132,9 @@ This document provides a comprehensive guide for third-party developers who want
 - Specialized sensor (LiDAR, IMU, GPS)
 - Custom actuator or gripper controller
 
-### 2. Container Services (External Process)
+### 2. Container Services (External Process) -- Phase 2 (Deferred)
+
+> **Note**: Container-based services are a Phase 2 capability. The current approach focuses exclusively on Go components distributed as Go modules. Container service support will be added when non-Go language integration is needed (primarily for ML/AI workloads communicating via NATS).
 
 **Best For**:
 - ML/AI models (object detection, SLAM, path planning)
@@ -100,7 +155,7 @@ This document provides a comprehensive guide for third-party developers who want
 
 ### Step 1: Scaffold the Repository
 
-Use the Gorai CLI to generate a template:
+Start from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template) template repo, or use the Gorai CLI to generate a component template:
 
 ```bash
 gorai new component \
@@ -347,7 +402,9 @@ git push origin v1.0.0
 
 ---
 
-## Creating a Container Service
+## Creating a Container Service -- Phase 2 (Deferred)
+
+> **Phase 2**: The following container service workflow is deferred. It documents the future approach for non-Go components that communicate via NATS as external services. For now, all components should be Go packages using the Caddy model described above.
 
 ### Step 1: Scaffold the Repository
 
@@ -698,7 +755,7 @@ gorai component validate .
 gorai validate examples/basic/robot.json
 ```
 
-### For Container Services
+### For Container Services (Phase 2 -- Deferred)
 
 ```bash
 # Build container
@@ -823,7 +880,7 @@ import _ "github.com/acme-corp/gorai-component-lidar/custom-lidar"
 }
 ```
 
-### For Container Services
+### For Container Services (Phase 2 -- Deferred)
 
 **Discovery**:
 ```bash
@@ -1101,11 +1158,12 @@ Third-party components are essential for a thriving Gorai ecosystem. By followin
 - Monetize your work if desired
 - Contribute to the robotics community
 
-**Next Steps**:
-1. Use `gorai new component` or `gorai new service` to scaffold
-2. Implement your component following best practices
-3. Validate with `gorai component validate`
-4. Publish to git repository
-5. Optional: Submit to registry.gorai.dev for discovery
+**Getting Started**:
+1. Clone [gorai-robot-template](https://github.com/gorai/gorai-robot-template) for a new robot project
+2. Use `gorai new component` to scaffold a new component package
+3. Implement your component following the Caddy model (blank imports + `init()` registration)
+4. Validate with `gorai component validate`
+5. Publish to git repository (`git tag` + `git push`)
+6. Optional: Submit to registry.gorai.dev for discovery
 
 Questions? Open an issue at https://github.com/gorai/gorai/issues

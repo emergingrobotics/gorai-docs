@@ -450,6 +450,51 @@ Services are software capabilities that process data or make decisions.
 | `behavior` | Behavior Trees | `default`, `custom`, `fake` |
 | `coordinator` | Multi-Robot | `default`, `custom`, `fake` |
 | `mlmodel` | ML Inference | `tflite`, `onnx`, `tpu`, `fake` |
+| `llm` | Large Language Model endpoint (protocol + URL + credential env var); referenced by name from other services | `claude-sonnet-4-6`, `gpt-5`, `qwen3-coder:30b`, `mock`, etc. — provider-specific |
+| `command` | Slash-command role bound to one `llm` service (used by coding-agent robots such as `goraic`) | provider-specific |
+| `prompt-log` | Subscriber that records all task traffic to per-session JSONL (used by coding-agent robots) | `default` |
+
+#### 6.2.1 The `llm` service type
+
+An `llm` service declares a single configured LLM endpoint. Its `attributes`:
+
+| Attribute | Required | Description |
+|-----------|----------|-------------|
+| `protocol` | Yes | Wire format: `anthropic`, `openai`, `ollama`, `vllm`, `gemini`, `mock`. |
+| `endpoint` | Sometimes | Base URL. Required for `vllm` and self-hosted setups; SaaS protocols default to their official URL; `ollama` defaults to `http://localhost:11434`. |
+| `api_key_env` | Optional | **Name of an env var** holding the API key. Never the key itself. Defaults per protocol. Schema **forbids** a literal `api_key` field. |
+| `headers_env` | Optional | Map `header-name → env-var-name` for proxies/gateways that need extra headers. |
+| `model` | Optional | Default model identifier; overridable by callers. |
+| `temperature`, `max_tokens`, `timeout_seconds` | Optional | Per-request defaults; overridable by callers. |
+| `tls` | Optional | `{ ca_cert_file, insecure_skip_verify }` for private CAs (test/staging). `insecure_skip_verify: true` MUST produce a startup warning. |
+
+Credentials policy:
+- **Secrets are environment variables only.** The schema rejects any literal credential value in the RDL.
+- **Fail-fast on startup.** A robot binary loading an `llm` service whose `protocol` requires credentials and whose `api_key_env` is unset or empty MUST exit non-zero with a clear error naming the service and the env var.
+
+#### 6.2.2 The `command` service type (coding-agent extension)
+
+A `command` service is a named slash-command role bound to a single `llm`
+service. The user invokes it by typing `/<name>` followed by a prompt.
+
+Required attribute:
+- `llm` — name of an `llm` service declared in this RDL (or reachable via a `remotes` block).
+
+Optional attributes (override the bound LLM service's defaults for this command):
+- `model`, `temperature`, `max_tokens`
+- `permissions` — `readonly | standard | broad`
+- `skills` — list of skill IDs to load into the system prompt
+- `system_prompt` — optional override
+
+Inline `provider`/`api_key_env`/`base_url` on a command service is rejected by
+the validator with a migration message — that configuration belongs on the
+referenced `llm` service.
+
+#### 6.2.3 The `prompt-log` service type (coding-agent extension)
+
+A `prompt-log` service subscribes to every `*.task` and `*.result` subject and
+writes each as a JSON line under its `attributes.dir`. One entry per session,
+one file per day.
 
 ### 6.3 Service Dependencies
 

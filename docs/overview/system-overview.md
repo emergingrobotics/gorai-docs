@@ -4,13 +4,13 @@
 
 ---
 
-## Hardware Products
+## Target Hardware
 
-Gorai is the software platform. These are the hardware products it powers:
+Gorai is the software platform. It targets prosumer-accessible field robots, with the initial focus on marine and surface domains:
 
-- **ORCA** — Autonomous submersible. 2 motors + dive planes, rated to 80ft depth, target price under $2,500. This is the flagship hardware project. There is no competition in this category below $50,000.
-- **Surf** — Autonomous surface vessel. Target price under $1,500. Second product.
-- **Drive** — Land robot. Deferred. The land robot market is competitive and crowded; Gorai's differentiation is strongest in marine autonomy.
+- **Autonomous submersibles** — underwater robots for marine monitoring and exploration.
+- **Autonomous surface vessels** — boats for water quality monitoring, bathymetric mapping, and coastal survey work.
+- **Land robots** — deferred; the land robot market is competitive and crowded, and Gorai's differentiation is strongest in marine autonomy.
 
 ---
 
@@ -26,9 +26,22 @@ robot.json  →  gorai run  →  Robot running
 
 The framework is designed around three convictions:
 
-1. **Robots are distributed systems.** Even a single robot has MCUs, SBCs, accelerators, and sometimes base stations. The programming model should assume this from the start.
+1. **Robots are distributed systems.** Even a single robot has MCUs, SBCs, accelerators, and sometimes base stations. The programming model should assume this from the start. Taken to its conclusion, a robot need not be one physical unit at all — see [the Composite Robot](#capabilities-over-nats-and-the-composite-robot) below.
 2. **Autonomy is a spectrum.** From scripted state machines to learned models to LLM-driven agents — all should work through the same interfaces.
 3. **Simple things should be simple.** A GPS tracker should take 20 minutes, not 20 hours. Complexity should be opt-in.
+
+> The platform's north star is [`VISION.md`](../../../gorai/VISION.md): **capabilities over NATS.** Sensors are *resources*, actuators are *tools*, and agents read and act on the physical world through them — the same capability model the Model Context Protocol gives AI agents, delivered natively over NATS with no MCP server in the path.
+
+---
+
+## Capabilities Over NATS, and the Composite Robot
+
+Gorai gives AI agents the powers the Model Context Protocol (MCP) defines — typed **resources** to read, typed **tools** to call, **events** pushed without polling, and **live capability discovery** — but provides them **natively over NATS**. There is no MCP server and no JSON-RPC bridge; the capability model is expressed directly as NATS subjects, request/reply, and the mesh registry. We call this **NCP, the NATS Capability Protocol**. Two primitives carry the weight, and they map onto the two halves of every robot:
+
+- **Resources are sensors** (read-only): an IMU, a GPS fix, a temperature probe, a camera frame. Snapshot via request/reply on `…<name>.state`; live stream via pub/sub on `…<name>.data`.
+- **Tools are actuators** (side-effecting): a relay, a motor, a servo, a thruster, a gripper. Called via request/reply on `…<name>.command`, with arguments validated against a registered JSON Schema.
+
+Because capabilities are just NATS subjects discovered through the [mesh registry](#mesh-service-discovery), **where a capability physically runs stops mattering.** A robot becomes a *logical scope* (`robot_id`) over a set of capabilities, not a chassis. That set can be hosted on one machine — or spread across a ground rover, an aerial scout, a sensor mast, and a compute box, all sharing one mesh. To the agent it is **one robot**; the drone's camera is just another resource, the rover's arm just another tool. This is the **Composite Robot**: many physical platforms acting as one, composed at runtime, degrading gracefully as platforms join and leave. See [`VISION.md`](../../../gorai/VISION.md) for the full treatment.
 
 ---
 

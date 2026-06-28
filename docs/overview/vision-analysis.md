@@ -666,7 +666,7 @@ Translate between ROS2 TF2 and GoRAI transform tree.
 
 **Priority order:**
 1. **Phase 1**: GoRAI core, basic sensors/actuators (months 1-6)
-2. **Phase 2**: First robot (Surf) working end-to-end (months 6-12)
+2. **Phase 2**: First robot (an autonomous surface vessel) working end-to-end (months 6-12)
 3. **Phase 3**: ROS2 bridge MVP (months 12-18)
 
 ---
@@ -682,8 +682,8 @@ Simple Robot              Medium Robot            Complex Robot
 ──────────────           ──────────────          ──────────────
 Native binaries          Podman pods             K3s cluster
 
-• Surf (marine)          • Multi-sensor          • Robot swarm
-• Drive (wheeled)          research platform     • Edge-cloud ML
+• Surface vessel         • Multi-sensor          • Robot swarm
+• Wheeled robot            research platform     • Edge-cloud ML
 • Single SBC             • Vision + SLAM +       • Multi-robot
 • <10 processes            navigation              coordination
                          • 2-3 SBCs              • Fleet management
@@ -757,14 +757,14 @@ docker run -it gorai/dev:latest
 
 #### Simple Single-Purpose Robots
 
-**Surf (marine monitoring):**
+**Autonomous surface vessel (marine monitoring):**
 - 1 Raspberry Pi CM4
 - 3-5 GoRAI processes (GPS, compass, motors, mission planner, web UI)
 - Everything talks via NATS on localhost
 
 **No value from containers:**
-- Deployment: `scp gorai-surf robot@surf.local:/usr/local/bin/`
-- Update: `ssh robot@surf.local "systemctl restart gorai"`
+- Deployment: `scp gorai-boat robot@boat.local:/usr/local/bin/`
+- Update: `ssh robot@boat.local "systemctl restart gorai"`
 - Simpler than Docker daemon, image registry, etc.
 
 **Why native is better here:**
@@ -818,7 +818,7 @@ No daemon, no complexity, systemd integration.
 3. ✅ Complex service orchestration (>10 services per robot)
 4. ✅ Multi-robot coordination
 
-**For initial Surf/Drive products: SKIP K3s.**
+**For initial simple robots (surface and land): SKIP K3s.**
 
 Use:
 - Native binaries for core GoRAI
@@ -827,7 +827,7 @@ Use:
 
 ### Architecture Recommendation
 
-#### Tier 1: Simple Robots (Surf, Drive)
+#### Tier 1: Simple Robots (surface vessels, land robots)
 
 ```
 Raspberry Pi 5
@@ -937,7 +937,7 @@ Tier 1 (Simple Robots):
 - Native Go binaries
 - Systemd lifecycle management
 - Optional Podman for vision/ML
-- Target: Surf, Drive, simple kits
+- Target: surface vessels, land robots, simple kits
 
 Tier 2 (Research Platforms):
 - Podman pods for complex dependencies
@@ -969,7 +969,7 @@ Start Tier 1, evolve to Tier 2/3 as needed.
 6. ✅ Deploy to PiCar-X as validation platform
 
 **Phase 2: First Product (Months 6-12)**
-1. ✅ Surf hardware design finalized
+1. ✅ Surface vessel hardware design finalized
 2. ✅ Marine-specific sensors (GPS, compass, depth)
 3. ✅ Waypoint navigation
 4. ✅ Mission planner
@@ -1059,7 +1059,7 @@ Start Tier 1, evolve to Tier 2/3 as needed.
 **Mitigation:**
 - Start with native binaries (no containers)
 - Resist Kubernetes unless fleet >10 robots
-- Keep Surf/Drive dead simple
+- Keep simple surface and land robots dead simple
 - Document when to upgrade to Tier 2/3
 
 **Risk 4: Limited Adoption**

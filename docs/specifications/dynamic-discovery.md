@@ -4,6 +4,8 @@
 
 This specification defines how Gorai supports runtime discovery of devices and services not explicitly defined in the Robot Definition Language (RDL).
 
+> See [VISION.md](../../../gorai/VISION.md) for the north star. Dynamic discovery and the proxy factory are how a capability on one platform appears as a first-class resource or tool on another — the Composite Robot at runtime, re-composing gracefully as platforms join and leave.
+
 ---
 
 ## Overview

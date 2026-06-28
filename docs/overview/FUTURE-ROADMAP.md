@@ -2,6 +2,8 @@
 
 This document describes the planned evolution of Gorai from simple binary deployment to full distributed fleet management. The architecture is designed to be progressive — start simple, add complexity only when needed.
 
+> The platform's north star is [VISION.md](../../../gorai/VISION.md): capabilities over NATS (NCP) and the Composite Robot. The leaf-node and fleet phases below are how a single Composite Robot — and many of them — span machines, sites, and links.
+
 ---
 
 ## Phase 1: Simple Binary -- The Product
@@ -10,7 +12,7 @@ This document describes the planned evolution of Gorai from simple binary deploy
 
 `gorai run` is the Gorai runtime. A single Go binary with an embedded NATS server reads a JSON configuration file, brings up all components and services, and runs the robot. There is no external dependency to install. This is not a stepping stone -- it is the deployment model for all current and near-term use cases.
 
-ORCA (autonomous submersible) runs `gorai run` on a Raspberry Pi inside a pressure housing -- the ultimate proof that single-binary deployment is the right model for embedded robotics.
+An autonomous submersible runs `gorai run` on a Linux host (Raspberry Pi/Orange Pi/etc) inside a pressure housing -- the ultimate proof that single-binary deployment is the right model for embedded robotics.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -51,7 +53,7 @@ This is what makes Gorai accessible: `gorai component add` is the entire install
 - Students learning robotics
 - Rapid prototyping
 - Single-device deployments
-- Production embedded robots (ORCA, Surf)
+- Production embedded robots (marine, surface, and land field robots)
 
 ### Recommendation
 

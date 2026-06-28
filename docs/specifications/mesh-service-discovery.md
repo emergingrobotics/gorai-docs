@@ -2,6 +2,8 @@
 
 This document specifies the Gorai mesh service discovery system, which enables runtime service registration and discovery across independent processes.
 
+> See [VISION.md](../../../gorai/VISION.md) for the north star. The three KV buckets specified here (`gorai-services`, `gorai-channels`, `gorai-schemas`) are NCP's capability catalog — the MCP `tools/list` equivalent. An agent that reads them knows the robot's entire surface of resources (sensors) and tools (actuators), across every physical platform a Composite Robot spans.
+
 ## Overview
 
 The mesh provides a NATS-native service discovery mechanism that allows:

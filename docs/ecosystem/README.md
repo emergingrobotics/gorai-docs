@@ -2,6 +2,8 @@
 
 The Gorai ecosystem extends beyond the core framework. This directory documents the external components and services that are critical to Gorai's operation.
 
+> See [VISION.md](../../../gorai/VISION.md) for the north star. The protocol gateways below (gorai-nats-gw and friends) are how non-NATS devices — a $5 microcontroller, an off-the-shelf smart plug — join the mesh as native NCP capabilities (resources and tools) and become part of a Composite Robot.
+
 ## Core Framework
 
 ### gorai

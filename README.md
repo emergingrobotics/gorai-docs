@@ -14,9 +14,13 @@
 
 > **Build robots like software. Run them like systems.** Gorai is a software engineer's robotics platform — opinionated, pragmatic, and operational. If you already think in APIs, distributed systems, and deployments, you'll be productive in days, not months.
 
+> **A robot is a set of capabilities on a mesh — not a chassis.** Sensors are *resources*, actuators are *tools*, and any agent on the mesh can read the world and change it. The capabilities can live on one machine or span a dozen physical platforms; from the agent's point of view it is one robot. This is the platform's north star — read **[VISION.md](../gorai/VISION.md)**.
+
 ---
 
 This is the canonical documentation for the Gorai robotics platform. If you want to understand what Gorai is, how it works, how to build with it, or where it's headed — it's in here.
+
+**[VISION.md](../gorai/VISION.md)** is the north star: capabilities over NATS (NCP) and the Composite Robot. Everything below serves that vision.
 
 The core framework implementation lives in [gorai](../gorai). This repo is everything else: the design, the specs, the book, the hardware research, and the ecosystem documentation for components that live outside the core.
 
@@ -24,11 +28,13 @@ The core framework implementation lives in [gorai](../gorai). This repo is every
 
 ## Start Here
 
-**[System Overview](docs/overview/system-overview.md)** — Read this first. It explains the entire Gorai system in one document: what it is, the architecture (resource model, NATS messaging, mesh discovery), how robots are configured and deployed, the ecosystem of components, and how it all fits together.
+**[VISION.md](../gorai/VISION.md)** — The north star. Why Gorai exists: MCP-equivalent capabilities (resources = sensors, tools = actuators) delivered natively over NATS, and the Composite Robot — one logical robot spanning many physical platforms.
+
+**[System Overview](docs/overview/system-overview.md)** — Read this next. It explains the entire Gorai system in one document: what it is, the architecture (resource model, NATS messaging, mesh discovery), how robots are configured and deployed, the ecosystem of components, and how it all fits together.
 
 ### Use an AI agent to explore
 
-This repo has ~100 documents. Point an AI coding agent at this repo (it will read `CLAUDE.md` and `INDEX.md` automatically) and ask it what you need:
+This repo has ~100 documents. Point an AI agent at this repo (it will read `CLAUDE.md` and `INDEX.md` automatically) and ask it what you need:
 
 - *"Explain the Gorai architecture and how components communicate"*
 - *"I want to build a new sensor component — what patterns should I follow?"*

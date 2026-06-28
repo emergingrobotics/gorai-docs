@@ -6,7 +6,7 @@ This document describes the **safety strategy, governance model, and execution a
 
 * Cloud-based AI agents (when connectivity exists)
 * Offline/onboard decision-making (Jetson-class compute)
-* A unified **executor loop** that schedules robot actions via an MCP (Model Context Protocol) server
+* A unified **executor loop** that schedules robot actions as NCP tool calls over NATS — the MCP capability model delivered natively, with no MCP server in the path (see [VISION.md](../../../gorai/VISION.md))
 * Hard real-time control loops that are strictly separated from AI-driven decision loops
 
 The core design principle is **layered safety with explicit authority boundaries**: no AI system—cloud or local—ever directly controls actuators. All actions are mediated, gated, logged, and revocable.
@@ -107,22 +107,24 @@ flowchart TD
 
 ---
 
-## 5. MCP-Based Action Governance
+## 5. Capability-Based Action Governance
 
-### 5.1 MCP Server Role
+> This governance model is realized through NCP (see [VISION.md](../../../gorai/VISION.md)), not a hosted MCP server. The capability model survives; the MCP server does not. Each capability node speaks NATS directly, and safety is enforced *at the node that touches hardware* — never at the agent, and not at a single bridge that could bottleneck or fail.
 
-The robot hosts an MCP server that:
+### 5.1 Capability-Node Role
 
-* Exposes **actions as tools**
-* Exposes **state and resources as data**
-* Enforces:
+Each capability node on the mesh:
+
+* Exposes **actions as tools** (`…<name>.command`)
+* Exposes **state and resources as data** (`…<name>.state` / `…<name>.data`)
+* Enforces, in the node handler itself:
 
   * Parameter bounds
   * Rate limits
   * Authority leases
   * Command TTLs
 
-No agent (cloud or local) bypasses MCP.
+No agent (cloud or local) bypasses the node's enforcement — every tool call arrives as a typed NATS message that the node validates before acting.
 
 ---
 
@@ -138,16 +140,16 @@ All commands are:
 ```mermaid
 sequenceDiagram
     participant Agent
-    participant MCP
+    participant Node as Capability Node
     participant Safety
     participant Control
 
-    Agent->>MCP: Tool Call
-    MCP->>Safety: Validate
-    Safety-->>MCP: Approve / Reject
-    MCP->>Control: Execute
-    Control-->>MCP: Status
-    MCP-->>Agent: Result
+    Agent->>Node: Tool Call (NATS)
+    Node->>Safety: Validate
+    Safety-->>Node: Approve / Reject
+    Node->>Control: Execute
+    Control-->>Node: Status
+    Node-->>Agent: Result
 ```
 
 ---
@@ -197,7 +199,7 @@ flowchart TD
 * Deterministic planners (FSM / behavior trees)
 * Smaller LLMs (optional)
 * Reduced context window
-* Same scheduler, same MCP tools
+* Same scheduler, same NCP tools (NATS tool calls)
 
 ### 7.3 Hybrid
 
@@ -209,15 +211,15 @@ sequenceDiagram
     participant Human
     participant Cloud
     participant Executor
-    participant MCP
+    participant Node as Capability Node
     participant Safety
 
     Human->>Cloud: Mission
     Cloud->>Executor: Plan
-    Executor->>MCP: Schedule Tool Calls
-    MCP->>Safety: Validate
-    Safety->>MCP: OK
-    MCP->>Executor: Result
+    Executor->>Node: Schedule Tool Calls (NATS)
+    Node->>Safety: Validate
+    Safety->>Node: OK
+    Node->>Executor: Result
 ```
 
 ---
@@ -256,7 +258,7 @@ Humans never directly control actuators—only **authority and intent**.
 flowchart LR
     Sensors --> Recorder
     Decisions --> Recorder
-    MCP --> Recorder
+    ToolCalls["Capability Nodes (tool calls)"] --> Recorder
     Safety --> Recorder
 ```
 

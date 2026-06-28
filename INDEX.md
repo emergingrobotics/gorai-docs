@@ -6,6 +6,7 @@ Use this file to find the right document fast. Scan the topic table first, then 
 
 | Topic | Go to |
 |-------|-------|
+| Vision / north star (capabilities over NATS, Composite Robot) | `../gorai/VISION.md` |
 | What is Gorai / full system overview | `docs/overview/system-overview.md` |
 | Strategic positioning and market wedge | `thoughts/strategy-paper.md` |
 | Strategic decisions (quick reference) | `docs/overview/STRATEGIC-SUMMARY.md` |
@@ -50,7 +51,7 @@ Use this file to find the right document fast. Scan the topic table first, then 
 | `STRATEGIC-SUMMARY.md` | Quick-reference for strategic decisions: prosumer positioning, phased architecture, Go-first polyglot strategy, competitive positioning guidelines. |
 | `gorai-overarching-strategy.md` | Internal strategy defining the strategic wedge, target users (software-first teams), and non-targets (experimental research). |
 | `FUTURE-ROADMAP.md` | Evolution plan: Phase 1 (simple binary, current), Phase 2 (optional containers for ML/vision), Phase 3 (K3s fleet management). |
-| `ai-driven-robot-safety-governance-arch.md` | Layered safety architecture separating AI decision-making from hard real-time control, runtime safety monitors, MCP server integration. |
+| `ai-driven-robot-safety-governance-arch.md` | Layered safety architecture separating AI decision-making from hard real-time control, runtime safety monitors, capability-node action governance (NCP). |
 | `general-designs.md` | Deep comparison of ROS 2 (DDS), Viam (gRPC, cloud-native), and YARP (port-based). Architecture, strengths, weaknesses. |
 | `ros2-design.md` | ROS 2 architecture deep dive: nodes, topics, services, actions, DDS, QoS, parameter server, rclcpp/rclpy. |
 | `viam-design.md` | Viam architecture: resource-centric design, API/model triplets, modular plugins, gRPC + WebRTC. |

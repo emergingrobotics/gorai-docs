@@ -6,6 +6,8 @@ A lightweight, Go-based robotics framework built on NATS.io with first-class AI/
 
 *Pronounced "go-ray" (like "sting-ray")*
 
+> The platform's north star is [VISION.md](../../../gorai/VISION.md): capabilities over NATS (NCP) and the Composite Robot. The resource model, mesh discovery, and topic conventions specified below are the implementation of that vision — resources are sensors, tools are actuators.
+
 ---
 
 ## Table of Contents

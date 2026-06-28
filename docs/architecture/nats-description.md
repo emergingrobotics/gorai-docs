@@ -3,6 +3,8 @@
 **Version:** 1.0
 **Last Updated:** 2026-02-06
 
+> See [VISION.md](../../../gorai/VISION.md) for the north star. NATS is the fabric beneath NCP (the NATS Capability Protocol): the pub/sub, request/reply, queue groups, JetStream, and leaf nodes described here are exactly the fan-out, audit, and edge-reach that make resources (sensors), tools (actuators), and the Composite Robot work.
+
 ## Table of Contents
 
 1. [What is NATS?](#what-is-nats)

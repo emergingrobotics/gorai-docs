@@ -4,6 +4,8 @@
 
 This document summarizes the key strategic decisions that guide Gorai's development. For comprehensive analysis, see [vision-analysis.md](vision-analysis.md).
 
+> The platform's north star is [VISION.md](../../../gorai/VISION.md): capabilities over NATS (NCP) and the Composite Robot. The strategic decisions below serve that vision.
+
 ---
 
 ## Core Positioning
@@ -23,27 +25,14 @@ This document summarizes the key strategic decisions that guide Gorai's developm
 
 ---
 
-## Flagship Products
+## Target Robots
 
-### ORCA — Autonomous Submersible (Under $2,500)
+Gorai targets prosumer-accessible field robots, with the initial focus on marine and surface domains:
 
-ORCA is the flagship hardware project and Gorai's category-creating opportunity. An autonomous submersible under $2,500 has zero competition:
+- **Autonomous submersibles** for citizen scientists monitoring marine environments, hobbyist underwater explorers, and students learning marine robotics — prosumer-accessible autonomy is a blue-ocean space.
+- **Autonomous surface vessels** for water quality monitoring, bathymetric mapping, and coastal survey work at a price point accessible to individuals and small organizations.
 
-| Segment | Product | Price | Capability |
-|---------|---------|-------|------------|
-| **Consumer ROV** | BlueROV2 | $4,600+ | Remote-controlled only, no autonomy |
-| **Professional AUV** | Various | $50,000+ | Autonomous, but priced for institutions |
-| **Gorai ORCA** | ORCA | Under $2,500 | Autonomous, prosumer-accessible |
-
-ORCA targets citizen scientists monitoring marine environments, hobbyist underwater explorers, and students learning marine robotics. There is no product in this price/capability space today.
-
-### Surf — Autonomous Surface Vessel (Under $1,500)
-
-Surf is the second hardware product. An autonomous surface vessel for water quality monitoring, bathymetric mapping, and coastal survey work at a price point accessible to individuals and small organizations.
-
-### Drive — Land Robot (Deferred)
-
-Land robotics is a competitive market with many existing platforms at multiple price points. Drive is deferred indefinitely in favor of the blue-ocean opportunities in marine robotics.
+Land robotics is a competitive market with many existing platforms at multiple price points, so it is deferred in favor of the blue-ocean opportunities in marine robotics.
 
 ---
 
@@ -283,10 +272,10 @@ Containers and K3s are explicitly deferred. The prosumer market does not need or
 
 ## Competitive Positioning
 
-### vs. BlueROV2 and Consumer ROVs
-- BlueROV2 ($4,600) is remote-controlled only — no autonomy
-- ORCA (under $2,500) is autonomous — different category entirely
-- No direct competitor exists in autonomous submersibles under $50,000
+### vs. Consumer ROVs
+- Consumer ROVs are typically remote-controlled only — no autonomy
+- A prosumer-accessible autonomous submersible is a different category entirely
+- No direct competitor exists in affordable autonomous submersibles
 
 ### vs. ROS 2
 Not "vs. ROS 2" — different markets:
@@ -314,7 +303,7 @@ Not "vs. ROS 2" — different markets:
 3. Basic sensors (GPS, IMU, compass) as standalone Go module components
 4. Motor control (I2C/PWM) via both RP2040 (GSP/2) and native RPi
 5. CLI: validate, run, build, component add/list/search
-6. ORCA and Surf hardware platform support
+6. Marine and surface robot hardware platform support
 
 ### Phase 2: Marine Autonomy
 1. Waypoint navigation and mission planning
@@ -378,9 +367,9 @@ Not "vs. ROS 2" — different markets:
 
 ### Risk 3: Marine Hardware Complexity
 **Mitigation**:
-- ORCA uses proven components (BlueRobotics thrusters, standard pressure housings)
+- Use proven components (off-the-shelf thrusters, standard pressure housings)
 - Dual driver model (RP2040 co-processor or native RPi) provides flexibility
-- Start with surface vessel (Surf) as simpler validation platform
+- Start with an autonomous surface vessel as a simpler validation platform
 - Open hardware designs enable community contribution and cost reduction
 
 ### Risk 4: Limited Adoption

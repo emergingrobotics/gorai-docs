@@ -6,6 +6,8 @@ This paper serves as an internal reference for why Gorai exists, who it is for, 
 
 Gorai is open source. Design documents exist elsewhere. This paper explains why we are building what we are building.
 
+The platform's north star is [VISION.md](../../gorai/VISION.md): capabilities over NATS (NCP) and the Composite Robot. This strategy paper explains the market wedge; VISION.md explains the technical thesis it serves.
+
 1) The Thesis
 Robotics is entering a structural shift—not because motors or sensors improved, but because decision-making is moving up the stack.
 

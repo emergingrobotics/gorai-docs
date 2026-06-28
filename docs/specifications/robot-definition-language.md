@@ -63,6 +63,7 @@ RDL files use the `.json` extension. By convention, the main robot configuration
   "prometheus": { },
   "components": [ ],
   "services": [ ],
+  "discovery": { },
   "remotes": [ ],
   "resources": { },
   "log": { },
@@ -81,6 +82,7 @@ RDL files use the `.json` extension. By convention, the main robot configuration
 | `prometheus` | object | No | Prometheus metrics config |
 | `components` | array | No | Component definitions |
 | `services` | array | No | Service definitions |
+| `discovery` | object | No | Runtime discovery of additional tools/resources beyond the base robot (off by default) |
 | `remotes` | array | No | Remote robot connections |
 | `resources` | object | No | Default resource limits for containers |
 | `log` | object | No | Logging configuration |
@@ -88,6 +90,26 @@ RDL files use the `.json` extension. By convention, the main robot configuration
 | `alerting` | object | No | Alert Manager configuration |
 
 > **Note:** For the current phase, services run within the main robot binary. Container-based services are planned for future phases. See [FUTURE-ROADMAP.md](../docs/FUTURE-ROADMAP.md).
+
+### 2.4 Base Robot vs. Composed Robot (the `discovery` toggle)
+
+RDL always defines the **base robot** — the exact set of components and services the CLI builds and runs. The optional top-level `discovery` object controls whether that base robot also **adopts additional tools and resources discovered at runtime on the mesh**, turning it into a [Composite Robot](../../../gorai/VISION.md) that can span other platforms and other binaries (in any language) sharing the same robot.
+
+```json
+{
+  "discovery": {
+    "enabled": false
+  }
+}
+```
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `enabled` | boolean | No | `false` | Master switch. When `false`, the robot is exactly the base defined in this RDL. When `true`, it discovers — and may adopt — additional capabilities advertised in the mesh catalog. |
+
+Discovery is **additive and opt-in**: it never removes or overrides anything in the base robot; it only adds capabilities the robot is authorized to see. When `enabled` is `true`, the discovery sources, adoption rules, and `@discovered:` dependencies are configured as specified in [Dynamic Discovery](dynamic-discovery.md).
+
+> **Security boundary.** Discovery surfaces only capabilities reachable over the robot's authenticated NATS connection. A component must hold valid credentials for the robot's NATS account to announce itself, be discovered, or be adopted — credentials are the membership boundary of a robot. See [NATS Authentication](../architecture/gorai-nats-auth.md).
 
 ---
 
@@ -450,9 +472,7 @@ Services are software capabilities that process data or make decisions.
 | `behavior` | Behavior Trees | `default`, `custom`, `fake` |
 | `coordinator` | Multi-Robot | `default`, `custom`, `fake` |
 | `mlmodel` | ML Inference | `tflite`, `onnx`, `tpu`, `fake` |
-| `llm` | Large Language Model endpoint (protocol + URL + credential env var); referenced by name from other services | `claude-sonnet-4-6`, `gpt-5`, `qwen3-coder:30b`, `mock`, etc. — provider-specific |
-| `command` | Slash-command role bound to one `llm` service (used by coding-agent robots such as `goraic`) | provider-specific |
-| `prompt-log` | Subscriber that records all task traffic to per-session JSONL (used by coding-agent robots) | `default` |
+| `llm` | Large Language Model endpoint (protocol + URL + credential env var); referenced by name by a robot's reasoning/behavior services that need an agent in the loop | `claude-sonnet-4-6`, `gpt-5`, `mock`, etc. — provider-specific |
 
 #### 6.2.1 The `llm` service type
 
@@ -472,29 +492,7 @@ Credentials policy:
 - **Secrets are environment variables only.** The schema rejects any literal credential value in the RDL.
 - **Fail-fast on startup.** A robot binary loading an `llm` service whose `protocol` requires credentials and whose `api_key_env` is unset or empty MUST exit non-zero with a clear error naming the service and the env var.
 
-#### 6.2.2 The `command` service type (coding-agent extension)
-
-A `command` service is a named slash-command role bound to a single `llm`
-service. The user invokes it by typing `/<name>` followed by a prompt.
-
-Required attribute:
-- `llm` — name of an `llm` service declared in this RDL (or reachable via a `remotes` block).
-
-Optional attributes (override the bound LLM service's defaults for this command):
-- `model`, `temperature`, `max_tokens`
-- `permissions` — `readonly | standard | broad`
-- `skills` — list of skill IDs to load into the system prompt
-- `system_prompt` — optional override
-
-Inline `provider`/`api_key_env`/`base_url` on a command service is rejected by
-the validator with a migration message — that configuration belongs on the
-referenced `llm` service.
-
-#### 6.2.3 The `prompt-log` service type (coding-agent extension)
-
-A `prompt-log` service subscribes to every `*.task` and `*.result` subject and
-writes each as a JSON line under its `attributes.dir`. One entry per session,
-one file per day.
+An `llm` service is how a robot puts a reasoning agent in the loop: a behavior, navigation, or coordinator service references it by name to plan over the robot's capabilities. The agent perceives through resource (sensor) reads and acts through tool (actuator) calls over NATS — it is a client of the mesh like any other. See [`VISION.md`](../../../gorai/VISION.md).
 
 ### 6.3 Service Dependencies
 

@@ -4,7 +4,7 @@
 
 ## How to Navigate This Repo
 
-**Read `INDEX.md` first.** It has a topic quick-reference table at the top and per-file summaries for every document. This gets you to the right file in one lookup instead of searching.
+**Read [`VISION.md`](../gorai/VISION.md) first** — the platform's north star: capabilities over NATS (NCP) and the Composite Robot. Then **read `INDEX.md`**: it has a topic quick-reference table at the top and per-file summaries for every document. This gets you to the right file in one lookup instead of searching.
 
 ### If you need to understand what Gorai is
 
@@ -28,10 +28,12 @@ This repo holds all documentation — strategy, architecture, specifications, bo
 
 ## What Gorai Is
 
-- Go-based robotics platform for software-first teams building AI-driven autonomous systems
+- Go-based robotics platform for software-first teams building AI-driven autonomous systems for the physical world
+- **Capabilities over NATS (NCP):** the capability model MCP gives AI agents — resources to read, tools to call, events, live discovery — delivered natively over NATS, with no MCP server in the path. **Resources are sensors; tools are actuators.** Agents read the world and change it through them.
+- **The Composite Robot:** a robot is a logical scope over a set of capabilities on the mesh, not a chassis. One robot can span many physical platforms acting together, composed at runtime.
 - Single binary deployment (Go binary + NATS), no containers required
-- Resource/capability model: robots expose state (resources) and actions (tools) through typed contracts
-- Agent-compatible, not agent-dependent — supports deterministic behaviors, learned policies, and agentic orchestration
+- Agent-compatible, not agent-dependent — supports deterministic behaviors, learned policies, and agentic orchestration; reasoning agents are clients of the mesh
+- Physical-world focus — software-only coding agents and standalone LLM-serving infrastructure are out of scope
 - Not a ROS 2 replacement — different market, complementary
 
 ## Repo Structure

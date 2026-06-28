@@ -2,6 +2,8 @@
 
 A balanced summary of the core arguments for and against adopting Gorai, drawn from the strategy paper, devil's advocate critique, and wedge positioning.
 
+> For the platform's technical north star — capabilities over NATS (NCP) and the Composite Robot — see [VISION.md](../gorai/VISION.md). The "clean capability contracts" argument below is that vision in practice: resources are sensors, tools are actuators.
+
 ---
 
 ## The Case FOR Gorai

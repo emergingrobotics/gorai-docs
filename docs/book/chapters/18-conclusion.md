@@ -84,7 +84,7 @@ Returning to Chapter 2's question: What if we designed a robotics framework for 
 
 4. **Build a custom sensor**: Pick hardware you have—a temperature sensor, a button, an LED
 5. **Write tests**: Unit tests, fake implementation, component tests
-6. **Connect hardware**: Deploy to a Raspberry Pi or Orange Pi
+6. **Connect hardware**: Deploy to a Linux host (Raspberry Pi/Orange Pi/etc)
 
 ### Medium Term
 

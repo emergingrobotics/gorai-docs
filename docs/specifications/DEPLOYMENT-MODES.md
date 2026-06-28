@@ -18,7 +18,7 @@ Gorai supports progressive deployment modes that match robot complexity. Start s
 
 **Status: Implemented and Tested**
 
-This is the recommended deployment for all current use cases, including the ORCA autonomous submersible and Surf autonomous surface vessel.
+This is the recommended deployment for all current use cases, including autonomous submersibles and autonomous surface vessels.
 
 The primary deployment mode. A single Go binary runs directly on the robot, managed by systemd. NATS is now embedded in the binary — users do not need to install or manage a separate NATS server.
 

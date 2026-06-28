@@ -81,7 +81,7 @@ An RP2040 microcontroller board handles real-time hardware I/O (PWM, motor contr
 - Precise timing-critical control (servo PWM, motor encoders)
 - Isolating hardware I/O from Linux scheduler jitter
 - Complex actuator configurations (multiple motors, servos, ESCs)
-- Robots where hardware reliability is critical (e.g., ORCA submersible — control must not glitch underwater)
+- Robots where hardware reliability is critical (e.g., an autonomous submersible — control must not glitch underwater)
 
 **How it works:**
 - RP2040 runs TinyGo firmware (`rp2040-pwm` or custom)

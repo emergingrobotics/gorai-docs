@@ -48,7 +48,7 @@ Learn by example. These projects demonstrate GoRAI concepts in complete, working
 
 ```bash
 # Clone the repository
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 
 # Run hello-sensor (no hardware required)

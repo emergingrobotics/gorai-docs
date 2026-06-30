@@ -12,7 +12,7 @@ We welcome contributions!
 ## Development Setup
 
 ```bash
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 make setup
 make test

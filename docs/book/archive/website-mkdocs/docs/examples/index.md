@@ -55,4 +55,4 @@ Complete, working GoRAI projects you can build.
 
 ## Source Code
 
-All examples have complete source code in the [GoRAI repository](https://github.com/gorai/gorai/tree/main/examples).
+All examples have complete source code in the [GoRAI repository](https://github.com/emergingrobotics/gorai/tree/main/examples).

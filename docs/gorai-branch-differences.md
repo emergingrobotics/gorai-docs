@@ -418,8 +418,8 @@ To migrate a component from direct hardware access to HAL:
 1. **Update imports:**
    ```go
    import (
-       "github.com/gorai/gorai/driver/hal"
-       "github.com/gorai/gorai/driver/gpio"  // or i2c, spi, etc.
+       "github.com/emergingrobotics/gorai/driver/hal"
+       "github.com/emergingrobotics/gorai/driver/gpio"  // or i2c, spi, etc.
    )
    ```
 

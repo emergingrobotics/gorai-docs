@@ -44,7 +44,7 @@ A two-robot system demonstrating distributed control using NATS messaging.
 │  └─────────────┘    └────────────────┘  │
 │                                         │
 │  ┌─────────────────────────────────┐    │
-│  │ Dashboard (:8080)               │    │
+│  │ Dashboard (:10101)              │    │
 │  │ - Local camera view             │    │
 │  │ - PWM status                    │    │
 │  └─────────────────────────────────┘    │
@@ -133,7 +133,7 @@ gorai run projects/surf-test/ground-station.json
 
 ### 3. Access Dashboards
 
-- **Main Robot Dashboard**: `http://RASPBERRY_PI_IP:8080`
+- **Main Robot Dashboard**: `http://RASPBERRY_PI_IP:10101`
 - **Ground Station Dashboard**: `http://localhost:8081`
 
 ## Logging

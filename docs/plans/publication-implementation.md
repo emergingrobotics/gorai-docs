@@ -620,8 +620,8 @@ create-missing = false
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "ayu"
-git-repository-url = "https://github.com/gorai/gorai"
-edit-url-template = "https://github.com/gorai/gorai/edit/main/publish/content/{path}"
+git-repository-url = "https://github.com/emergingrobotics/gorai"
+edit-url-template = "https://github.com/emergingrobotics/gorai/edit/main/publish/content/{path}"
 site-url = "/book/"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
@@ -847,7 +847,7 @@ site_description: A lightweight, Go-based robotics framework built on NATS.io
 site_author: Greg Herlein, Luca Herlein
 
 repo_name: gorai/gorai
-repo_url: https://github.com/gorai/gorai
+repo_url: https://github.com/emergingrobotics/gorai
 edit_uri: edit/main/publish/content/
 
 theme:
@@ -1043,7 +1043,7 @@ extra:
 
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/gorai/gorai
+      link: https://github.com/emergingrobotics/gorai
 
   analytics:
     provider: google
@@ -1134,8 +1134,8 @@ package main
 
 import (
     "context"
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/pkg/pub"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/pub"
 )
 
 func main() {

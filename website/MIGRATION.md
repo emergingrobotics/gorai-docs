@@ -237,7 +237,7 @@ disableKinds = ["taxonomy", "term"]
   [[menu.after]]
     identifier = "github"
     name = "GitHub"
-    url = "https://github.com/gorai/gorai"
+    url = "https://github.com/emergingrobotics/gorai"
     weight = 100
 
 # Hugo Book theme parameters
@@ -249,7 +249,7 @@ disableKinds = ["taxonomy", "term"]
   # BookLogo = "/images/logo.png"
 
   # Set source repository location
-  BookRepo = "https://github.com/gorai/gorai"
+  BookRepo = "https://github.com/emergingrobotics/gorai"
 
   # Enable "Edit this page" links
   BookEditPath = "edit/main/publish/website/content"
@@ -664,7 +664,7 @@ enableEmoji = true
 
   [params.editURL]
     enable = true
-    base = "https://github.com/gorai/gorai/edit/main/publish/website/content"
+    base = "https://github.com/emergingrobotics/gorai/edit/main/publish/website/content"
 
 [menu]
   [[menu.main]]
@@ -682,7 +682,7 @@ enableEmoji = true
   [[menu.main]]
     identifier = "github"
     name = "GitHub"
-    url = "https://github.com/gorai/gorai"
+    url = "https://github.com/emergingrobotics/gorai"
     weight = 100
 ```
 

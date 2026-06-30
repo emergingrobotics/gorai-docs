@@ -52,9 +52,9 @@ ARG DATE=unknown
 RUN echo "Building gorai CLI: version=${VERSION} commit=${COMMIT} date=${DATE}" && \
     CGO_ENABLED=0 GOOS=linux go build \
         -ldflags="-s -w \
-            -X github.com/gorai/gorai/cmd/gorai/commands.Version=${VERSION} \
-            -X github.com/gorai/gorai/cmd/gorai/commands.Commit=${COMMIT} \
-            -X github.com/gorai/gorai/cmd/gorai/commands.Date=${DATE}" \
+            -X github.com/emergingrobotics/gorai/cmd/gorai/commands.Version=${VERSION} \
+            -X github.com/emergingrobotics/gorai/cmd/gorai/commands.Commit=${COMMIT} \
+            -X github.com/emergingrobotics/gorai/cmd/gorai/commands.Date=${DATE}" \
         -o gorai \
         ./cmd/gorai
 
@@ -83,7 +83,7 @@ ENV CONTAINER_HOST=unix:///run/podman/podman.sock
 # Labels
 LABEL org.opencontainers.image.title="Gorai CLI"
 LABEL org.opencontainers.image.description="Gorai robotics framework CLI for building and managing robots"
-LABEL org.opencontainers.image.source="https://github.com/gorai/gorai"
+LABEL org.opencontainers.image.source="https://github.com/emergingrobotics/gorai"
 LABEL org.opencontainers.image.vendor="Gorai Project"
 
 # Default entrypoint is the CLI

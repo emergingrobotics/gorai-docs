@@ -41,7 +41,7 @@ hugo version
 
 ```bash
 # Clone with submodules (if cloning fresh)
-git clone --recurse-submodules https://github.com/gorai/gorai.git
+git clone --recurse-submodules https://github.com/emergingrobotics/gorai.git
 
 # Or if already cloned, initialize submodules
 git submodule update --init --recursive
@@ -217,7 +217,7 @@ enableEmoji = true
 
   [params.editURL]
     enable = true
-    base = "https://github.com/gorai/gorai/edit/main/publish/website/content"
+    base = "https://github.com/emergingrobotics/gorai/edit/main/publish/website/content"
 
 [menu]
   [[menu.main]]
@@ -235,7 +235,7 @@ enableEmoji = true
   [[menu.main]]
     identifier = "github"
     name = "GitHub"
-    url = "https://github.com/gorai/gorai"
+    url = "https://github.com/emergingrobotics/gorai"
     weight = 100
 ```
 
@@ -458,7 +458,7 @@ After cloning the repository, initialize the theme submodule:
 
 ```bash
 # If cloning fresh
-git clone --recurse-submodules https://github.com/gorai/gorai.git
+git clone --recurse-submodules https://github.com/emergingrobotics/gorai.git
 
 # If already cloned
 git submodule update --init --recursive

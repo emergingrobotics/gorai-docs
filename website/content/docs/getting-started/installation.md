@@ -65,7 +65,7 @@ nats-server --version
 ## Install Gorai CLI
 
 ```bash
-go install github.com/gorai/gorai/cmd/gorai@latest
+go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 ```
 
 Verify:

@@ -422,7 +422,7 @@ Update to new format without containers:
       "type": "dashboard",
       "model": "web",
       "attributes": {
-        "listen": ":8080"
+        "listen": ":10101"
       }
     },
     {
@@ -590,7 +590,7 @@ WantedBy=multi-user.target
 
 1. `gorai run --config hello-camera.json` works on Raspberry Pi
 2. Camera streams frames via NATS
-3. Dashboard accessible at localhost:8080
+3. Dashboard accessible at localhost:10101
 4. External Hailo detector works as managed service
 5. All specs updated
 6. All examples updated

@@ -691,7 +691,7 @@ Once all prerequisites are installed, test the hello-robot example:
 
 ```bash
 # Clone the repository (if not already done)
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai/examples/hello-robot
 
 # Follow the testing instructions

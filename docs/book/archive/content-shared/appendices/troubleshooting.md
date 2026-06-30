@@ -89,7 +89,7 @@ cannot open video device /dev/video0
 ### Module not found
 
 ```
-cannot find module providing package github.com/gorai/gorai/...
+cannot find module providing package github.com/emergingrobotics/gorai/...
 ```
 
 **Solutions**:
@@ -170,8 +170,8 @@ error: could not find wasm-opt
 
 If you can't resolve an issue:
 
-1. Check [GitHub Issues](https://github.com/gorai/gorai/issues)
-2. Search [Discussions](https://github.com/gorai/gorai/discussions)
+1. Check [GitHub Issues](https://github.com/emergingrobotics/gorai/issues)
+2. Search [Discussions](https://github.com/emergingrobotics/gorai/discussions)
 3. Include in bug reports:
    - Go version
    - NATS server version

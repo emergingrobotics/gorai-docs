@@ -34,7 +34,7 @@ A camera mount that can pan and tilt, with optional sensor fusion from depth sen
 
 ```bash
 # Clone the repository
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai/examples/pan-tilt
 
 # Configure for your hardware

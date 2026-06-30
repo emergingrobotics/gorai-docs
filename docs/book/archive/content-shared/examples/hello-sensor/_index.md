@@ -24,7 +24,7 @@ A sensor that reads CPU temperature and publishes it over NATS.
 
 ```bash
 # Clone the repository
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai/examples/hello-sensor
 
 # Run the sensor

@@ -118,7 +118,7 @@ Install the gorai CLI directly on the host:
 
 ```bash
 # Install CLI
-go install github.com/gorai/gorai/cmd/gorai@latest
+go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 
 # Run robot
 gorai run --config robot.json

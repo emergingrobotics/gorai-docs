@@ -261,7 +261,7 @@ A camera robot demonstrating V4L2 capture and web dashboard.
 
 - Captures video from a V4L2 camera (USB or CSI)
 - Publishes JPEG frames to NATS
-- Provides a web dashboard on port 8080
+- Provides a web dashboard on port 10101
 
 ### Configuration
 
@@ -293,7 +293,7 @@ A camera robot demonstrating V4L2 capture and web dashboard.
       "type": "dashboard",
       "model": "web",
       "attributes": {
-        "listen": ":8080"
+        "listen": ":10101"
       }
     }
   ]
@@ -323,7 +323,7 @@ v4l2-ctl --list-devices
 
 ### Access the Dashboard
 
-Open http://localhost:8080 in your browser to view the camera feed.
+Open http://localhost:10101 in your browser to view the camera feed.
 
 ### Watch Camera Data via NATS
 

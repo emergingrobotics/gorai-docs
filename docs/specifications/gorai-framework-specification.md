@@ -3797,7 +3797,7 @@ type ConvertOptions struct {
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "retention": "5m",
     "websocket": {
       "buffer_size": 100,
@@ -3918,7 +3918,7 @@ Prometheus is a **required dependency** for Gorai, running locally on the robot 
 │  │  - Services     │     │ Pub/Sub         │     │                 │    │
 │  │                 │     │                 │     │ Retention:      │    │
 │  │ Dashboard:      │     └─────────────────┘     │ 15d default     │    │
-│  │  - HTTP :8080   │                             │                 │    │
+│  │  - HTTP :10101  │                             │                 │    │
 │  │                 │◀────────────────────────────│ PromQL queries  │    │
 │  │ Metrics:        │                             │                 │    │
 │  │  - /metrics     │────────────────────────────▶│ Scrape :9091    │    │
@@ -4050,7 +4050,7 @@ The dashboard queries **local Prometheus** for both real-time gauges and histori
 │   ├─ History: polls /api/history on load + refresh             │
 │   └─ Cameras: streams from /api/cameras/{name}/stream          │
 └────────────────────────────────────────────────────────────────┘
-                              │ HTTP :8080
+                              │ HTTP :10101
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │ Gorai Dashboard Server                                           │
@@ -4077,7 +4077,7 @@ The dashboard queries **local Prometheus** for both real-time gauges and histori
 {
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "video": {
       "enabled": true,
       "format": "mjpeg",
@@ -4091,7 +4091,7 @@ The dashboard queries **local Prometheus** for both real-time gauges and histori
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `enabled` | bool | true | Enable/disable dashboard |
-| `listen` | string | ":8080" | HTTP listen address |
+| `listen` | string | ":10101" | HTTP listen address |
 | `video.enabled` | bool | true | Enable camera streaming |
 | `video.format` | string | "mjpeg" | Stream format: mjpeg, webrtc, hls |
 | `video.max_fps` | int | 15 | Maximum video frame rate |
@@ -4110,7 +4110,7 @@ Note: Data retention is configured via `prometheus.retention`, not in the dashbo
 ```
 
 When disabled:
-- No HTTP server starts on :8080
+- No HTTP server starts on :10101
 - Prometheus continues to collect metrics
 - Can still use Grafana or other tools to visualize
 
@@ -4288,7 +4288,7 @@ The dashboard supports camera streaming via MJPEG (default) with optional WebRTC
 
 The dashboard is designed for **trusted networks**. For production:
 
-1. Bind to localhost: `"listen": "127.0.0.1:8080"`
+1. Bind to localhost: `"listen": "127.0.0.1:10101"`
 2. Use SSH tunneling for remote access
 3. Or disable completely: `"enabled": false`
 

@@ -133,7 +133,7 @@ This document provides a comprehensive implementation plan for the Gorai framewo
 syntax = "proto3";
 package gorai.action;
 
-option go_package = "github.com/gorai/gorai/api/gen/gorai/action";
+option go_package = "github.com/emergingrobotics/gorai/api/gen/gorai/action";
 
 import "gorai/std/std.proto";
 import "google/protobuf/any.proto";
@@ -188,7 +188,7 @@ package action_test
 import (
     "testing"
 
-    "github.com/gorai/gorai/api/gen/gorai/action"
+    "github.com/emergingrobotics/gorai/api/gen/gorai/action"
     "google.golang.org/protobuf/proto"
 )
 
@@ -415,7 +415,7 @@ package resource_test
 import (
     "testing"
 
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 func TestName_String(t *testing.T) {
@@ -565,8 +565,8 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/internal/testutil"
 )
 
 func TestNode_New(t *testing.T) {
@@ -701,8 +701,8 @@ import (
     "context"
     "testing"
 
-    "github.com/gorai/gorai/api/gen/gorai/std"
-    "github.com/gorai/gorai/pkg/pub"
+    "github.com/emergingrobotics/gorai/api/gen/gorai/std"
+    "github.com/emergingrobotics/gorai/pkg/pub"
 )
 
 func TestPublisher_Topic(t *testing.T) {
@@ -743,8 +743,8 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/pkg/node"
-    actionpb "github.com/gorai/gorai/api/gen/gorai/action"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    actionpb "github.com/emergingrobotics/gorai/api/gen/gorai/action"
     "google.golang.org/protobuf/proto"
 )
 
@@ -813,7 +813,7 @@ package action
 import (
     "context"
 
-    "github.com/gorai/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/node"
     "google.golang.org/protobuf/proto"
 )
 
@@ -903,7 +903,7 @@ go test -v ./pkg/action/...
 package component
 
 import (
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 // Component is a hardware component.
@@ -932,8 +932,8 @@ package component_test
 import (
     "testing"
 
-    "github.com/gorai/gorai/components"
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/components"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 func TestComponent_IsResource(t *testing.T) {
@@ -1044,9 +1044,9 @@ import (
     "context"
     "encoding/json"
 
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/pkg/resource"
-    "github.com/gorai/gorai/pkg/services"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/services"
 )
 
 // Server exposes a local resource over NATS.
@@ -1114,9 +1114,9 @@ package nws
 import (
     "context"
 
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/pkg/resource"
-    "github.com/gorai/gorai/pkg/services"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/services"
 )
 
 // Connect creates a client for a remote resource.
@@ -1170,7 +1170,7 @@ import (
     "runtime"
     "testing"
 
-    "github.com/gorai/gorai/examples/hello-sensor/reader"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/reader"
 )
 
 func TestNew(t *testing.T) {
@@ -1236,7 +1236,7 @@ import (
     "errors"
     "testing"
 
-    "github.com/gorai/gorai/examples/hello-sensor/sensor/fake"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor/fake"
 )
 
 func TestFakeReader_Default(t *testing.T) {
@@ -1293,7 +1293,7 @@ package sensor_test
 import (
     "testing"
 
-    "github.com/gorai/gorai/examples/hello-sensor/sensor"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor"
 )
 
 func TestCelsiusToFahrenheit(t *testing.T) {

@@ -24,7 +24,7 @@ The dashboard provides:
 ┌─────────────────────────────────────────────────────────┐
 │                    Gorai Binary                         │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │              Dashboard Server (:8080)            │  │
+│  │             Dashboard Server (:10101)            │  │
 │  │                                                  │  │
 │  │  ┌─────────┐  ┌─────────┐  ┌─────────────────┐  │  │
 │  │  │ Templ   │  │  HTMX   │  │     uPlot       │  │  │
@@ -66,7 +66,7 @@ The dashboard is enabled by default. To disable:
 {
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "video": {
       "enabled": true,
       "format": "mjpeg",
@@ -99,7 +99,7 @@ The dashboard exposes REST endpoints that query Prometheus:
 ### Example: Get Gauges
 
 ```bash
-curl http://localhost:8080/api/gauges
+curl http://localhost:10101/api/gauges
 ```
 
 Response:
@@ -122,7 +122,7 @@ Response:
 ### Example: Get History
 
 ```bash
-curl "http://localhost:8080/api/history?sensor=temperature&range=5m"
+curl "http://localhost:10101/api/history?sensor=temperature&range=5m"
 ```
 
 ## Dashboard Sections
@@ -176,7 +176,7 @@ MJPEG streaming from configured cameras:
 
 The dashboard is designed for **trusted networks**. For production:
 
-1. **Bind to localhost**: `"listen": "127.0.0.1:8080"`
+1. **Bind to localhost**: `"listen": "127.0.0.1:10101"`
 2. **Use SSH tunneling** for remote access
 3. **Or disable**: `"enabled": false`
 
@@ -184,9 +184,9 @@ The dashboard is designed for **trusted networks**. For production:
 
 ```bash
 # From your workstation
-ssh -L 8080:localhost:8080 robot@192.168.1.100
+ssh -L 10101:localhost:10101 robot@192.168.1.100
 
-# Then open http://localhost:8080 in your browser
+# Then open http://localhost:10101 in your browser
 ```
 
 ## Implementation

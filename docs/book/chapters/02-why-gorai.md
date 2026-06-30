@@ -177,7 +177,7 @@ Getting started with Gorai should take minutes, not days:
 # Install Go (if needed)
 # Install NATS (single binary)
 # Clone and run
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 go run ./examples/hello-sensor
 ```

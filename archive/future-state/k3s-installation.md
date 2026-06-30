@@ -833,7 +833,7 @@ After K3s installation:
 
 - **Documentation:** https://gorai.dev/docs
 - **K3s docs:** https://docs.k3s.io
-- **Issues:** https://github.com/gorai/gorai/issues
+- **Issues:** https://github.com/emergingrobotics/gorai/issues
 - **Community:** https://discord.gg/gorai (planned)
 
 ---

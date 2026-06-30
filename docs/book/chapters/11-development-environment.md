@@ -107,7 +107,7 @@ tinygo version
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 ```
 
@@ -326,7 +326,7 @@ source ~/.bashrc
 **Clone and Build**:
 
 ```bash
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 go build ./...
 ```

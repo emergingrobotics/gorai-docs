@@ -64,5 +64,5 @@ gorai.robot1.service.vision.req
 
 <!-- website-only -->
 !!! tip "API Documentation"
-    For Go API documentation, see [pkg.go.dev/github.com/gorai/gorai](https://pkg.go.dev/github.com/gorai/gorai).
+    For Go API documentation, see [pkg.go.dev/github.com/emergingrobotics/gorai](https://pkg.go.dev/github.com/emergingrobotics/gorai).
 <!-- /website-only -->

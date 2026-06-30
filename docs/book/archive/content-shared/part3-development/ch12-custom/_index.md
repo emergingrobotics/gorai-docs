@@ -56,7 +56,7 @@ package drv8833
 
 import (
     "context"
-    "github.com/gorai/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/components/motor"
 )
 
 // DRV8833Motor implements motor.Motor for DRV8833 controller.
@@ -82,8 +82,8 @@ import (
     "fmt"
     "sync"
 
-    "github.com/gorai/gorai/driver/gpio"
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/driver/gpio"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 type Config struct {
@@ -297,8 +297,8 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/components/motor"
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 type Motor struct {

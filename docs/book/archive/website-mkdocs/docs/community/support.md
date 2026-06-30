@@ -9,8 +9,8 @@ Getting help with GoRAI.
 
 ## Community
 
-- [GitHub Issues](https://github.com/gorai/gorai/issues) - Bug reports and feature requests
-- [GitHub Discussions](https://github.com/gorai/gorai/discussions) - Questions and community chat
+- [GitHub Issues](https://github.com/emergingrobotics/gorai/issues) - Bug reports and feature requests
+- [GitHub Discussions](https://github.com/emergingrobotics/gorai/discussions) - Questions and community chat
 
 ## Reporting Issues
 

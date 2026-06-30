@@ -50,7 +50,7 @@
           "type": "string",
           "format": "uri",
           "description": "Git repository URL",
-          "examples": ["github.com/gorai/gorai-service-vision"]
+          "examples": ["github.com/emergingrobotics/gorai-service-vision"]
         },
         "description": {
           "type": "string",

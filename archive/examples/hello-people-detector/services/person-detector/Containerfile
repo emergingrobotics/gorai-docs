@@ -73,7 +73,7 @@ ENV INPUT_SIZE=640
 # Labels
 LABEL org.opencontainers.image.title="Gorai Person Detector Service"
 LABEL org.opencontainers.image.description="YOLOv8 person detection service using Hailo-8 NPU"
-LABEL org.opencontainers.image.source="https://github.com/gorai/gorai"
+LABEL org.opencontainers.image.source="https://github.com/emergingrobotics/gorai"
 LABEL gorai.service.type="object_detection"
 LABEL gorai.service.model="yolov8"
 LABEL gorai.service.accelerator="hailo-8"

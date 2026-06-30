@@ -58,12 +58,12 @@ Users can reference the RDL file directly:
     "type": "vision",
     "model": "yolox",
     "version": "v1.2.0",
-    "repository": "github.com/gorai/gorai-service-vision",
+    "repository": "github.com/emergingrobotics/gorai-service-vision",
 
     "description": "Real-time object detection using YOLOX neural network with multiple model size variants",
     "author": "Gorai Project",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/gorai/gorai-service-vision",
+    "homepage": "https://github.com/emergingrobotics/gorai-service-vision",
     "documentation": "https://docs.gorai.dev/services/yolox",
 
     "compatibility": {
@@ -218,7 +218,7 @@ Users can reference the RDL file directly:
     ],
 
     "quality": {
-      "ci_status": "https://github.com/gorai/gorai-service-vision/actions",
+      "ci_status": "https://github.com/emergingrobotics/gorai-service-vision/actions",
       "test_coverage": 82,
       "has_benchmarks": true
     },

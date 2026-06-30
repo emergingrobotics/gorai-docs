@@ -633,7 +633,7 @@ render();
 {
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "websocket_buffer": 100,
     "sensor_downsample_hz": 10,
     "video": {

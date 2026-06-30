@@ -24,7 +24,7 @@ Technical reference documentation for GoRAI.
 
 ## API Documentation
 
-Go package documentation is available at [pkg.go.dev/github.com/gorai/gorai](https://pkg.go.dev/github.com/gorai/gorai).
+Go package documentation is available at [pkg.go.dev/github.com/emergingrobotics/gorai](https://pkg.go.dev/github.com/emergingrobotics/gorai).
 
 ## Book Reference Sections
 

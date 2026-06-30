@@ -4,7 +4,7 @@ site_description: A lightweight, Go-based robotics framework built on NATS.io
 site_author: Greg Herlein, Luca Herlein
 
 repo_name: gorai/gorai
-repo_url: https://github.com/gorai/gorai
+repo_url: https://github.com/emergingrobotics/gorai
 edit_uri: edit/main/publish/content/
 
 theme:
@@ -200,6 +200,6 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/gorai/gorai
+      link: https://github.com/emergingrobotics/gorai
 
 copyright: Copyright &copy; 2024-2025 Greg Herlein & Luca Herlein. Apache 2.0 License.

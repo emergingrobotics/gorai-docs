@@ -397,7 +397,7 @@ Update `hello-camera.json`:
       "type": "dashboard",
       "model": "web",
       "attributes": {
-        "listen": ":8080"
+        "listen": ":10101"
       }
     },
     {
@@ -425,7 +425,7 @@ Update `hello-camera.json`:
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080"
+    "listen": ":10101"
   }
 }
 ```

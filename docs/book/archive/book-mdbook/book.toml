@@ -12,8 +12,8 @@ create-missing = false
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "ayu"
-git-repository-url = "https://github.com/gorai/gorai"
-edit-url-template = "https://github.com/gorai/gorai/edit/main/publish/content/{path}"
+git-repository-url = "https://github.com/emergingrobotics/gorai"
+edit-url-template = "https://github.com/emergingrobotics/gorai/edit/main/publish/content/{path}"
 site-url = "/book/"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 

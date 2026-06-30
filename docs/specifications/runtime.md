@@ -869,12 +869,12 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/gorai/gorai/pkg/config"
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/pkg/config"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 
     // Import components to register them
-    _ "github.com/gorai/gorai/components/motor/gpio"
-    _ "github.com/gorai/gorai/components/sensor/mpu6050"
+    _ "github.com/emergingrobotics/gorai/components/motor/gpio"
+    _ "github.com/emergingrobotics/gorai/components/sensor/mpu6050"
 )
 
 func main() {

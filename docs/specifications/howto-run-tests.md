@@ -102,7 +102,7 @@ go test -v ./pkg/node -run "TestNew/with_valid_config"
 ```bash
 # Test the node package
 $ go test ./pkg/node
-ok      github.com/gorai/gorai/pkg/node    0.023s
+ok      github.com/emergingrobotics/gorai/pkg/node    0.023s
 
 # Verbose output showing each test
 $ go test -v ./pkg/node
@@ -113,11 +113,11 @@ $ go test -v ./pkg/node
     --- PASS: TestNew/with_valid_config (0.00s)
     --- PASS: TestNew/with_empty_name (0.00s)
 PASS
-ok      github.com/gorai/gorai/pkg/node    0.024s
+ok      github.com/emergingrobotics/gorai/pkg/node    0.024s
 
 # Test with race detection
 $ go test -race ./pkg/node
-ok      github.com/gorai/gorai/pkg/node    0.156s
+ok      github.com/emergingrobotics/gorai/pkg/node    0.156s
 ```
 
 ---
@@ -157,7 +157,7 @@ go test -tags=component ./components/sensor/...
 ```bash
 # Test motor component
 $ go test -tags=component ./components/motor
-ok      github.com/gorai/gorai/components/motor    0.089s
+ok      github.com/emergingrobotics/gorai/components/motor    0.089s
 
 # Verbose motor tests
 $ go test -v -tags=component ./components/motor
@@ -169,7 +169,7 @@ $ go test -v -tags=component ./components/motor
 === RUN   TestGPIOMotor_Stop
 --- PASS: TestGPIOMotor_Stop (0.01s)
 PASS
-ok      github.com/gorai/gorai/components/motor    0.091s
+ok      github.com/emergingrobotics/gorai/components/motor    0.091s
 ```
 
 ---
@@ -209,7 +209,7 @@ go test -tags=integration ./tests/integration -run TestAction
 ```bash
 # Run all integration tests
 $ go test -tags=integration ./tests/integration/...
-ok      github.com/gorai/gorai/tests/integration    1.234s
+ok      github.com/emergingrobotics/gorai/tests/integration    1.234s
 
 # Verbose pub/sub test
 $ go test -v -tags=integration ./tests/integration -run TestPubSub_IMU
@@ -220,7 +220,7 @@ $ go test -v -tags=integration ./tests/integration -run TestPubSub_IMU
     integration_test.go:71: message received in 12.3ms
 --- PASS: TestPubSub_IMU (0.15s)
 PASS
-ok      github.com/gorai/gorai/tests/integration    0.162s
+ok      github.com/emergingrobotics/gorai/tests/integration    0.162s
 ```
 
 ---
@@ -275,7 +275,7 @@ $ go test -v -tags=module ./tests/module -run TestMotorModule_Lifecycle
 --- PASS: TestMotorModule_Lifecycle/Stop (0.05s)
 --- PASS: TestMotorModule_Lifecycle (2.34s)
 PASS
-ok      github.com/gorai/gorai/tests/module    2.456s
+ok      github.com/emergingrobotics/gorai/tests/module    2.456s
 ```
 
 ---
@@ -327,7 +327,7 @@ $ go test -v -tags=system ./tests/system -run TestDifferentialDrive
 --- PASS: TestDifferentialDriveRobot/EmergencyStop (0.15s)
 --- PASS: TestDifferentialDriveRobot (5.67s)
 PASS
-ok      github.com/gorai/gorai/tests/system    5.891s
+ok      github.com/emergingrobotics/gorai/tests/system    5.891s
 ```
 
 ---
@@ -382,7 +382,7 @@ $ sudo go test -v -tags="hardware,raspberry_pi" ./driver/gpio -run TestBlink
     gpio_test.go:35: blink complete
 --- PASS: TestBlink (2.01s)
 PASS
-ok      github.com/gorai/gorai/driver/gpio    2.034s
+ok      github.com/emergingrobotics/gorai/driver/gpio    2.034s
 ```
 
 ---
@@ -536,7 +536,7 @@ $ find ./pkg/node -name "*.go" | entr -c go test -v ./pkg/node
 === RUN   TestClose
 --- PASS: TestClose (0.00s)
 PASS
-ok      github.com/gorai/gorai/pkg/node    0.023s
+ok      github.com/emergingrobotics/gorai/pkg/node    0.023s
 
 # [file saved, tests re-run automatically]
 
@@ -547,7 +547,7 @@ ok      github.com/gorai/gorai/pkg/node    0.023s
 === RUN   TestNewFeature
 --- PASS: TestNewFeature (0.00s)
 PASS
-ok      github.com/gorai/gorai/pkg/node    0.025s
+ok      github.com/emergingrobotics/gorai/pkg/node    0.025s
 ```
 
 ---
@@ -665,7 +665,7 @@ $ nats req motor.left.stop ''
 ```bash
 # Coverage for single package
 go test -cover ./pkg/node
-# ok    github.com/gorai/gorai/pkg/node    0.023s    coverage: 85.2% of statements
+# ok    github.com/emergingrobotics/gorai/pkg/node    0.023s    coverage: 85.2% of statements
 
 # Coverage for all packages
 go test -cover ./...
@@ -704,17 +704,17 @@ xdg-open coverage.html    # Linux
 ```bash
 # Detailed coverage output
 $ go test -cover ./pkg/...
-ok      github.com/gorai/gorai/pkg/node      0.023s    coverage: 85.2%
-ok      github.com/gorai/gorai/pkg/pub       0.018s    coverage: 92.1%
-ok      github.com/gorai/gorai/pkg/sub       0.019s    coverage: 88.7%
-ok      github.com/gorai/gorai/pkg/services   0.021s    coverage: 79.3%
+ok      github.com/emergingrobotics/gorai/pkg/node      0.023s    coverage: 85.2%
+ok      github.com/emergingrobotics/gorai/pkg/pub       0.018s    coverage: 92.1%
+ok      github.com/emergingrobotics/gorai/pkg/sub       0.019s    coverage: 88.7%
+ok      github.com/emergingrobotics/gorai/pkg/services   0.021s    coverage: 79.3%
 
 # Function-level coverage
 $ go tool cover -func=coverage.out | head -20
-github.com/gorai/gorai/pkg/node/node.go:25:     New             100.0%
-github.com/gorai/gorai/pkg/node/node.go:45:     Close           85.7%
-github.com/gorai/gorai/pkg/node/node.go:62:     Connect         100.0%
-github.com/gorai/gorai/pkg/node/node.go:89:     Publish         90.0%
+github.com/emergingrobotics/gorai/pkg/node/node.go:25:     New             100.0%
+github.com/emergingrobotics/gorai/pkg/node/node.go:45:     Close           85.7%
+github.com/emergingrobotics/gorai/pkg/node/node.go:62:     Connect         100.0%
+github.com/emergingrobotics/gorai/pkg/node/node.go:89:     Publish         90.0%
 ...
 total:                                          (statements)    86.4%
 ```
@@ -760,11 +760,11 @@ go test -bench=. -benchtime=1000x ./...
 $ go test -bench=. -benchmem ./pkg/pub
 goos: linux
 goarch: amd64
-pkg: github.com/gorai/gorai/pkg/pub
+pkg: github.com/emergingrobotics/gorai/pkg/pub
 BenchmarkPublish-8           1000000      1052 ns/op     256 B/op      4 allocs/op
 BenchmarkPublishParallel-8   5000000       234 ns/op     256 B/op      4 allocs/op
 PASS
-ok      github.com/gorai/gorai/pkg/pub    3.456s
+ok      github.com/emergingrobotics/gorai/pkg/pub    3.456s
 
 # Compare benchmarks
 $ go test -bench=. -benchmem ./pkg/pub > old.txt

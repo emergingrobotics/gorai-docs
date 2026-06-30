@@ -19,7 +19,7 @@ Thank you for your interest in contributing! Here's how to get started.
 
 ```bash
 # Clone the repository
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai
 
 # Install dependencies

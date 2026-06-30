@@ -68,7 +68,7 @@ The dashboard runs as part of the main gorai binary and can be enabled or disabl
 │  └───────────────────────────────────────────────────────────┘ │
 └────────────────────────────────────────────────────────────────┘
                               │
-                              │ HTTP/WebSocket (port 8080)
+                              │ HTTP/WebSocket (port 10101)
                               ▼
 ┌────────────────────────────────────────────────────────────────┐
 │ Browser                                                         │
@@ -122,7 +122,7 @@ The dashboard runs as part of the main gorai binary and can be enabled or disabl
 # gorai.yaml
 dashboard:
   enabled: true                    # false to disable entirely
-  listen: ":8080"                  # HTTP listen address
+  listen: ":10101"                 # HTTP listen address
 
   # WebSocket settings
   websocket:

@@ -38,7 +38,7 @@ A boat-form robot capable of autonomous navigation, data collection, and remote 
 
 ```bash
 # Clone the repository
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai/examples/skimmer
 
 # Configure for your hardware

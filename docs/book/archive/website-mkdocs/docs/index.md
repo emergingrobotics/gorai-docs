@@ -79,7 +79,7 @@ n.Spin(ctx)
 
     View and contribute on GitHub
 
-    [:octicons-arrow-right-24: GitHub](https://github.com/gorai/gorai)
+    [:octicons-arrow-right-24: GitHub](https://github.com/emergingrobotics/gorai)
 
 </div>
 

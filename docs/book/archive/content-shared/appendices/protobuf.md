@@ -139,7 +139,7 @@ make proto
 ### Using Messages in Go
 
 ```go
-import "github.com/gorai/gorai/api/sensor"
+import "github.com/emergingrobotics/gorai/api/sensor"
 
 msg := &sensor.Image{
     Header: &std.Header{

@@ -27,7 +27,7 @@ Gorai is a **Linux-based robotics platform**. Every robot running Gorai **SHALL*
 
 Gorai uses a **hybrid monorepo architecture** consisting of:
 
-- **One core monorepo** (`github.com/gorai/gorai`) containing all interfaces, core libraries, and reference implementations — **always standard Go**
+- **One core monorepo** (`github.com/emergingrobotics/gorai`) containing all interfaces, core libraries, and reference implementations — **always standard Go**
 - **Satellite repositories** for hardware-specific drivers, accelerator backends, and complex services with heavy dependencies — **standard Go**
 - **TinyGo satellite repositories** for microcontroller peripherals — **TinyGo only**
 
@@ -66,7 +66,7 @@ Microcontroller nodes communicate with Linux nodes via serial using the Gorai Se
 
 ```mermaid
 flowchart TB
-    subgraph core["Core Monorepo: github.com/gorai/gorai (Standard Go)"]
+    subgraph core["Core Monorepo: github.com/emergingrobotics/gorai (Standard Go)"]
         API["api/ - Protocol Buffers"]
         PKG["pkg/ - Core Libraries"]
         COMP["component/ - Interfaces"]
@@ -104,7 +104,7 @@ flowchart TB
 
 ### Core Repository
 
-The core repository **SHALL** be located at `github.com/gorai/gorai`.
+The core repository **SHALL** be located at `github.com/emergingrobotics/gorai`.
 
 The core repository **SHALL** contain:
 - All interface definitions
@@ -127,7 +127,7 @@ Satellite repositories **SHALL** be used for:
 - Services with large dependency trees
 - Community-contributed implementations
 
-Satellite repositories **SHALL** be located at `github.com/gorai/gorai-{category}-{name}`.
+Satellite repositories **SHALL** be located at `github.com/emergingrobotics/gorai-{category}-{name}`.
 
 ---
 
@@ -136,8 +136,8 @@ Satellite repositories **SHALL** be located at `github.com/gorai/gorai-{category
 The following directory structure is **mandatory** for the core repository:
 
 ```
-github.com/gorai/gorai/
-├── go.mod                          # module github.com/gorai/gorai
+github.com/emergingrobotics/gorai/
+├── go.mod                          # module github.com/emergingrobotics/gorai
 ├── go.sum
 ├── README.md
 ├── LICENSE                         # Apache 2.0
@@ -308,11 +308,11 @@ Each satellite repository **SHALL** declare its module as:
 
 ```go
 // go.mod
-module github.com/gorai/gorai-driver-v4l2
+module github.com/emergingrobotics/gorai-driver-v4l2
 
 go 1.21
 
-require github.com/gorai/gorai v0.1.0
+require github.com/emergingrobotics/gorai v0.1.0
 ```
 
 ---
@@ -379,14 +379,14 @@ func Lookup(subtype, model string) (Constructor, bool) {
 Satellite implementations **SHALL** register in `init()`:
 
 ```go
-// github.com/gorai/gorai-driver-v4l2/v4l2.go
+// github.com/emergingrobotics/gorai-driver-v4l2/v4l2.go
 package v4l2
 
 import (
     "context"
 
-    "github.com/gorai/gorai/components/camera"
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/components/camera"
+    "github.com/emergingrobotics/gorai/pkg/registry"
 )
 
 func init() {
@@ -409,10 +409,10 @@ Users **SHALL** import satellite packages with blank identifier:
 package main
 
 import (
-    "github.com/gorai/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/node"
 
-    _ "github.com/gorai/gorai-driver-v4l2"   // Registers v4l2 camera
-    _ "github.com/gorai/gorai-accel-coral"   // Registers Coral TPU
+    _ "github.com/emergingrobotics/gorai-driver-v4l2"   // Registers v4l2 camera
+    _ "github.com/emergingrobotics/gorai-accel-coral"   // Registers Coral TPU
 )
 
 func main() {
@@ -492,7 +492,7 @@ TinyGo code **SHALL NOT** be used for:
 
 All TinyGo code **SHALL** be placed in satellite repositories, never in the core repository.
 
-The core repository (`github.com/gorai/gorai`) **SHALL** always be standard Go only.
+The core repository (`github.com/emergingrobotics/gorai`) **SHALL** always be standard Go only.
 
 TinyGo repositories **SHALL** use the naming pattern:
 
@@ -542,16 +542,16 @@ The serial gateway:
 ### Structure
 
 ```
-github.com/gorai/gorai-tiny-core/
-├── go.mod                  # module github.com/gorai/gorai-tiny-core
+github.com/emergingrobotics/gorai-tiny-core/
+├── go.mod                  # module github.com/emergingrobotics/gorai-tiny-core
 ├── node/                   # TinyGo-compatible node
 ├── pub/                    # TinyGo-compatible publisher
 ├── sub/                    # TinyGo-compatible subscriber
 └── serial/                 # Serial protocol client
     └── gsp/                # Gorai Serial Protocol
 
-github.com/gorai/gorai-tiny-driver/
-├── go.mod                  # module github.com/gorai/gorai-tiny-driver
+github.com/emergingrobotics/gorai-tiny-driver/
+├── go.mod                  # module github.com/emergingrobotics/gorai-tiny-driver
 ├── gpio/                   # TinyGo GPIO
 ├── i2c/                    # TinyGo I2C
 ├── spi/                    # TinyGo SPI
@@ -627,9 +627,9 @@ Satellite repositories **SHALL**:
 
 ```go
 // go.mod
-module github.com/gorai/gorai-driver-v4l2
+module github.com/emergingrobotics/gorai-driver-v4l2
 
-require github.com/gorai/gorai v0.5.0
+require github.com/emergingrobotics/gorai v0.5.0
 ```
 
 ### Compatibility Matrix
@@ -661,15 +661,15 @@ The core repository **SHALL** maintain `docs/ecosystem.md`:
 
 | Name | Platform | Status | Maintainer |
 |------|----------|--------|------------|
-| [gorai-driver-v4l2](https://github.com/gorai/gorai-driver-v4l2) | Linux | Stable | @gorai/drivers |
-| [gorai-driver-realsense](https://github.com/gorai/gorai-driver-realsense) | Linux | Beta | @gorai/drivers |
+| [gorai-driver-v4l2](https://github.com/emergingrobotics/gorai-driver-v4l2) | Linux | Stable | @gorai/drivers |
+| [gorai-driver-realsense](https://github.com/emergingrobotics/gorai-driver-realsense) | Linux | Beta | @gorai/drivers |
 
 ## Official Accelerators
 
 | Name | Hardware | Status | Maintainer |
 |------|----------|--------|------------|
-| [gorai-accel-coral](https://github.com/gorai/gorai-accel-coral) | Coral TPU | Alpha | @gorai/accel |
-| [gorai-accel-rockchip](https://github.com/gorai/gorai-accel-rockchip) | RK3588 | Stable | @gorai/accel |
+| [gorai-accel-coral](https://github.com/emergingrobotics/gorai-accel-coral) | Coral TPU | Alpha | @gorai/accel |
+| [gorai-accel-rockchip](https://github.com/emergingrobotics/gorai-accel-rockchip) | RK3588 | Stable | @gorai/accel |
 
 ## Community Contributions
 
@@ -690,7 +690,7 @@ All Gorai repositories **SHALL** use these GitHub topics:
 
 ### pkg.go.dev
 
-All repositories under `github.com/gorai/*` appear together on pkg.go.dev, providing natural discovery.
+All repositories under `github.com/emergingrobotics/*` appear together on pkg.go.dev, providing natural discovery.
 
 ---
 
@@ -735,7 +735,7 @@ gorai-api
 gorai-types
 
 # CORRECT
-Interfaces in github.com/gorai/gorai/components/*
+Interfaces in github.com/emergingrobotics/gorai/components/*
 ```
 
 ### 4. Premature Extraction
@@ -756,7 +756,7 @@ Code **SHALL** start in the core repository and only be extracted when:
 # WRONG
 gorai-driver-v4l2/
 └── vendor/
-    └── github.com/gorai/gorai/
+    └── github.com/emergingrobotics/gorai/
 
 # CORRECT
 go.mod with proper require directive
@@ -771,7 +771,7 @@ go.mod with proper require directive
 Initial development **SHALL** occur entirely in the core repository:
 
 ```
-github.com/gorai/gorai/
+github.com/emergingrobotics/gorai/
 ├── api/
 ├── pkg/
 ├── components/
@@ -787,8 +787,8 @@ github.com/gorai/gorai/
 When CGo dependencies are added, extract:
 
 ```
-github.com/gorai/gorai-driver-v4l2/
-github.com/gorai/gorai-accel-rockchip/
+github.com/emergingrobotics/gorai-driver-v4l2/
+github.com/emergingrobotics/gorai-accel-rockchip/
 ```
 
 ### Phase 3: Community Growth
@@ -808,7 +808,7 @@ Promote well-maintained packages to the official organization.
 
 | Aspect | Requirement |
 |--------|-------------|
-| Core location | `github.com/gorai/gorai` |
+| Core location | `github.com/emergingrobotics/gorai` |
 | Core language | Standard Go only |
 | Satellite naming | `gorai-{category}-{name}` |
 | Satellite language | Standard Go |

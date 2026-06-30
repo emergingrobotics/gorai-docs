@@ -7,7 +7,7 @@ As your robot codebase grows, organization matters. This chapter covers best pra
 The main GoRAI repository:
 
 ```
-github.com/gorai/gorai/
+github.com/emergingrobotics/gorai/
 ├── api/                 # Protocol definitions
 │   ├── proto/           # .proto source files
 │   │   └── gorai/
@@ -77,7 +77,7 @@ module github.com/myorg/gorai-drv8833
 go 1.22
 
 require (
-    github.com/gorai/gorai v0.2.0
+    github.com/emergingrobotics/gorai v0.2.0
 )
 ```
 
@@ -107,7 +107,7 @@ github.com/myorg/my-robot/
 Drivers with external dependencies:
 
 ```
-github.com/gorai/gorai-driver-v4l2/
+github.com/emergingrobotics/gorai-driver-v4l2/
 ├── camera.go           # V4L2 camera driver
 ├── camera_test.go
 ├── go.mod              # CGo dependencies isolated
@@ -135,10 +135,10 @@ v2.0.0  # Breaking changes (new import path)
 **Go module versioning**:
 ```go
 // v0.x and v1.x
-import "github.com/gorai/gorai/pkg/node"
+import "github.com/emergingrobotics/gorai/pkg/node"
 
 // v2+
-import "github.com/gorai/gorai/v2/pkg/node"
+import "github.com/emergingrobotics/gorai/v2/pkg/node"
 ```
 
 ## 13.5 Configuration Organization
@@ -198,7 +198,7 @@ Motor component interface for GoRAI.
 
 ## Installation
 
-go get github.com/gorai/gorai/components/motor
+go get github.com/emergingrobotics/gorai/components/motor
 
 ## Usage
 

@@ -46,7 +46,7 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 // TemperatureSensor is a fake temperature sensor for testing.

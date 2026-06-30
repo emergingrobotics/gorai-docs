@@ -30,7 +30,7 @@ GoRAI focuses on edge inference—models running on the robot itself.
 - GoRAI uses go-rknnlite bindings
 
 ```go
-import "github.com/gorai/gorai/accel/rknn"
+import "github.com/emergingrobotics/gorai/accel/rknn"
 
 acc, err := rknn.New()
 if err != nil {
@@ -49,7 +49,7 @@ defer model.Close()
 
 **NVIDIA CUDA** (Jetson):
 ```go
-import "github.com/gorai/gorai/accel/cuda"
+import "github.com/emergingrobotics/gorai/accel/cuda"
 
 acc, err := cuda.New()
 // Requires CUDA 12.x and cuDNN 9.x
@@ -57,7 +57,7 @@ acc, err := cuda.New()
 
 **OpenCL** (generic):
 ```go
-import "github.com/gorai/gorai/accel/opencl"
+import "github.com/emergingrobotics/gorai/accel/opencl"
 
 acc, err := opencl.New()
 // Works on various GPUs
@@ -67,7 +67,7 @@ acc, err := opencl.New()
 
 **Google Coral**:
 ```go
-import "github.com/gorai/gorai/accel/coral"
+import "github.com/emergingrobotics/gorai/accel/coral"
 
 acc, err := coral.New()
 // USB or M.2 Edge TPU

@@ -10,17 +10,17 @@
 
 ### Module Path
 ```
-github.com/gorai/gorai
+github.com/emergingrobotics/gorai
 ```
 
 ### Key Packages
 | Package | Import | Purpose |
 |---------|--------|---------|
-| Registry | `github.com/gorai/gorai/pkg/registry` | Compile-time component registration |
-| Mesh | `github.com/gorai/gorai/pkg/mesh` | Runtime service discovery |
-| NATS | `github.com/gorai/gorai/pkg/nats` | NATS client wrapper |
-| Topics | `github.com/gorai/gorai/pkg/topics` | Topic naming conventions |
-| Resource | `github.com/gorai/gorai/pkg/resource` | Base resource interfaces |
+| Registry | `github.com/emergingrobotics/gorai/pkg/registry` | Compile-time component registration |
+| Mesh | `github.com/emergingrobotics/gorai/pkg/mesh` | Runtime service discovery |
+| NATS | `github.com/emergingrobotics/gorai/pkg/nats` | NATS client wrapper |
+| Topics | `github.com/emergingrobotics/gorai/pkg/topics` | Topic naming conventions |
+| Resource | `github.com/emergingrobotics/gorai/pkg/resource` | Base resource interfaces |
 
 ---
 
@@ -95,8 +95,8 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/components/motor"
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/pkg/registry"
 )
 
 func init() {
@@ -169,8 +169,8 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/components/motor"
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/pkg/registry"
 )
 
 func init() {
@@ -270,8 +270,8 @@ package yolo
 import (
     "context"
 
-    "github.com/gorai/gorai/pkg/registry"
-    "github.com/gorai/gorai/services/vision"
+    "github.com/emergingrobotics/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/services/vision"
 )
 
 func init() {
@@ -369,7 +369,7 @@ gorai.<robot_id>.system.heartbeat
 
 ### Using the Topic Builder
 ```go
-import "github.com/gorai/gorai/pkg/topics"
+import "github.com/emergingrobotics/gorai/pkg/topics"
 
 tb := topics.NewBuilder("robot-alpha")
 
@@ -397,7 +397,7 @@ For runtime service registration/discovery across independent processes.
 ```go
 import (
     "github.com/nats-io/nats.go"
-    "github.com/gorai/gorai/pkg/mesh"
+    "github.com/emergingrobotics/gorai/pkg/mesh"
 )
 
 nc, _ := nats.Connect("nats://localhost:4222")
@@ -629,7 +629,7 @@ import (
     "context"
     "testing"
 
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/pkg/registry"
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/require"
 )

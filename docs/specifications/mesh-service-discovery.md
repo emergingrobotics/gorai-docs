@@ -251,7 +251,7 @@ package main
 import (
     "context"
     "github.com/nats-io/nats.go"
-    "github.com/gorai/gorai/pkg/mesh"
+    "github.com/emergingrobotics/gorai/pkg/mesh"
 )
 
 func main() {

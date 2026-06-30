@@ -62,7 +62,7 @@ The structure is intentional:
 The `config` package parses configuration files:
 
 ```go
-import "github.com/gorai/gorai/pkg/config"
+import "github.com/emergingrobotics/gorai/pkg/config"
 
 cfg, err := config.LoadFile("robot.json")
 if err != nil {

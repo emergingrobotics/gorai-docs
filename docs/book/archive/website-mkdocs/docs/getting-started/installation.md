@@ -9,7 +9,7 @@
 ## Install GoRAI
 
 ```bash
-go get github.com/gorai/gorai
+go get github.com/emergingrobotics/gorai
 ```
 
 ## Start NATS
@@ -29,7 +29,7 @@ docker run -d --name nats -p 4222:4222 nats:latest
 ## Verify Installation
 
 ```bash
-go run github.com/gorai/gorai/cmd/gorai version
+go run github.com/emergingrobotics/gorai/cmd/gorai version
 ```
 
 ## Next Steps

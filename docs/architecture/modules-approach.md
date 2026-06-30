@@ -10,7 +10,7 @@
 
 Gorai uses the same component packaging approach as the [Caddy web server](https://caddyserver.com/): **blank imports in `main.go` are the canonical component manifest**.
 
-Each robot project starts from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template). The user's `main.go` declares components via blank imports. Each import triggers `init()` which calls `registry.RegisterComponent()`. The result is a single compiled binary with exactly the components needed.
+Each robot project starts from the [gorai-robot-template](https://github.com/emergingrobotics/gorai-robot-template). The user's `main.go` declares components via blank imports. Each import triggers `init()` which calls `registry.RegisterComponent()`. The result is a single compiled binary with exactly the components needed.
 
 **Why this was chosen:**
 - **Standard Go tooling**: `go get`, `go mod tidy`, semantic versioning. No custom package manager.
@@ -56,7 +56,7 @@ gorai/gorai (single repo)
 └── cmd/                # CLI & runtime
 
 User Robot Binary:
-- Imports github.com/gorai/gorai
+- Imports github.com/emergingrobotics/gorai
 - Gets ALL components/services
 - RDL selects which to instantiate
 ```
@@ -90,8 +90,8 @@ User Robot Binary:
 Each component category becomes its own module:
 
 ```
-github.com/gorai/gorai-component-motor
-├── go.mod              # module github.com/gorai/gorai-component-motor
+github.com/emergingrobotics/gorai-component-motor
+├── go.mod              # module github.com/emergingrobotics/gorai-component-motor
 ├── gpio/               # GPIO motor implementation
 │   ├── gpio.go
 │   └── gpio_test.go
@@ -100,8 +100,8 @@ github.com/gorai/gorai-component-motor
 └── fake/               # Fake motor for testing
     └── fake.go
 
-github.com/gorai/gorai-component-sensor
-├── go.mod              # module github.com/gorai/gorai-component-sensor
+github.com/emergingrobotics/gorai-component-sensor
+├── go.mod              # module github.com/emergingrobotics/gorai-component-sensor
 ├── imu/
 │   ├── mpu6050/
 │   ├── bno055/
@@ -110,8 +110,8 @@ github.com/gorai/gorai-component-sensor
 ├── lidar/
 └── encoder/
 
-github.com/gorai/gorai-service-vision
-├── go.mod              # module github.com/gorai/gorai-service-vision
+github.com/emergingrobotics/gorai-service-vision
+├── go.mod              # module github.com/emergingrobotics/gorai-service-vision
 ├── yolox/              # YOLOX object detection
 ├── yolov8/             # YOLOv8 implementation
 └── tflite/             # TensorFlow Lite models
@@ -126,11 +126,11 @@ github.com/gorai/gorai-service-vision
 package main
 
 import (
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 
     // Import component packages (triggers init() registration)
-    _ "github.com/gorai/gorai-component-motor/gpio"
-    _ "github.com/gorai/gorai-component-sensor/imu/mpu6050"
+    _ "github.com/emergingrobotics/gorai-component-motor/gpio"
+    _ "github.com/emergingrobotics/gorai-component-sensor/imu/mpu6050"
     _ "github.com/acme-corp/gorai-driver-custom-lidar"
 )
 
@@ -145,7 +145,7 @@ func main() {
 // gorai-component-motor/gpio/gpio.go
 package gpio
 
-import "github.com/gorai/gorai/pkg/registry"
+import "github.com/emergingrobotics/gorai/pkg/registry"
 
 func init() {
     registry.RegisterComponent("motor", "gpio", NewGPIOMotor)
@@ -197,9 +197,9 @@ module github.com/acme-corp/my-robot
 go 1.22
 
 require (
-    github.com/gorai/gorai v0.3.0
-    github.com/gorai/gorai-component-motor v0.2.1
-    github.com/gorai/gorai-component-sensor v0.2.0
+    github.com/emergingrobotics/gorai v0.3.0
+    github.com/emergingrobotics/gorai-component-motor v0.2.1
+    github.com/emergingrobotics/gorai-component-sensor v0.2.0
     github.com/acme-corp/gorai-driver-custom-lidar v1.0.0  // Private repo
 )
 ```
@@ -227,7 +227,7 @@ go build ./...
 module github.com/acme-corp/my-robot
 
 require (
-    github.com/gorai/gorai v0.3.0
+    github.com/emergingrobotics/gorai v0.3.0
     github.com/acme-corp/gorai-driver-custom-lidar v1.0.0
 )
 
@@ -269,7 +269,7 @@ Each external service is its own repo with:
 - Build scripts
 
 ```
-github.com/gorai/gorai-service-yolox
+github.com/emergingrobotics/gorai-service-yolox
 ├── Containerfile           # Multi-stage build
 ├── service.rdl.json        # Reusable service definition
 ├── requirements.txt        # Python dependencies
@@ -359,7 +359,7 @@ Service RDL files define reusable service templates:
 **Option A**: Include in component repos (recommended)
 
 ```
-github.com/gorai/gorai-service-yolox
+github.com/emergingrobotics/gorai-service-yolox
 ├── service.rdl.json        # Authoritative definition
 └── ...
 
@@ -426,7 +426,7 @@ podman login registry.acme-corp.com
 ### Core Framework
 
 ```
-github.com/gorai/gorai
+github.com/emergingrobotics/gorai
 ├── components/           # Base interfaces ONLY (no implementations except fake/)
 │   ├── motor/
 │   │   ├── motor.go          # Motor interface
@@ -450,18 +450,18 @@ github.com/gorai/gorai
 **Public Components**:
 
 ```
-github.com/gorai/gorai-component-motor
-github.com/gorai/gorai-component-sensor
-github.com/gorai/gorai-component-camera
-github.com/gorai/gorai-component-actuator
+github.com/emergingrobotics/gorai-component-motor
+github.com/emergingrobotics/gorai-component-sensor
+github.com/emergingrobotics/gorai-component-camera
+github.com/emergingrobotics/gorai-component-actuator
 ```
 
 **Platform-Specific Drivers**:
 
 ```
-github.com/gorai/gorai-driver-hailo       # Hailo AI accelerator
-github.com/gorai/gorai-driver-camera-v4l2 # V4L2 camera support
-github.com/gorai/gorai-driver-lidar-rplidar
+github.com/emergingrobotics/gorai-driver-hailo       # Hailo AI accelerator
+github.com/emergingrobotics/gorai-driver-camera-v4l2 # V4L2 camera support
+github.com/emergingrobotics/gorai-driver-lidar-rplidar
 ```
 
 **Private/Company Repositories**:
@@ -476,9 +476,9 @@ github.com/acme-corp/gorai-component-proprietary-arm
 **Public Services**:
 
 ```
-github.com/gorai/gorai-service-vision      # YOLOX, YOLOv8, etc.
-github.com/gorai/gorai-service-slam        # Cartographer, etc.
-github.com/gorai/gorai-service-navigation  # Path planning
+github.com/emergingrobotics/gorai-service-vision      # YOLOX, YOLOv8, etc.
+github.com/emergingrobotics/gorai-service-slam        # Cartographer, etc.
+github.com/emergingrobotics/gorai-service-navigation  # Path planning
 ```
 
 **Each service repo contains**:
@@ -490,8 +490,8 @@ github.com/gorai/gorai-service-navigation  # Path planning
 ### Platform Repositories
 
 ```
-github.com/gorai/gorai-platform-k3s       # K3s deployment tools
-github.com/gorai/gorai-platform-systemd   # systemd integration
+github.com/emergingrobotics/gorai-platform-k3s       # K3s deployment tools
+github.com/emergingrobotics/gorai-platform-systemd   # systemd integration
 ```
 
 ---
@@ -573,15 +573,15 @@ gorai-component-actuator
 ```bash
 mkdir my-robot && cd my-robot
 go mod init github.com/me/my-robot
-go get github.com/gorai/gorai
+go get github.com/emergingrobotics/gorai
 ```
 
 ```go
 package main
 import (
-    "github.com/gorai/gorai/pkg/robot"
-    _ "github.com/gorai/gorai/components/motor/gpio"  // All components in one repo
-    _ "github.com/gorai/gorai/components/sensor/imu"
+    "github.com/emergingrobotics/gorai/pkg/robot"
+    _ "github.com/emergingrobotics/gorai/components/motor/gpio"  // All components in one repo
+    _ "github.com/emergingrobotics/gorai/components/sensor/imu"
 )
 func main() { robot.RunFromConfig("robot.json") }
 ```
@@ -590,22 +590,22 @@ func main() { robot.RunFromConfig("robot.json") }
 ```bash
 mkdir my-robot && cd my-robot
 go mod init github.com/me/my-robot
-go get github.com/gorai/gorai
-go get github.com/gorai/gorai-component-motor
-go get github.com/gorai/gorai-component-sensor
+go get github.com/emergingrobotics/gorai
+go get github.com/emergingrobotics/gorai-component-motor
+go get github.com/emergingrobotics/gorai-component-sensor
 ```
 
 ```go
 package main
 import (
-    "github.com/gorai/gorai/pkg/robot"
-    _ "github.com/gorai/gorai-component-motor/gpio"      // Per-category repos
-    _ "github.com/gorai/gorai-component-sensor/imu/mpu6050"
+    "github.com/emergingrobotics/gorai/pkg/robot"
+    _ "github.com/emergingrobotics/gorai-component-motor/gpio"      // Per-category repos
+    _ "github.com/emergingrobotics/gorai-component-sensor/imu/mpu6050"
 )
 func main() { robot.RunFromConfig("robot.json") }
 ```
 
-**Standard starting point**: Clone [gorai-robot-template](https://github.com/gorai/gorai-robot-template) for a ready-made project skeleton with `main.go`, `go.mod`, `robot.json`, and a `Makefile`.
+**Standard starting point**: Clone [gorai-robot-template](https://github.com/emergingrobotics/gorai-robot-template) for a ready-made project skeleton with `main.go`, `go.mod`, `robot.json`, and a `Makefile`.
 
 **Additional option**: CLI scaffolding command
 
@@ -624,7 +624,7 @@ gorai new my-robot --template differential-drive
 
 ```bash
 # Clone template
-git clone https://github.com/gorai/gorai-component-template my-component
+git clone https://github.com/emergingrobotics/gorai-component-template my-component
 cd my-component
 
 # Customize
@@ -656,7 +656,7 @@ go get github.com/acme-corp/gorai-driver-custom@v1.0.0
 
 ```bash
 # Clone template
-git clone https://github.com/gorai/gorai-service-template my-service
+git clone https://github.com/emergingrobotics/gorai-service-template my-service
 cd my-service
 
 # Implement in any language
@@ -691,11 +691,11 @@ podman push ghcr.io/me/my-service:v1.0.0
 gorai/gorai
 ├── .gitmodules
 ├── components/
-│   ├── motor/          → git submodule github.com/gorai/gorai-component-motor
-│   ├── sensor/         → git submodule github.com/gorai/gorai-component-sensor
+│   ├── motor/          → git submodule github.com/emergingrobotics/gorai-component-motor
+│   ├── sensor/         → git submodule github.com/emergingrobotics/gorai-component-sensor
 │   └── ...
 └── services/
-    └── vision/         → git submodule github.com/gorai/gorai-service-vision
+    └── vision/         → git submodule github.com/emergingrobotics/gorai-service-vision
 ```
 
 **Why Not?**
@@ -841,7 +841,7 @@ $ gorai validate robot.json
 ✗ Component type=sensor model=rplidar_a1 not found
 
   Did you forget to import it?
-  Try: go get github.com/gorai/gorai-driver-lidar-rplidar
+  Try: go get github.com/emergingrobotics/gorai-driver-lidar-rplidar
 ```
 
 **At runtime**:
@@ -854,7 +854,7 @@ func (c *Config) Validate() error {
             return &ComponentNotFoundError{
                 Type:  comp.Type,
                 Model: comp.Model,
-                Suggestion: fmt.Sprintf("Import the package that provides this component, e.g.:\nimport _ \"github.com/gorai/gorai-component-motor/gpio\""),
+                Suggestion: fmt.Sprintf("Import the package that provides this component, e.g.:\nimport _ \"github.com/emergingrobotics/gorai-component-motor/gpio\""),
             }
         }
     }
@@ -964,9 +964,9 @@ Monorepos centralize control. We want to **decentralize** component development.
 
 ```go
 import (
-    _ "github.com/gorai/gorai-component-motor/gpio"
-    _ "github.com/gorai/gorai-component-motor/can"
-    _ "github.com/gorai/gorai-component-motor/odrive"
+    _ "github.com/emergingrobotics/gorai-component-motor/gpio"
+    _ "github.com/emergingrobotics/gorai-component-motor/can"
+    _ "github.com/emergingrobotics/gorai-component-motor/odrive"
     // ...all components
 )
 ```
@@ -974,7 +974,7 @@ import (
 Or use the "batteries-included" meta-package:
 
 ```go
-import _ "github.com/gorai/gorai-stdlib"  // Imports all official components
+import _ "github.com/emergingrobotics/gorai-stdlib"  // Imports all official components
 ```
 
 ### Q: How do I test my robot without recompiling?
@@ -1043,13 +1043,13 @@ git push origin v1.0.0
 Users pin versions in go.mod:
 
 ```go
-require github.com/gorai/gorai-component-motor v1.2.3
+require github.com/emergingrobotics/gorai-component-motor v1.2.3
 ```
 
 Or use version ranges:
 
 ```go
-require github.com/gorai/gorai-component-motor v1.2  // Any v1.2.x
+require github.com/emergingrobotics/gorai-component-motor v1.2  // Any v1.2.x
 ```
 
 ---

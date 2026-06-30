@@ -7,7 +7,7 @@ Build your first GoRAI node in minutes.
 ```bash
 mkdir my-robot && cd my-robot
 go mod init my-robot
-go get github.com/gorai/gorai
+go get github.com/emergingrobotics/gorai
 ```
 
 ## Write Your First Node
@@ -21,7 +21,7 @@ import (
     "context"
     "log"
 
-    "github.com/gorai/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/node"
 )
 
 func main() {

@@ -567,7 +567,7 @@ When technical justification exists, integrate C++ cleanly and isolate it:
 #### Pattern 2: CGo Wrapper (When Process Boundary Impractical)
 
 ```go
-// Satellite repository: github.com/gorai/gorai-driver-realsense
+// Satellite repository: github.com/emergingrobotics/gorai-driver-realsense
 // NOT in core gorai repository
 
 package realsense

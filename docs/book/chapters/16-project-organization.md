@@ -7,7 +7,7 @@ As your robot codebase grows, organization matters. This chapter covers best pra
 The main Gorai repository:
 
 ```
-github.com/gorai/gorai/
+github.com/emergingrobotics/gorai/
 ├── api/                 # Protocol definitions
 │   ├── proto/           # .proto source files
 │   │   └── gorai/
@@ -79,7 +79,7 @@ module github.com/myorg/gorai-drv8833
 go 1.22
 
 require (
-    github.com/gorai/gorai v0.2.0
+    github.com/emergingrobotics/gorai v0.2.0
 )
 ```
 
@@ -109,7 +109,7 @@ github.com/myorg/my-robot/
 Drivers with external dependencies:
 
 ```
-github.com/gorai/gorai-driver-v4l2/
+github.com/emergingrobotics/gorai-driver-v4l2/
 ├── camera.go           # V4L2 camera driver
 ├── camera_test.go
 ├── go.mod              # CGo dependencies isolated
@@ -140,10 +140,10 @@ v2.0.0  # Breaking changes (new import path)
 
 ```go
 // v0.x and v1.x
-import "github.com/gorai/gorai/pkg/node"
+import "github.com/emergingrobotics/gorai/pkg/node"
 
 // v2+
-import "github.com/gorai/gorai/v2/pkg/node"
+import "github.com/emergingrobotics/gorai/v2/pkg/node"
 ```
 
 ## Configuration Organization
@@ -204,7 +204,7 @@ Motor component interface for Gorai.
 
 ## Installation
 
-go get github.com/gorai/gorai/components/motor
+go get github.com/emergingrobotics/gorai/components/motor
 
 ## Usage
 
@@ -275,7 +275,7 @@ go test -v -run Example
 ```go
 // go.mod
 require (
-    github.com/gorai/gorai v0.2.0
+    github.com/emergingrobotics/gorai v0.2.0
     github.com/nats-io/nats.go v1.31.0
 )
 ```
@@ -284,7 +284,7 @@ require (
 
 ```bash
 # Update a specific dependency
-go get -u github.com/gorai/gorai@v0.3.0
+go get -u github.com/emergingrobotics/gorai@v0.3.0
 
 # Update all dependencies
 go get -u ./...

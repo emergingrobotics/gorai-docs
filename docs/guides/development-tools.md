@@ -493,7 +493,7 @@ nats:     nats-server: v2.10.22
 # (see instructions above for your OS)
 
 # 2. Clone repository
-git clone https://github.com/gorai/gorai.git
+git clone https://github.com/emergingrobotics/gorai.git
 cd gorai
 
 # 3. Install dev dependencies

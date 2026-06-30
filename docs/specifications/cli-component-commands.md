@@ -72,7 +72,7 @@ $ gorai component search --type motor
 
 Found 8 components:
 
-  github.com/gorai/gorai-component-motor v0.3.0
+  github.com/emergingrobotics/gorai-component-motor v0.3.0
     Official Gorai motor drivers
     Provides: motor/gpio, motor/pwm, motor/fake
     License: Apache-2.0 | Updated: 2026-01-12 | ★ Stable
@@ -325,11 +325,11 @@ $ gorai component list
 Installed Components (12):
 
 TYPE      MODEL           SOURCE                                           VERSION
-motor     gpio            github.com/gorai/gorai-component-motor           v0.3.0
-motor     pwm             github.com/gorai/gorai-component-motor           v0.3.0
+motor     gpio            github.com/emergingrobotics/gorai-component-motor           v0.3.0
+motor     pwm             github.com/emergingrobotics/gorai-component-motor           v0.3.0
 sensor    bno085          github.com/robotics-lab/gorai-component-imu      v1.2.3
-sensor    fake            github.com/gorai/gorai (builtin)                 v0.3.0
-camera    v4l2            github.com/gorai/gorai-driver-camera-v4l2        v0.2.1
+sensor    fake            github.com/emergingrobotics/gorai (builtin)                 v0.3.0
+camera    v4l2            github.com/emergingrobotics/gorai-driver-camera-v4l2        v0.2.1
 ...
 
 # Filter by type
@@ -337,8 +337,8 @@ $ gorai component list --type sensor
 
 TYPE      MODEL           SOURCE
 sensor    bno085          github.com/robotics-lab/gorai-component-imu      v1.2.3
-sensor    mpu6050         github.com/gorai/gorai-component-sensor          v0.3.0
-sensor    fake            github.com/gorai/gorai (builtin)                 v0.3.0
+sensor    mpu6050         github.com/emergingrobotics/gorai-component-sensor          v0.3.0
+sensor    fake            github.com/emergingrobotics/gorai (builtin)                 v0.3.0
 
 # JSON output
 $ gorai component list --format json
@@ -346,7 +346,7 @@ $ gorai component list --format json
   {
     "type": "motor",
     "model": "gpio",
-    "repository": "github.com/gorai/gorai-component-motor",
+    "repository": "github.com/emergingrobotics/gorai-component-motor",
     "version": "v0.3.0",
     "source": "external"
   },
@@ -438,7 +438,7 @@ Updates available:
   github.com/robotics-lab/gorai-component-imu
     v1.2.3 → v1.3.0 (minor)
 
-  github.com/gorai/gorai-component-motor
+  github.com/emergingrobotics/gorai-component-motor
     v0.3.0 → v0.4.0 (minor)
 
 Run 'gorai component update --all' to update
@@ -448,7 +448,7 @@ $ gorai component update --all
 
 ✓ Updated 2 components
   • github.com/robotics-lab/gorai-component-imu: v1.2.3 → v1.3.0
-  • github.com/gorai/gorai-component-motor: v0.3.0 → v0.4.0
+  • github.com/emergingrobotics/gorai-component-motor: v0.3.0 → v0.4.0
 
 # Allow breaking updates
 $ gorai component update --all --major
@@ -590,7 +590,7 @@ Usage Example:
   }
 
 Documentation: https://docs.gorai.dev/services/yolox
-Repository:    https://github.com/gorai/gorai-service-vision
+Repository:    https://github.com/emergingrobotics/gorai-service-vision
 ```
 
 ---

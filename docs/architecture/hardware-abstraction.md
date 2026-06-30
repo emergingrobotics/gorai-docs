@@ -135,11 +135,11 @@ package hal
 import (
     "context"
 
-    "github.com/gorai/gorai/driver/gpio"
-    "github.com/gorai/gorai/driver/i2c"
-    "github.com/gorai/gorai/driver/spi"
-    "github.com/gorai/gorai/driver/pwm"
-    "github.com/gorai/gorai/driver/serial"
+    "github.com/emergingrobotics/gorai/driver/gpio"
+    "github.com/emergingrobotics/gorai/driver/i2c"
+    "github.com/emergingrobotics/gorai/driver/spi"
+    "github.com/emergingrobotics/gorai/driver/pwm"
+    "github.com/emergingrobotics/gorai/driver/serial"
 )
 
 // HAL provides access to hardware peripherals.
@@ -421,7 +421,7 @@ package pwm
 import (
     "context"
 
-    "github.com/gorai/gorai/driver"
+    "github.com/emergingrobotics/gorai/driver"
 )
 
 // Chip represents a PWM controller chip.
@@ -738,7 +738,7 @@ Just import `gorai` and it works on any supported board:
 ```go
 package main
 
-import "github.com/gorai/gorai/pkg/robot"
+import "github.com/emergingrobotics/gorai/pkg/robot"
 
 func main() {
     robot.Run()  // Auto-detects board
@@ -947,9 +947,9 @@ package gpio
 import (
     "context"
 
-    "github.com/gorai/gorai/driver/gpio"
-    "github.com/gorai/gorai/driver/hal"
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/driver/gpio"
+    "github.com/emergingrobotics/gorai/driver/hal"
+    "github.com/emergingrobotics/gorai/pkg/registry"
 )
 
 func init() {
@@ -1040,7 +1040,7 @@ func New(ctx context.Context, deps registry.Dependencies, conf registry.Config) 
 This hardware abstraction design enables:
 
 1. **Write once, run anywhere**: Robot code using consistent HAL interfaces
-2. **Single import**: Just `import "github.com/gorai/gorai"` for all board support
+2. **Single import**: Just `import "github.com/emergingrobotics/gorai"` for all board support
 3. **Configuration-driven**: RDL `platform` section selects board and peripherals
 4. **Auto-detection**: Board detected automatically from `/proc/device-tree/model`
 5. **Standard Linux interfaces**: All boards use gpiod, i2c-dev, spidev, sysfs PWM
@@ -1107,12 +1107,12 @@ import (
     "fmt"
     "sync"
 
-    "github.com/gorai/gorai/driver"
-    "github.com/gorai/gorai/driver/gpio"
-    "github.com/gorai/gorai/driver/i2c"
-    "github.com/gorai/gorai/driver/pwm"
-    "github.com/gorai/gorai/driver/serial"
-    "github.com/gorai/gorai/driver/spi"
+    "github.com/emergingrobotics/gorai/driver"
+    "github.com/emergingrobotics/gorai/driver/gpio"
+    "github.com/emergingrobotics/gorai/driver/i2c"
+    "github.com/emergingrobotics/gorai/driver/pwm"
+    "github.com/emergingrobotics/gorai/driver/serial"
+    "github.com/emergingrobotics/gorai/driver/spi"
 )
 
 // HAL provides access to hardware peripherals.
@@ -1902,7 +1902,7 @@ package pwm
 import (
     "context"
 
-    "github.com/gorai/gorai/driver"
+    "github.com/emergingrobotics/gorai/driver"
 )
 
 // Chip represents a PWM controller with one or more channels.
@@ -2044,16 +2044,16 @@ import (
     "context"
     "fmt"
 
-    "github.com/gorai/gorai/driver/gpio"
-    gpiolinux "github.com/gorai/gorai/driver/gpio/linux"
-    "github.com/gorai/gorai/driver/i2c"
-    i2clinux "github.com/gorai/gorai/driver/i2c/linux"
-    "github.com/gorai/gorai/driver/pwm"
-    pwmlinux "github.com/gorai/gorai/driver/pwm/linux"
-    "github.com/gorai/gorai/driver/serial"
-    seriallinux "github.com/gorai/gorai/driver/serial/linux"
-    "github.com/gorai/gorai/driver/spi"
-    spilinux "github.com/gorai/gorai/driver/spi/linux"
+    "github.com/emergingrobotics/gorai/driver/gpio"
+    gpiolinux "github.com/emergingrobotics/gorai/driver/gpio/linux"
+    "github.com/emergingrobotics/gorai/driver/i2c"
+    i2clinux "github.com/emergingrobotics/gorai/driver/i2c/linux"
+    "github.com/emergingrobotics/gorai/driver/pwm"
+    pwmlinux "github.com/emergingrobotics/gorai/driver/pwm/linux"
+    "github.com/emergingrobotics/gorai/driver/serial"
+    seriallinux "github.com/emergingrobotics/gorai/driver/serial/linux"
+    "github.com/emergingrobotics/gorai/driver/spi"
+    spilinux "github.com/emergingrobotics/gorai/driver/spi/linux"
 )
 
 // createGPIODriver creates a GPIO driver for the board.
@@ -2103,7 +2103,7 @@ import (
     "os"
     "sync"
 
-    "github.com/gorai/gorai/driver/i2c"
+    "github.com/emergingrobotics/gorai/driver/i2c"
     "golang.org/x/sys/unix"
 )
 
@@ -2544,7 +2544,7 @@ import (
     "sync"
     "time"
 
-    "github.com/gorai/gorai/driver/pwm"
+    "github.com/emergingrobotics/gorai/driver/pwm"
 )
 
 // Common errors
@@ -2636,7 +2636,7 @@ import (
     "sync"
     "time"
 
-    "github.com/gorai/gorai/driver/pwm"
+    "github.com/emergingrobotics/gorai/driver/pwm"
 )
 
 // sysfsChip implements pwm.Chip for Linux sysfs PWM.
@@ -2786,7 +2786,7 @@ import (
     "sync"
     "time"
 
-    "github.com/gorai/gorai/driver/pwm"
+    "github.com/emergingrobotics/gorai/driver/pwm"
 )
 
 // sysfsChannel implements pwm.Channel for Linux sysfs PWM.

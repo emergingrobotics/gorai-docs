@@ -170,7 +170,7 @@ make proto
 Using Messages in Go:
 
 ```go
-import "github.com/gorai/gorai/api/sensor"
+import "github.com/emergingrobotics/gorai/api/sensor"
 
 msg := &sensor.Image{
     Header: &std.Header{
@@ -398,7 +398,7 @@ cannot open video device /dev/video0
 **Problem**: Module not found
 
 ```
-cannot find module providing package github.com/gorai/gorai/...
+cannot find module providing package github.com/emergingrobotics/gorai/...
 ```
 
 **Solutions**:

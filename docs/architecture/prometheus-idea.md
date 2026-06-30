@@ -39,7 +39,7 @@ This is **viable and has significant advantages** over an in-memory buffer appro
 │  │  - Services     │     │ Pub/Sub         │     │ or push         │    │
 │  │                 │     │                 │     │                 │    │
 │  │ Dashboard:      │     └─────────────────┘     │ Retention:      │    │
-│  │  - HTTP :8080   │                             │ 15d default     │    │
+│  │  - HTTP :10101  │                             │ 15d default     │    │
 │  │  - WebSocket    │◀────────────────────────────│ (configurable)  │    │
 │  │                 │     Query PromQL API        │                 │    │
 │  │ Metrics:        │                             │                 │    │
@@ -56,7 +56,7 @@ This is **viable and has significant advantages** over an in-memory buffer appro
 │                                                                          │
 └──────────────────────────────────────────────────────────────────────────┘
                               │
-                              │ HTTP :8080
+                              │ HTTP :10101
                               ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ Browser                                                                   │
@@ -495,7 +495,7 @@ func (s *Server) handleAlerts(w http.ResponseWriter, r *http.Request) {
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "retention": "15d"
   }
 }
@@ -606,7 +606,7 @@ services:
   gorai:
     image: gorai:latest
     ports:
-      - "8080:8080"
+      - "10101:10101"
       - "9091:9091"
     depends_on:
       - nats
@@ -736,7 +736,7 @@ sensorValue.WithLabelValues("imu", "accel_x_max").Set(imuStats.AccelXMax)
   },
   "dashboard": {
     "enabled": true,
-    "listen": ":8080"
+    "listen": ":10101"
   }
 }
 ```

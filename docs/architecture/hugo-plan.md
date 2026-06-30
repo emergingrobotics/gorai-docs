@@ -242,7 +242,7 @@ If Docsy feels too heavyweight or the team prefers:
 2. **Initialize Theme as Hugo Module**
    ```bash
    cd publish/website
-   hugo mod init github.com/gorai/gorai-website
+   hugo mod init github.com/emergingrobotics/gorai-website
    ```
 
 3. **Add Theme to `hugo.toml`**
@@ -285,8 +285,8 @@ If Docsy feels too heavyweight or the team prefers:
 1. **Configure Docsy Parameters**
    ```toml
    [params]
-     github_repo = "https://github.com/gorai/gorai"
-     github_project_repo = "https://github.com/gorai/gorai"
+     github_repo = "https://github.com/emergingrobotics/gorai"
+     github_project_repo = "https://github.com/emergingrobotics/gorai"
      github_branch = "main"
 
      # Enable features
@@ -301,7 +301,7 @@ If Docsy feels too heavyweight or the team prefers:
      [params.links]
        [[params.links.developer]]
          name = "GitHub"
-         url = "https://github.com/gorai/gorai"
+         url = "https://github.com/emergingrobotics/gorai"
          icon = "fab fa-github"
    ```
 

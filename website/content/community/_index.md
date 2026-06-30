@@ -10,8 +10,8 @@ Welcome to the Gorai community! We're building something new and would love your
 
 ## Get Help
 
-- **[GitHub Discussions](https://github.com/gorai/gorai/discussions)** — Ask questions, share ideas
-- **[GitHub Issues](https://github.com/gorai/gorai/issues)** — Report bugs, request features
+- **[GitHub Discussions](https://github.com/emergingrobotics/gorai/discussions)** — Ask questions, share ideas
+- **[GitHub Issues](https://github.com/emergingrobotics/gorai/issues)** — Report bugs, request features
 
 ## Contribute
 

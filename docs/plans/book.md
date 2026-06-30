@@ -400,7 +400,7 @@ type Camera interface {
 
 ### 8.2 Project Setup
 ```bash
-git clone https://github.com/gorai/gorai
+git clone https://github.com/emergingrobotics/gorai
 cd gorai
 go mod download
 ```
@@ -814,7 +814,7 @@ accel/
 
 ### 13.1 The Gorai Monorepo Structure
 ```
-github.com/gorai/gorai/
+github.com/emergingrobotics/gorai/
 ├── api/                 # Protocol definitions
 │   ├── proto/           # .proto files
 │   └── gen/             # Generated Go code
@@ -852,7 +852,7 @@ github.com/myorg/gorai-mymotor/
 ├── mymotor.go
 ├── mymotor_test.go
 ├── fake/
-└── go.mod  # imports github.com/gorai/gorai
+└── go.mod  # imports github.com/emergingrobotics/gorai
 ```
 
 #### 13.3.2 Robot Applications

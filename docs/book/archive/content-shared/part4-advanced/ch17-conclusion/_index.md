@@ -87,7 +87,7 @@ GoRAI is actively developing:
 
 ## 15.5 Getting Help
 
-**GitHub Issues**: https://github.com/gorai/gorai/issues
+**GitHub Issues**: https://github.com/emergingrobotics/gorai/issues
 - Bug reports
 - Feature requests
 - Questions

@@ -52,7 +52,7 @@ Create a Go-based program that:
    ```sh
    mkdir gorai-gps-example
    cd gorai-gps-example
-   go mod init github.com/gorai/gorai-gps-example
+   go mod init github.com/emergingrobotics/gorai-gps-example
    ```
 
 2. **Install Required Packages**

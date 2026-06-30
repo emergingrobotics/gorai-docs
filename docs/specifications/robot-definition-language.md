@@ -1188,7 +1188,7 @@ The `dashboard` object configures the embedded web dashboard. The dashboard quer
 {
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "video": {
       "enabled": true,
       "format": "mjpeg",
@@ -1204,7 +1204,7 @@ The `dashboard` object configures the embedded web dashboard. The dashboard quer
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `enabled` | bool | No | true | Enable/disable dashboard |
-| `listen` | string | No | ":8080" | HTTP listen address |
+| `listen` | string | No | ":10101" | HTTP listen address |
 | `video` | object | No | - | Video streaming configuration |
 
 Note: Data retention is now configured via `prometheus.retention`, not in the dashboard.
@@ -1251,7 +1251,7 @@ The dashboard provides two viewing modes, both powered by Prometheus queries:
 │   └─ Cameras: streams from /api/cameras/{name}/stream          │
 └────────────────────────────────────────────────────────────────┘
                               │
-                              │ HTTP :8080
+                              │ HTTP :10101
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │ Gorai Dashboard Server                                           │
@@ -1286,7 +1286,7 @@ To disable the dashboard completely:
 ```
 
 When disabled:
-- No HTTP server starts on :8080
+- No HTTP server starts on :10101
 - Zero CPU/memory overhead
 - Prometheus continues to collect metrics (can still use Grafana, etc.)
 
@@ -1307,7 +1307,7 @@ When enabled, the dashboard provides:
 
 The dashboard is designed for **trusted networks** (local development, robot-internal access). For production deployments exposed to untrusted networks:
 
-1. Bind to localhost only: `"listen": "127.0.0.1:8080"`
+1. Bind to localhost only: `"listen": "127.0.0.1:10101"`
 2. Use a reverse proxy with authentication
 3. Or disable the dashboard: `"enabled": false`
 
@@ -1506,7 +1506,7 @@ robot.json:15: components[0].type: unknown component type "imu2"
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080",
+    "listen": ":10101",
     "video": {
       "enabled": true,
       "format": "mjpeg",

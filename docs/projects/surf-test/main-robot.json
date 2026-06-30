@@ -138,6 +138,6 @@
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080"
+    "listen": ":10101"
   }
 }

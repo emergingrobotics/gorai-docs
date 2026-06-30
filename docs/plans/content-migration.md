@@ -421,7 +421,7 @@ enableEmoji = true
 [params]
   description = "A lightweight, Go-based robotics framework built on NATS.io"
   author = "Greg Herlein & Luca Herlein"
-  github = "https://github.com/gorai/gorai"
+  github = "https://github.com/emergingrobotics/gorai"
 
   # Features
   [params.features]

@@ -65,7 +65,7 @@ This plan addresses fundamental architectural questions about how Gorai robots a
 │                                                             │
 │  2. Custom Robot Binary (recommended)                       │
 │     - User writes main.go                                   │
-│     - Imports github.com/gorai/gorai/*                      │
+│     - Imports github.com/emergingrobotics/gorai/*                      │
 │     - Full control over startup/lifecycle                   │
 │     - Can embed config or load from file                    │
 │                                                             │
@@ -314,13 +314,13 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/gorai/gorai/pkg/config"
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/pkg/config"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 
     // Import component implementations to register them
-    _ "github.com/gorai/gorai/components/motor/gpio"
-    _ "github.com/gorai/gorai/components/sensor/mpu6050"
-    _ "github.com/gorai/gorai/components/camera/v4l2"
+    _ "github.com/emergingrobotics/gorai/components/motor/gpio"
+    _ "github.com/emergingrobotics/gorai/components/sensor/mpu6050"
+    _ "github.com/emergingrobotics/gorai/components/camera/v4l2"
 
     // Import custom components
     _ "myrobot/components/custom_sensor"

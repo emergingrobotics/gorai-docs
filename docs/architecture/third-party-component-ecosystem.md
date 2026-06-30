@@ -29,7 +29,7 @@ Gorai uses the same component packaging approach as the [Caddy web server](https
 
 ### How It Works
 
-1. **The user's robot project is a Go module.** Start from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template) template repo.
+1. **The user's robot project is a Go module.** Start from the [gorai-robot-template](https://github.com/emergingrobotics/gorai-robot-template) template repo.
 2. **`main.go` blank imports are the manifest.** Each `import _ "..."` line declares a component dependency.
 3. **Each blank import triggers `init()` which calls `registry.RegisterComponent()`.** The component is available at runtime without any other configuration.
 4. **`gorai component add` = `go get` + add blank import.** Standard Go tooling handles dependency resolution.
@@ -51,11 +51,11 @@ Gorai uses the same component packaging approach as the [Caddy web server](https
 package main
 
 import (
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 
     // Components are declared via blank imports
-    _ "github.com/gorai/gorai-component-motor/gpio"
-    _ "github.com/gorai/gorai-component-sensor/imu/mpu6050"
+    _ "github.com/emergingrobotics/gorai-component-motor/gpio"
+    _ "github.com/emergingrobotics/gorai-component-sensor/imu/mpu6050"
     _ "github.com/acme-corp/gorai-driver-custom-lidar"
 )
 
@@ -155,7 +155,7 @@ This runs `go get` and adds the blank import to `main.go`. That is all.
 
 ### Step 1: Scaffold the Repository
 
-Start from the [gorai-robot-template](https://github.com/gorai/gorai-robot-template) template repo, or use the Gorai CLI to generate a component template:
+Start from the [gorai-robot-template](https://github.com/emergingrobotics/gorai-robot-template) template repo, or use the Gorai CLI to generate a component template:
 
 ```bash
 gorai new component \
@@ -198,9 +198,9 @@ import (
     "context"
     "fmt"
 
-    "github.com/gorai/gorai/components/sensor"
-    "github.com/gorai/gorai/pkg/resource"
-    "github.com/gorai/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/components/sensor"
+    "github.com/emergingrobotics/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/registry"
 )
 
 // Register this component with Gorai
@@ -347,7 +347,7 @@ import (
     "context"
     "testing"
 
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/resource"
     "github.com/stretchr/testify/assert"
 )
 
@@ -1159,11 +1159,11 @@ Third-party components are essential for a thriving Gorai ecosystem. By followin
 - Contribute to the robotics community
 
 **Getting Started**:
-1. Clone [gorai-robot-template](https://github.com/gorai/gorai-robot-template) for a new robot project
+1. Clone [gorai-robot-template](https://github.com/emergingrobotics/gorai-robot-template) for a new robot project
 2. Use `gorai new component` to scaffold a new component package
 3. Implement your component following the Caddy model (blank imports + `init()` registration)
 4. Validate with `gorai component validate`
 5. Publish to git repository (`git tag` + `git push`)
 6. Optional: Submit to registry.gorai.dev for discovery
 
-Questions? Open an issue at https://github.com/gorai/gorai/issues
+Questions? Open an issue at https://github.com/emergingrobotics/gorai/issues

@@ -256,7 +256,7 @@ no I2C device at address 0x68
 **Problem**: Module not found
 
 ```
-cannot find module providing package github.com/gorai/gorai/...
+cannot find module providing package github.com/emergingrobotics/gorai/...
 ```
 
 **Solutions**:

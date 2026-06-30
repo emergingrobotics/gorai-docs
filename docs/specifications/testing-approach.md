@@ -119,7 +119,7 @@ package motor_test
 ### Directory Structure
 
 ```
-github.com/gorai/gorai/
+github.com/emergingrobotics/gorai/
 ├── pkg/
 │   └── node/
 │       ├── node.go
@@ -287,8 +287,8 @@ import (
     "context"
     "testing"
 
-    "github.com/gorai/gorai/components/motor"
-    "github.com/gorai/gorai/components/motor/fake"
+    "github.com/emergingrobotics/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/components/motor/fake"
 )
 
 func TestGPIOMotor_SetPower(t *testing.T) {
@@ -380,10 +380,10 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/internal/testutil"
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/pkg/pub"
-    "github.com/gorai/gorai/pkg/sub"
+    "github.com/emergingrobotics/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/pub"
+    "github.com/emergingrobotics/gorai/pkg/sub"
 )
 
 func TestPubSub_RoundTrip(t *testing.T) {
@@ -488,9 +488,9 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/internal/testutil"
-    "github.com/gorai/gorai/components/motor"
-    fakemotor "github.com/gorai/gorai/components/motor/fake"
+    "github.com/emergingrobotics/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/components/motor"
+    fakemotor "github.com/emergingrobotics/gorai/components/motor/fake"
 )
 
 func TestMotorModule_Lifecycle(t *testing.T) {
@@ -607,8 +607,8 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/internal/testutil"
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 )
 
 func TestDifferentialRobot_Navigation(t *testing.T) {
@@ -670,7 +670,7 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/driver/gpio"
+    "github.com/emergingrobotics/gorai/driver/gpio"
 )
 
 func TestGPIO_BlinkLED(t *testing.T) {
@@ -747,7 +747,7 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/components/motor"
 )
 
 // Motor is a fake motor for testing

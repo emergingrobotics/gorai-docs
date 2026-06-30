@@ -327,8 +327,8 @@ create-missing = false
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "ayu"
-git-repository-url = "https://github.com/gorai/gorai"
-edit-url-template = "https://github.com/gorai/gorai/edit/main/publish/book/{path}"
+git-repository-url = "https://github.com/emergingrobotics/gorai"
+edit-url-template = "https://github.com/emergingrobotics/gorai/edit/main/publish/book/{path}"
 site-url = "/book/"
 cname = "gorai.dev"
 
@@ -427,7 +427,7 @@ site_description: A lightweight, Go-based robotics framework built on NATS.io
 site_author: The Gorai Authors
 
 repo_name: gorai/gorai
-repo_url: https://github.com/gorai/gorai
+repo_url: https://github.com/emergingrobotics/gorai
 edit_uri: edit/main/publish/website/docs/
 
 theme:
@@ -537,7 +537,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/gorai/gorai
+      link: https://github.com/emergingrobotics/gorai
 
   version:
     provider: mike

@@ -24,9 +24,9 @@ Join the GoRAI community.
 
 ## Connect With Us
 
-- **GitHub**: [github.com/gorai/gorai](https://github.com/gorai/gorai)
-- **Issues**: [Report bugs and request features](https://github.com/gorai/gorai/issues)
-- **Discussions**: [Ask questions and share ideas](https://github.com/gorai/gorai/discussions)
+- **GitHub**: [github.com/emergingrobotics/gorai](https://github.com/emergingrobotics/gorai)
+- **Issues**: [Report bugs and request features](https://github.com/emergingrobotics/gorai/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/emergingrobotics/gorai/discussions)
 
 ## Ways to Contribute
 

@@ -1,4 +1,4 @@
-module github.com/gorai/gorai/examples/hello-robot/subscriber
+module github.com/emergingrobotics/gorai/examples/hello-robot/subscriber
 
 go 1.22
 

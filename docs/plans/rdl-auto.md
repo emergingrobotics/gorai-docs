@@ -196,23 +196,23 @@ import (
     // ============================================
 
     // Sensors
-    _ "github.com/gorai/gorai/components/sensor/bno055"    // ahrs: front_imu
-    _ "github.com/gorai/gorai/components/sensor/rplidar"   // lidar: front_lidar
+    _ "github.com/emergingrobotics/gorai/components/sensor/bno055"    // ahrs: front_imu
+    _ "github.com/emergingrobotics/gorai/components/sensor/rplidar"   // lidar: front_lidar
 
     // Actuators
-    _ "github.com/gorai/gorai/components/motor/gpio"       // motor: left_motor, right_motor
-    _ "github.com/gorai/gorai/components/base/differential" // base: base
+    _ "github.com/emergingrobotics/gorai/components/motor/gpio"       // motor: left_motor, right_motor
+    _ "github.com/emergingrobotics/gorai/components/base/differential" // base: base
 
     // Cameras
-    _ "github.com/gorai/gorai/components/camera/v4l2"      // camera: front_camera
+    _ "github.com/emergingrobotics/gorai/components/camera/v4l2"      // camera: front_camera
 
     // ============================================
     // Standard Gorai Services (from robot.json)
     // ============================================
 
-    _ "github.com/gorai/gorai/services/vision/yolox"           // vision: detector
-    _ "github.com/gorai/gorai/services/slam/cartographer"      // slam: mapper
-    _ "github.com/gorai/gorai/services/navigation/default"     // navigation: navigator
+    _ "github.com/emergingrobotics/gorai/services/vision/yolox"           // vision: detector
+    _ "github.com/emergingrobotics/gorai/services/slam/cartographer"      // slam: mapper
+    _ "github.com/emergingrobotics/gorai/services/navigation/default"     // navigation: navigator
 
     // ============================================
     // Custom Components (from components/)
@@ -244,13 +244,13 @@ const ServiceCount = 3
 package generated
 
 import (
-    "github.com/gorai/gorai/components/motor"
-    "github.com/gorai/gorai/components/sensor"
-    "github.com/gorai/gorai/components/camera"
-    "github.com/gorai/gorai/components/base"
-    "github.com/gorai/gorai/services/vision"
-    "github.com/gorai/gorai/services/slam"
-    "github.com/gorai/gorai/services/navigation"
+    "github.com/emergingrobotics/gorai/components/motor"
+    "github.com/emergingrobotics/gorai/components/sensor"
+    "github.com/emergingrobotics/gorai/components/camera"
+    "github.com/emergingrobotics/gorai/components/base"
+    "github.com/emergingrobotics/gorai/services/vision"
+    "github.com/emergingrobotics/gorai/services/slam"
+    "github.com/emergingrobotics/gorai/services/navigation"
 )
 
 // These type assertions ensure that the interfaces referenced in robot.json
@@ -351,7 +351,7 @@ Generating code...
   ✓ internal/generated/imports.go (updated)
   ✓ internal/generated/validate.go (updated)
   ✓ deploy/my-robot.service (updated)
-  ✓ go.mod (updated: added github.com/gorai/gorai/components/sensor/bno055)
+  ✓ go.mod (updated: added github.com/emergingrobotics/gorai/components/sensor/bno055)
 
 Generation complete!
 ```
@@ -393,8 +393,8 @@ package my_sensor
 import (
     "context"
 
-    "github.com/gorai/gorai/pkg/registry"
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/pkg/registry"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 func init() {
@@ -541,8 +541,8 @@ import (
     "syscall"
     "time"
 
-    "github.com/gorai/gorai/pkg/config"
-    "github.com/gorai/gorai/pkg/robot"
+    "github.com/emergingrobotics/gorai/pkg/config"
+    "github.com/emergingrobotics/gorai/pkg/robot"
 
     // Generated imports - do not remove this import
     _ "myrobot/internal/generated"
@@ -810,7 +810,7 @@ watch:
 
   "dashboard": {
     "enabled": true,
-    "listen": ":8080"
+    "listen": ":10101"
   }
 }
 ```
@@ -915,12 +915,12 @@ $ gorai generate --verbose
 
 Analyzing dependencies...
   robot.json requires:
-    - github.com/gorai/gorai/components/sensor/bno055
-    - github.com/gorai/gorai/components/motor/gpio
-    - github.com/gorai/gorai/services/vision/yolox
+    - github.com/emergingrobotics/gorai/components/sensor/bno055
+    - github.com/emergingrobotics/gorai/components/motor/gpio
+    - github.com/emergingrobotics/gorai/services/vision/yolox
 
   go.mod has:
-    - github.com/gorai/gorai v0.2.0
+    - github.com/emergingrobotics/gorai v0.2.0
 
   Action: No changes needed (subpackages included in main module)
 
@@ -929,14 +929,14 @@ module myrobot
 
 go 1.22
 
-require github.com/gorai/gorai v0.2.0
+require github.com/emergingrobotics/gorai v0.2.0
 ```
 
 ### 9.2 Version Pinning
 
 ```bash
 # Update gorai version
-go get github.com/gorai/gorai@v0.3.0
+go get github.com/emergingrobotics/gorai@v0.3.0
 gorai generate  # Regenerate with new version
 ```
 
@@ -946,7 +946,7 @@ For developing gorai itself:
 
 ```bash
 # Use replace directive in go.mod
-go mod edit -replace github.com/gorai/gorai=../gorai
+go mod edit -replace github.com/emergingrobotics/gorai=../gorai
 
 # Or set GOFLAGS
 export GOFLAGS="-mod=mod"
@@ -984,7 +984,7 @@ jobs:
           go-version: '1.22'
 
       - name: Install gorai
-        run: go install github.com/gorai/gorai/cmd/gorai@latest
+        run: go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 
       - name: Validate robot.json
         run: gorai validate robot.json
@@ -1004,7 +1004,7 @@ jobs:
           go-version: '1.22'
 
       - name: Install gorai
-        run: go install github.com/gorai/gorai/cmd/gorai@latest
+        run: go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 
       - name: Generate
         run: gorai generate
@@ -1030,7 +1030,7 @@ jobs:
           go-version: '1.22'
 
       - name: Install gorai
-        run: go install github.com/gorai/gorai/cmd/gorai@latest
+        run: go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 
       - name: Generate
         run: gorai generate

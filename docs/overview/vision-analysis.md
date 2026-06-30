@@ -118,7 +118,7 @@ source install/setup.bash
 ros2 run my_robot my_node
 
 # GoRAI (proposed)
-go install github.com/gorai/gorai/cmd/gorai@latest
+go install github.com/emergingrobotics/gorai/cmd/gorai@latest
 gorai new my_robot
 cd my_robot && go run .
 ```
@@ -609,7 +609,7 @@ Even if few users need it, **perception of vendor lock-in hurts adoption**.
 package main
 
 import (
-    "github.com/gorai/gorai/pkg/nats"
+    "github.com/emergingrobotics/gorai/pkg/nats"
     "github.com/tiiuae/rclgo/pkg/rclgo"
 )
 

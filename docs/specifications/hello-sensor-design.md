@@ -149,7 +149,7 @@ Add to the existing `sensor.proto` or create as a separate file for this example
 syntax = "proto3";
 package gorai.sensor;
 
-option go_package = "github.com/gorai/gorai/api/gen/gorai/sensor";
+option go_package = "github.com/emergingrobotics/gorai/api/gen/gorai/sensor";
 
 import "gorai/std/std.proto";
 
@@ -560,12 +560,12 @@ import (
     "sync"
     "time"
 
-    "github.com/gorai/gorai/api/gen/gorai/sensor"
-    "github.com/gorai/gorai/api/gen/gorai/std"
-    "github.com/gorai/gorai/examples/hello-sensor/reader"
-    "github.com/gorai/gorai/pkg/node"
-    "github.com/gorai/gorai/pkg/pub"
-    "github.com/gorai/gorai/pkg/resource"
+    "github.com/emergingrobotics/gorai/api/gen/gorai/sensor"
+    "github.com/emergingrobotics/gorai/api/gen/gorai/std"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/reader"
+    "github.com/emergingrobotics/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/pkg/pub"
+    "github.com/emergingrobotics/gorai/pkg/resource"
 )
 
 // Config holds temperature sensor configuration.
@@ -899,7 +899,7 @@ import (
     "context"
     "sync"
 
-    "github.com/gorai/gorai/examples/hello-sensor/reader"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/reader"
 )
 
 // Reader is a fake temperature reader for testing.
@@ -979,8 +979,8 @@ import (
     "os/signal"
     "syscall"
 
-    "github.com/gorai/gorai/examples/hello-sensor/sensor"
-    "github.com/gorai/gorai/pkg/node"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor"
+    "github.com/emergingrobotics/gorai/pkg/node"
 )
 
 func main() {
@@ -1186,9 +1186,9 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/examples/hello-sensor/sensor"
-    "github.com/gorai/gorai/examples/hello-sensor/sensor/fake"
-    "github.com/gorai/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor/fake"
+    "github.com/emergingrobotics/gorai/internal/testutil"
 )
 
 func TestTemperatureSensor_Readings(t *testing.T) {
@@ -1283,7 +1283,7 @@ import (
     "testing"
     "time"
 
-    "github.com/gorai/gorai/internal/testutil"
+    "github.com/emergingrobotics/gorai/internal/testutil"
 )
 
 func TestHelloSensor_EndToEnd(t *testing.T) {
@@ -1448,7 +1448,7 @@ This section describes each file that must be implemented, its purpose, and key 
 - `main()` - Entry point
 
 **Dependencies:**
-- `github.com/gorai/gorai/pkg/node`
+- `github.com/emergingrobotics/gorai/pkg/node`
 - `./sensor`
 
 ---
@@ -1459,12 +1459,12 @@ This section describes each file that must be implemented, its purpose, and key 
 
 **Contents:**
 ```go
-module github.com/gorai/gorai/examples/hello-sensor
+module github.com/emergingrobotics/gorai/examples/hello-sensor
 
 go 1.21
 
 require (
-    github.com/gorai/gorai v0.1.0
+    github.com/emergingrobotics/gorai v0.1.0
     github.com/nats-io/nats.go v1.31.0
     google.golang.org/protobuf v1.31.0
 )
@@ -1626,7 +1626,7 @@ require (
 - `TestTemperatureSensor_Reconfigure` - Test hot reconfiguration
 
 **Dependencies:**
-- `github.com/gorai/gorai/internal/testutil` for StartNATS, RequireNoError
+- `github.com/emergingrobotics/gorai/internal/testutil` for StartNATS, RequireNoError
 - `./fake` for fake reader
 
 ---
@@ -1802,7 +1802,7 @@ package main
 import (
     "context"
     "fmt"
-    "github.com/gorai/gorai/examples/hello-sensor/reader"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/reader"
 )
 
 func main() {
@@ -1866,7 +1866,7 @@ package main
 import (
     "context"
     "fmt"
-    "github.com/gorai/gorai/examples/hello-sensor/reader"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/reader"
 )
 
 func main() {
@@ -1949,7 +1949,7 @@ package fake_test
 import (
     "context"
     "testing"
-    "github.com/gorai/gorai/examples/hello-sensor/sensor/fake"
+    "github.com/emergingrobotics/gorai/examples/hello-sensor/sensor/fake"
 )
 
 func TestFake(t *testing.T) {

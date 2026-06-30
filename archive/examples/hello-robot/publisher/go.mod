@@ -1,4 +1,4 @@
-module github.com/gorai/gorai/examples/hello-robot/publisher
+module github.com/emergingrobotics/gorai/examples/hello-robot/publisher
 
 go 1.22
 

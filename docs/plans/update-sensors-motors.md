@@ -297,7 +297,7 @@ package servo
 
 import (
     "context"
-    "github.com/gorai/gorai/components"
+    "github.com/emergingrobotics/gorai/components"
 )
 
 // Servo for position-controlled motors (RC servos, Dynamixel, etc.).
@@ -327,7 +327,7 @@ package stepper
 
 import (
     "context"
-    "github.com/gorai/gorai/components"
+    "github.com/emergingrobotics/gorai/components"
 )
 
 // Stepper for discrete-step motors (NEMA 17, etc.).
@@ -359,7 +359,7 @@ package thruster
 
 import (
     "context"
-    "github.com/gorai/gorai/components"
+    "github.com/emergingrobotics/gorai/components"
 )
 
 // Thruster for underwater propulsion (BlueRobotics, etc.).
@@ -390,7 +390,7 @@ package valve
 
 import (
     "context"
-    "github.com/gorai/gorai/components"
+    "github.com/emergingrobotics/gorai/components"
 )
 
 // Valve for fluid control actuators.
